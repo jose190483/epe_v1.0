@@ -13,14 +13,9 @@
 					<div class="card-body bg-light" >
 						<div class="row">
 							<div class="col">
-								<select class="js-example-basic-multiple" name="states[]" multiple="multiple">
-									<option value="AL">Alabama</option>
-									...
-									<option value="WY">Wyoming</option>
-								</select>
 								<div class="input-group input-group-sm mb-3">
 									<span class="input-group-text">ID</span>
-									{% render_field pd_form.pd_id class="form-control" readonly="True" id="pd_id" %}
+									{% render_field pd_form.pd_id class="form-control bg-secondary text-white" id="pd_id" disabled="disabled" %}
 								</div>
 								<div class="input-group input-group-sm mb-3">
 									<span class="input-group-text">Name</span>
@@ -32,23 +27,23 @@
 								</div>
 								<div class="input-group input-group-sm mb-3">
 									<span class="input-group-text">Dictionary</span>
-									{% render_field pd_form.pd_library id="pd_library" class="form-control" %}
+									{% render_field pd_form.pd_library id="pd_library" class="form-select" %}
 								</div>
 								<div class="input-group input-group-sm mb-3">
 									<span class="input-group-text">Unit Type</span>
-									{% render_field pd_form.pd_unit_type id="pd_unit_type" class="form-control" %}
+									{% render_field pd_form.pd_unit_type id="pd_unit_type" class="form-select" %}
 								</div>
 								<div class="input-group input-group-sm mb-3">
 									<span class="input-group-text">Data Type</span>
-									{% render_field pd_form.pd_datatype id="pd_datatype" class="form-control" %}
+									{% render_field pd_form.pd_datatype id="pd_datatype" class="form-select" %}
 								</div>
 								<div class="input-group input-group-sm mb-3">
 									<span class="input-group-text">Digital Source</span>
-									{% render_field pd_form.pd_digital_source id="pd_digital_source" class="form-control" %}
+									{% render_field pd_form.pd_digital_source id="pd_digital_source" class="form-select" %}
 								</div>
 								<div class="input-group input-group-sm mb-3">
 									<span class="input-group-text">Owner</span>
-									{% render_field pd_form.pd_owner id="pd_owner" class="form-control" %}
+									{% render_field pd_form.pd_owner id="pd_owner" class="form-select" %}
 								</div>
 								<div class="row">
 									<div class="col-1"></div>

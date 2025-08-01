@@ -22,10 +22,9 @@ font-size:12px!important;
 font-family: 'Poppins', sans-serif;
 }
 
-.form-control{
+.form-control,.form-select{
 font-family: 'Poppins', sans-serif;
 background-color:#e6e6e6;
-font-size:10px!important;
 }
 
 /*Button*/
