@@ -18,8 +18,7 @@
 <div class="container_fluid shadow-box-table m-2 p-3">
     <table id="param_def_list" class="table table-striped table-responsive table-sm nowrap mt-2">
         <thead class="table-dark">
-        <tr class="text-center">
-            <th></th>  <!-- For the expand button -->
+        <tr>
             <th>ID</th>
             <th>Parameter Definition</th>
             <th>Name</th>
@@ -30,18 +29,17 @@
         </thead>
         <tbody>
         {% for param_def in page_obj %}
-        <tr class="text-center">
-            <td></td>
+        <tr>
             <td>{{ param_def.id }}</td>
             <td>{{ param_def.pd_id }}</td>
             <td>{{ param_def.pd_name }}</td>
             <td>{{ param_def.pd_unit_type }}</td>
-            <td>
+            <td class="text-center">
                 <a class="btn btn-sm btn-primary" href="{% url 'param_def_update' param_def.id %}">
                     <i class="far fa-edit"></i>
                 </a>
             </td>
-            <td>
+            <td class="text-center">
                 <form action="{% url 'param_def_delete' param_def.id %}" method="post" onsubmit="return confirm('Are you sure?');">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-sm btn-danger">

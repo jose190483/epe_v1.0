@@ -16,10 +16,9 @@ border-bottom:2px solid #3366ff;
 .input-group span{
 
 background-color: #8de4e9;
-font-color: black;
+color: black;
 font-weight: bold ;
-font-size:10px!important;
-color:black;
+font-size:12px!important;
 font-family: 'Poppins', sans-serif;
 }
 
