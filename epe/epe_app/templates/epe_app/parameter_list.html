@@ -2,24 +2,20 @@
 
 {% block content %}
 <div class="d-flex justify-content-center "><h5 class="shadow-sm rounded rounded text-center bg-info p-2">Parameter List</h5></div>
-
-<div class="container-fluid row">
-    <div class="d-flex justify-content-start ">
-        <div class="p-1">
-            <a href="{% url 'home_page' %}" class="btn btn-sm btn-primary btn-block btn-lg"><i class="fas fa-arrow-left"></i> Back</a>
-        </div>
-        <div class="p-1">
-            <a href="{% url 'parameter_insert' %}" class="btn btn-sm btn-success btn-block btn-lg">
-                <i class="fas fa-plus"></i> Add
-            </a>
-        </div>
-    </div>
+<div class="d-flex gap-2 justify-content-start m-2">
+    <a href="{% url 'home_page' %}" class="btn btn-primary btn-sm">
+        <i class="fas fa-arrow-left"></i> Back
+    </a>
+    <a href="{% url 'parameter_insert' %}" class="btn btn-success btn-sm">
+        <i class="fas fa-plus"></i> Add
+    </a>
 </div>
+
 <hr>
-<div class="container-fluid shadow-box-table ">
-    <table  id="param_def_list" class="table table-striped table-bordered">
-        <thead class="thead-dark">
-        <tr>
+<div class="container_fluid shadow-box-table m-2 p-3">
+    <table id="param_def_list" class="table table-striped table-responsive table-sm nowrap mt-2">
+        <thead class="table-dark">
+        <tr class="text-center">
             <th>ID</th>
             <th>Paramerter</th>
             <th>Name</th>
@@ -32,7 +28,7 @@
         </thead>
         <tbody>
         {% for param in page_obj %}
-        <tr>
+        <tr class="text-center">
             <td> {{param.id}}</td>
             <td> {{param.p_id}}</td>
             <td> {{param.p_name}}</td>
@@ -59,10 +55,26 @@
         </tbody>
     </table>
 </div>
-<script>
-    $(document).ready(function() {
-    $('#param_def_list').DataTable();
-} );
-</script>
 
 {% endblock content %}
+
+{% block scripts %}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    new DataTable('#param_def_list', {
+      responsive: true,
+      dom: '<"row align-items-center mb-3"' +
+             '<"col-md-4"l>' +        // Length dropdown (entries per page)
+             '<"col-md-4 text-center"B>' + // Export buttons
+             '<"col-md-4 text-end"f>' +    // Search box
+           '>rt' +
+           '<"row mt-3"' +
+             '<"col-md-6"i>' +        // Table info
+             '<"col-md-6 text-end"p>' +  // Pagination
+           '>',
+      buttons: ['copy', 'excel', 'pdf']
+    });
+  });
+</script>
+
+{% endblock scripts %}
