@@ -1,0 +1,54 @@
+
+/*header*/
+
+.header_style{
+background-color: #111;
+border-bottom:5px solid #3366ff;
+text-align: center;
+}
+
+
+/*side nav separator style*/
+.hr_style{
+border-bottom:2px solid #3366ff;
+}
+
+.input-group span{
+
+background-color: #8de4e9;
+font-color: black;
+font-weight: bold ;
+font-size:10px!important;
+color:black;
+font-family: 'Poppins', sans-serif;
+}
+
+.form-control{
+font-family: 'Poppins', sans-serif;
+background-color:#e6e6e6;
+font-size:10px!important;
+}
+
+/*Button*/
+.btn{
+     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+/*Data Table*/
+.table{
+font-family: 'Poppins', sans-serif;
+background-color:white;
+border-color:black;
+}
+
+.table.dataTable thead tr th {
+  color: white;
+  text-align:center;
+}
+
+.shadow-box-table {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* strong shadow */
+    transition: box-shadow 0.3s ease;
+    padding-block: 10px;
+    border-radius: 5px;
+    background-color:white;
+}

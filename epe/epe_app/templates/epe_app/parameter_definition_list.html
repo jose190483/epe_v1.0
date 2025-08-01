@@ -1,0 +1,60 @@
+{% extends "epe_app/base.html" %}
+{% block content %}
+<div class="d-flex justify-content-center "><h5 class="shadow-sm rounded rounded text-center bg-info p-2">Parameter Definition List</h5></div>
+<div class="container-fluid row">
+    <div class="col-auto">
+        <a href="{% url 'home_page' %}" class="btn btn-primary btn-block btn-sm">
+            <i class="fas fa-arrow-left"></i> Back
+        </a>
+    </div>
+    <div class="col-auto">
+        <a href="{% url 'param_def_insert' %}" class="btn btn-success btn-block btn-sm">
+            <i class="fas fa-plus"></i> Add
+        </a>
+    </div>
+</div>
+<hr>
+<!--<div class="container-fluid shadow-box-table">-->
+    <table  id="param_def_list" class="table table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th>ID</th>
+            <th>Paramerter Definition</th>
+            <th>Name</th>
+            <th>Unity Type</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </thead>
+        <tbody>
+        {% for param_def in page_obj %}
+        <tr>
+            <td> {{param_def.id}}</td>
+            <td> {{param_def.pd_id}}</td>
+            <td> {{param_def.pd_name}}</td>
+            <td> {{param_def.pd_unit_type}}</td>
+            <td>
+                <a class="btn btn-sm btn-primary" href="{% url 'param_def_update' param_def.id %}" >
+                    <i class="far fa-edit"></i>
+                </a>
+            </td>
+            <td>
+                <form action="{% url 'param_def_delete' param_def.id %}" method="post" onclick="return confirm('Are you sure?');">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger btn-sm">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+<!--</div>-->
+
+<script>
+    $(document).ready(function() {
+    $('#param_def_list').DataTable();
+} );
+</script>
+
+{% endblock content %}

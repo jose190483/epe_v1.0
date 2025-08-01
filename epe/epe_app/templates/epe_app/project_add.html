@@ -1,0 +1,57 @@
+{% extends "epe_app/base.html" %}
+{% load widget_tweaks %}
+{% block content %}
+
+<form method="POST" action="">
+	{% csrf_token %}
+	<div class="row">
+		<div class="col-3"></div>
+		<div class="col-6">
+			<div class="container-fluid">
+				<div class="card text-white bg-info mb-3" style="max-width: 100%;">
+					<div class="card-header text-center"><h5>Add/Update Project</h5></div>
+					<div class="card-body bg-light" >
+						<div class="row">
+							<div class="col">
+								<div class="input-group input-group-sm mb-3">
+									<span class="input-group-text">Project ID</span>
+									{% render_field p_form.p_project_id class="form-control" id="p_project_id" %}
+								</div>
+								<div class="input-group input-group-sm mb-3">
+									<span class="input-group-text">Project Name</span>
+									{% render_field p_form.p_project_name id="p_project_name" class="form-control" %}
+								</div>
+								<div class="input-group input-group-sm mb-3">
+									<span class="input-group-text">Customer Name</span>
+									{% render_field p_form.p_customer_name id="p_customer_name" class="form-control" %}
+								</div>
+								<div class="input-group input-group-sm mb-3">
+									<span class="input-group-text">Location</span>
+									{% render_field p_form.p_location id="p_location" class="form-control" %}
+								</div>
+								<div class="row">
+									<div class="col-1"></div>
+									<div class="col-10">
+										<div class="message text-center">
+											{% for message in messages %}
+											<a {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</a>
+											{% endfor %}
+										</div>
+									</div>
+									<div class="col-1"></div>
+								</div>
+							</div>
+						</div>
+						<div class="d-flex justify-content-between"><button type="submit" class="btn btn-sm btn-success "><i class="fas fa-check"></i> Submit</button>
+							<a href="{% url 'project_list' %}" class="btn btn-sm btn-danger float-right">
+								<i class="fas fa-times"></i> Cancel
+							</a></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-3"></div>
+	</div>
+</form>
+
+{% endblock content %}

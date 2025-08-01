@@ -1,0 +1,81 @@
+{% extends "epe_app/base.html" %}
+{% load widget_tweaks %}
+{% block content %}
+
+<form method="POST" action="">
+	{% csrf_token %}
+	<div class="row">
+		<div class="col-3"></div>
+		<div class="col-6">
+			<div class="container-fluid">
+				<div class="card text-white bg-info mb-3" style="max-width: 100%;">
+					<div class="card-header text-center"><h5>Add/Update Parameter</h5></div>
+					<div class="card-body bg-light" >
+						<div class="row">
+							<div class="col">
+								<div class="input-group input-group-sm mb-3">
+									<span class="input-group-text" id="p_id">ID</span>
+									{% render_field p_form.p_id class="form-control" readonly="True" id="p_id" %}
+								</div>
+								<div class="input-group input-group-sm mb-3">
+									<span class="input-group-text" id="p_project">Project Name</span>
+									{% render_field p_form.p_project id="p_project" class="form-control" %}
+								</div>
+								<div class="input-group input-group-sm mb-3">
+									<span class="input-group-text">System Name</span>
+									{% render_field p_form.p_system id="p_system" class="form-control" %}
+								</div>
+								<div class="input-group input-group-sm mb-3">
+									<span class="input-group-text">Component Name</span>
+									{% render_field p_form.p_component id="p_component" class="form-control" %}
+								</div>
+								<div class="input-group input-group-sm mb-3">
+									<span class="input-group-text">Parameter Dictionary</span>
+									{% render_field p_form.p_parameter_dictionary id="p_parameter_dictionary" class="form-control" %}
+								</div>
+								<div class="input-group input-group-sm mb-3">
+									<span class="input-group-text">Parameter Definition</span>
+									{% render_field p_form.p_definition id="p_definition" class="form-control" %}
+								</div>
+								<div class="input-group input-group-sm mb-3">
+									<span class="input-group-text">Parameter Name</span>
+									{% render_field p_form.p_name id="p_name" class="form-control" %}
+								</div>
+								<div class="input-group input-group-sm mb-3">
+									<span class="input-group-text">Unit Type</span>
+									{% render_field p_form.p_unit_type id="p_unit_type" class="form-control" %}
+								</div>
+								<div class="input-group input-group-sm mb-3">
+									<span class="input-group-text">UOM</span>
+									{% render_field p_form.p_uom id="p_uom" class="form-control" %}
+								</div>
+								<div class="input-group input-group-sm mb-3">
+									<span class="input-group-text">Value</span>
+									{% render_field p_form.p_value id="p_value" class="form-control" %}
+								</div>
+								<div class="row">
+								<div class="col-1"></div>
+								<div class="col-10">
+									<div class="message text-center">
+										{% for message in messages %}
+										<a {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</a>
+										{% endfor %}
+									</div>
+								</div>
+								<div class="col-1"></div>
+							</div>
+							</div>
+						</div>
+						<div class="d-flex justify-content-between"><button type="submit" class="btn btn-sm  btn-success "><i class="fas fa-check"></i> Submit</button>
+							<a href="{% url 'parameter_list' %}" class="btn btn-sm btn-danger float-right">
+								<i class="fas fa-times"></i> Cancel
+							</a></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-3"></div>
+	</div>
+</form>
+
+{% endblock content %}

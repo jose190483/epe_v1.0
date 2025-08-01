@@ -1,0 +1,9 @@
+from django.shortcuts import render
+
+# Create your views here.
+from .sub_views.login_page_view import login_page
+from .sub_views.home_view import home_view
+from .sub_views.registration_page_view import registration_page
+from .sub_views.parameter_definition_view import parameter_definition_add,parameter_definition_list,parameter_definition_delete,parameter_definition_search
+from .sub_views.project_view import project_add,project_delete,project_list,project_search
+from .sub_views.parameter_view import parameter_add,parameter_delete,parameter_list,parameter_search
