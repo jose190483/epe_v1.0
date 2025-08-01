@@ -1,79 +1,95 @@
 {% extends "epe_app/base.html" %}
 {% load widget_tweaks %}
+
 {% block content %}
-
 <form method="POST" action="">
-	{% csrf_token %}
-	<div class="row">
-		<div class="col-3"></div>
-		<div class="col-6">
-			<div class="container-fluid">
-				<div class="card text-white bg-info mb-3" style="max-width: 100%;">
-					<div class="card-header text-center"><h5>Add/Update Parameter Definition</h5></div>
-					<div class="card-body bg-light" >
-						<div class="row">
-							<div class="col">
-								<div class="input-group input-group-sm mb-3">
-									<span class="input-group-text">ID</span>
-									{% render_field pd_form.pd_id class="form-control bg-secondary text-white" id="pd_id" disabled="disabled" %}
-								</div>
-								<div class="input-group input-group-sm mb-3">
-									<span class="input-group-text">Name</span>
-									{% render_field pd_form.pd_name id="pd_name" class="form-control" %}
-								</div>
-								<div class="input-group input-group-sm mb-3">
-									<span class="input-group-text">Description</span>
-									{% render_field pd_form.pd_description id="pd_description" rows='3' class="form-control" %}
-								</div>
-								<div class="input-group input-group-sm mb-3">
-									<span class="input-group-text">Dictionary</span>
-									{% render_field pd_form.pd_library id="pd_library" class="form-select" %}
-								</div>
-								<div class="input-group input-group-sm mb-3">
-									<span class="input-group-text">Unit Type</span>
-									{% render_field pd_form.pd_unit_type id="pd_unit_type" class="form-select" %}
-								</div>
-								<div class="input-group input-group-sm mb-3">
-									<span class="input-group-text">Data Type</span>
-									{% render_field pd_form.pd_datatype id="pd_datatype" class="form-select" %}
-								</div>
-								<div class="input-group input-group-sm mb-3">
-									<span class="input-group-text">Digital Source</span>
-									{% render_field pd_form.pd_digital_source id="pd_digital_source" class="form-select" %}
-								</div>
-								<div class="input-group input-group-sm mb-3">
-									<span class="input-group-text">Owner</span>
-									{% render_field pd_form.pd_owner id="pd_owner" class="form-select" %}
-								</div>
-								<div class="row">
-									<div class="col-1"></div>
-									<div class="col-10">
-										<div class="message text-center">
-											{% for message in messages %}
-											<a {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</a>
-											{% endfor %}
-										</div>
-									</div>
-									<div class="col-1"></div>
-								</div>
-							</div>
-						</div>
-						<div class="d-flex justify-content-between">
-							<button type="submit" class="btn btn-sm btn-success "><i class="fas fa-check"></i> Submit</button>
-							<a href="{% url 'param_def_list' %}" class="btn btn-sm btn-danger float-right">
-								<i class="fas fa-times"></i> Cancel
-							</a></div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col-3"></div>
-	</div>
-</form>
+  {% csrf_token %}
+  <div class="container my-3">
+    <div class="row justify-content-center">
+      <div class="col-12 col-lg-10">
+        <div class="card shadow-sm">
+          <div class="card-header bg-info text-white text-center">
+            <h5 class="mb-0">Add/Update Parameter Definition</h5>
+          </div>
 
-<script>
-	$(document).ready(function() {
-    $('.js-example-basic-single').select2();
-});
-</script>
+          <div class="card-body bg-light">
+            <div class="row g-3">
+              <!-- Left Column -->
+              <div class="col-md-6">
+                <div class="input-group input-group-sm mb-2">
+                  <span class="input-group-text">ID</span>
+                  {% render_field pd_form.pd_id class="form-control bg-secondary text-white" disabled="disabled" %}
+                </div>
+                <div class="input-group input-group-sm mb-2">
+                  <span class="input-group-text">Name</span>
+                  {% render_field pd_form.pd_name class="form-control" %}
+                </div>
+                <div class="input-group input-group-sm mb-2">
+                  <span class="input-group-text">Description</span>
+                  {% render_field pd_form.pd_description class="form-control" rows="3" %}
+                </div>
+                <div class="input-group input-group-sm mb-2">
+                  <span class="input-group-text">Dictionary</span>
+                  {% render_field pd_form.pd_library class="form-select" %}
+                </div>
+              </div>
+
+              <!-- Right Column -->
+              <div class="col-md-6">
+                <div class="input-group input-group-sm mb-2">
+                  <span class="input-group-text">Unit Type</span>
+                  {% render_field pd_form.pd_unit_type class="form-select select2 bg-white" %}
+                </div>
+                <div class="input-group input-group-sm mb-2">
+                  <span class="input-group-text">Data Type</span>
+                  {% render_field pd_form.pd_datatype class="form-select select2 no-bg" %}
+                </div>
+                <div class="input-group input-group-sm mb-2">
+                  <span class="input-group-text">Digital Source</span>
+                  {% render_field pd_form.pd_digital_source class="form-select select2 no-bg" %}
+                </div>
+                <div class="input-group input-group-sm mb-2">
+                  <span class="input-group-text">Owner</span>
+                  {% render_field pd_form.pd_owner class="form-select select2 no-bg" %}
+                </div>
+              </div>
+
+              <!-- Messages -->
+              <div class="col-12 text-center">
+                {% for message in messages %}
+                  <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %} py-1 mb-2">
+                    {{ message }}
+                  </div>
+                {% endfor %}
+              </div>
+
+              <!-- Buttons -->
+              <div class="col-12 d-flex justify-content-between mt-2">
+                <button type="submit" class="btn btn-sm btn-success">
+                  <i class="fas fa-check"></i> Submit
+                </button>
+                <a href="{% url 'param_def_list' %}" class="btn btn-sm btn-danger">
+                  <i class="fas fa-times"></i> Cancel
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
 {% endblock content %}
+
+{% block scripts %}
+<script>
+  $(document).ready(function () {
+    $('.select2').select2({
+      width: '66%',
+      theme: 'bootstrap-5',
+      dropdownParent: $('.card-body')
+    });
+  });
+</script>
+
+{% endblock scripts %}

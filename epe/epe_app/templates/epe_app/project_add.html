@@ -16,7 +16,7 @@
           <div class="col-md-6">
             <div class="input-group input-group-sm">
               <span class="input-group-text">Project ID</span>
-              {% render_field p_form.p_project_id class="form-control" id="p_project_id" %}
+              {% render_field p_form.p_project_id class="form-control bg-secondary text-white" id="p_project_id" disabled="disabled" %}
             </div>
           </div>
 
@@ -43,9 +43,9 @@
 
           <div class="col-12 text-center">
             {% for message in messages %}
-              <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %} py-1 mb-2">
-                {{ message }}
-              </div>
+            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %} py-1 mb-2">
+              {{ message }}
+            </div>
             {% endfor %}
           </div>
         </div>
