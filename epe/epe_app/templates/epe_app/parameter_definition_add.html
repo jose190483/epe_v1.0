@@ -30,7 +30,7 @@
                 </div>
                 <div class="input-group input-group-sm mb-2">
                   <span class="input-group-text">Dictionary</span>
-                  {% render_field pd_form.pd_library class="form-select" %}
+                  {% render_field pd_form.pd_library class="form-select select2" %}
                 </div>
               </div>
 
@@ -38,19 +38,19 @@
               <div class="col-md-6">
                 <div class="input-group input-group-sm mb-2">
                   <span class="input-group-text">Unit Type</span>
-                  {% render_field pd_form.pd_unit_type class="form-select select2 bg-white" %}
+                  {% render_field pd_form.pd_unit_type class="form-select select2" %}
                 </div>
                 <div class="input-group input-group-sm mb-2">
                   <span class="input-group-text">Data Type</span>
-                  {% render_field pd_form.pd_datatype class="form-select select2 no-bg" %}
+                  {% render_field pd_form.pd_datatype class="form-select select2" %}
                 </div>
                 <div class="input-group input-group-sm mb-2">
                   <span class="input-group-text">Digital Source</span>
-                  {% render_field pd_form.pd_digital_source class="form-select select2 no-bg" multiple="multiple" %}
+                  {% render_field pd_form.pd_digital_source class="form-select select2" multiple="multiple" %}
                 </div>
                 <div class="input-group input-group-sm mb-2">
                   <span class="input-group-text">Owner</span>
-                  {% render_field pd_form.pd_owner class="form-select select2 no-bg" %}
+                  {% render_field pd_form.pd_owner class="form-select select2" %}
                 </div>
               </div>
 
@@ -91,5 +91,4 @@
     });
   });
 </script>
-
 {% endblock scripts %}
