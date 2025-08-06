@@ -1,12 +1,11 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator
 from django.db.models import Q
 
 from ..forms import parameter_definition_form
 from ..models import prameter_definition_info
 from django.shortcuts import render, redirect
-from django.contrib import messages
 
 @login_required(login_url='login_page')
 def parameter_definition_add(request,param_def_id=0):
@@ -28,21 +27,12 @@ def parameter_definition_add(request,param_def_id=0):
         if param_def_id == 0:
             pd_form = parameter_definition_form(request.POST,request.FILES)
             if pd_form.is_valid():
-                # Generate Random requirement number
-                pd_form.save()
-                try:
-                    last_id = prameter_definition_info.objects.latest('id').id
-                    param_number=100000+last_id
-                except ObjectDoesNotExist:
-                    param_number=100000
-                    # param_num_next = str('param_') + str(randint(10000, 99999))
-                param_num_next=str('PD_') + str(param_number)
-                print("Requirement parameter_definition_form is Valid")
-                last_id = prameter_definition_info.objects.latest('id').id
-                prameter_definition_info.objects.filter(id=last_id).update(pd_id=param_num_next)
-                param_id = prameter_definition_info.objects.get(pd_id=param_num_next).id
+                parameter_def_instance = pd_form.save(commit=False)
+                parameter_def_instance.save()
+                parameter_def_instance.p_id = f"S_{1000000 + parameter_def_instance.id}"
+                parameter_def_instance.save(update_fields=['p_id'])
                 messages.success(request, 'Record Updated Successfully')
-                return redirect('/epe/param_def_update/'+ str(last_id))
+                return redirect(f'/epe/param_def_update/{parameter_def_instance.id}')
             else:
                 print("Requirement parameter_definition_form is Not Valid")
                 messages.error(request, 'Record Not Updated Successfully')

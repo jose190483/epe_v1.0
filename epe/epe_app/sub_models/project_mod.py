@@ -9,4 +9,4 @@ class project_info(models.Model):
         ordering = ["p_project_id"]
 
     def __str__(self):
-        return self.p_project_id
+        return str(self.p_project_id)
