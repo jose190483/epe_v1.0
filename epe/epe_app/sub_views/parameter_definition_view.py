@@ -2,9 +2,10 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.http import JsonResponse
 
 from ..forms import parameter_definition_form
-from ..models import prameter_definition_info
+from ..models import prameter_definition_info,parameter_definition_lov_info
 from django.shortcuts import render, redirect
 
 @login_required(login_url='login_page')
@@ -87,3 +88,16 @@ def parameter_definition_delete(request,param_def_id):
     param_def = prameter_definition_info.objects.get(pk=param_def_id)
     param_def.delete()
     return redirect('/epe/parameter_definition_search')
+
+@login_required(login_url='login_page')
+def add_parameter_definition_lov(request):
+    if request.method == 'POST':
+        pdl_lov = request.POST.get('pdl_lov')
+        # pdl_parameter_definition = request.POST.get('pdl_parameter_definition')
+        if pdl_lov:
+            existing = parameter_definition_lov_info.objects.filter(pdl_lov__iexact=pdl_lov).first()
+            if existing:
+                return JsonResponse({'id': existing.id, 'pdl_lov': existing.pdl_lov})
+            new_lov = parameter_definition_lov_info.objects.create(pdl_lov=pdl_lov)
+            return JsonResponse({'id': new_lov.id, 'pdl_lov': new_lov.pdl_lov})
+    return JsonResponse({'error': 'Invalid request'}, status=400)
