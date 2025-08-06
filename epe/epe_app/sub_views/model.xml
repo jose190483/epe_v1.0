@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TcClasses>
+
+  <TcClass applicationName="INFOMANAGEV200" className="CadAttrMappingDefPartICS"
+           description="" isExportable="false" isUninheritables="false" isUninstantiable="false"
+           packageName="com.teamcenter.core.property" parentClassName="CadAttrMappingDefPart"
+           sourceTemplate="found">
+
+    <TcAttribute attributeName="type_id" attributeType="POM_string"
+                 description="ICS mapping type (ICS or ICS CREATE)"
+                 exportAsString="false" followOnExport="false" isArray="false"
+                 isCandidateKey="false" isNullAllowed="false" isPublicRead="false"
+                 isPublicWrite="false" isTransient="false" isUnique="false"
+                 maxStringLength="12" noBackpointer="false"/>
+
+    <TcAttribute attributeName="attr_id" attributeType="POM_int"
+                 description="ICS attribute ID"
+                 exportAsString="false" followOnExport="false" isArray="false"
+                 isCandidateKey="false" isNullAllowed="false" isPublicRead="false"
+                 isPublicWrite="false" isTransient="false" isUnique="false"
+                 maxStringLength="0" noBackpointer="false"/>
+
+    <TcAttribute attributeName="class_id" attributeType="POM_string"
+                 description="ICS class ID"
+                 exportAsString="false" followOnExport="false" isArray="false"
+                 isCandidateKey="false" isNullAllowed="true" isPublicRead="false"
+                 isPublicWrite="false" isTransient="false" isUnique="false"
+                 maxStringLength="65" noBackpointer="false"/>
+
+    <TcAttribute attributeName="fnd0attr_vla" attributeType="POM_int"
+                 description="Supports attribute mapping from multiple NX attributes to one Teamcenter Classification VLA attribute"
+                 exportAsString="false" followOnExport="false" initialValue=""
+                 isArray="false" isCandidateKey="false" isNullAllowed="true"
+                 isPublicRead="false" isPublicWrite="true" isTransient="false"
+                 isUnique="false" maxStringLength="0" noBackpointer="false"
+                 lowerBoundValue="" upperBoundValue=""/>
+  </TcClass>
+
+  <TcClass applicationName="INFOMANAGEV200" className="CadAttrMappingDefPartNR"
+           description="" isExportable="false" isUninheritables="false"
+           isUninstantiable="false" packageName="com.teamcenter.core.property"
+           parentClassName="CadAttrMappingDefPart" sourceTemplate="found">
+  </TcClass>
+
+</TcClasses>

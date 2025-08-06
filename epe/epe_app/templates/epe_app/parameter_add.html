@@ -1,0 +1,107 @@
+{% extends "epe_app/base.html" %}
+{% load widget_tweaks %}
+{% block content %}
+
+<div class="container my-4">
+  <form method="POST" action="">
+    {% csrf_token %}
+
+    <div class="card shadow-sm">
+      <div class="card-header bg-info text-white text-center">
+        <h5 class="mb-0">Add/Update Parameter</h5>
+      </div>
+      <div class="card-body bg-light">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="input-group input-group-sm">
+              <span class="input-group-text">ID</span>
+              {% render_field p_form.p_id class="form-control bg-secondary text-white" id="p_id" disabled="disabled" %}
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="input-group input-group-sm">
+              <span class="input-group-text">Project Name</span>
+              {% render_field p_form.p_project class="form-select" %}
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="input-group input-group-sm">
+              <span class="input-group-text">System Name</span>
+              {% render_field p_form.p_system class="form-select" %}
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="input-group input-group-sm">
+              <span class="input-group-text">Component Name</span>
+              {% render_field p_form.p_component class="form-select" %}
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="input-group input-group-sm">
+              <span class="input-group-text">Parameter Dictionary</span>
+              {% render_field p_form.p_parameter_dictionary class="form-select" %}
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="input-group input-group-sm">
+              <span class="input-group-text">Parameter Definition</span>
+              {% render_field p_form.p_definition class="form-select" %}
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="input-group input-group-sm">
+              <span class="input-group-text">Parameter Name</span>
+              {% render_field p_form.p_name class="form-control" %}
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="input-group input-group-sm">
+              <span class="input-group-text">Unit Type</span>
+              {% render_field p_form.p_unit_type class="form-select" %}
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="input-group input-group-sm">
+              <span class="input-group-text">UOM</span>
+              {% render_field p_form.p_uom class="form-select" %}
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="input-group input-group-sm">
+              <span class="input-group-text">Value</span>
+              {% render_field p_form.p_value class="form-control" %}
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="message text-center">
+              {% for message in messages %}
+              <a {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</a>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-between mt-4">
+          <button type="submit" class="btn btn-sm btn-success">
+            <i class="fas fa-check"></i> Submit
+          </button>
+          <a href="{% url 'parameter_list' %}" class="btn btn-sm btn-danger">
+            <i class="fas fa-times"></i> Cancel
+          </a>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+{% endblock content %}
