@@ -1,5 +1,4 @@
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator
 from django.db.models import Q
 
@@ -10,8 +9,6 @@ from django.contrib import messages
 
 @login_required(login_url='login_page')
 def parameter_add(request,param_id=0):
-    first_name = request.session.get('first_name')
-    user_id = request.session.get('ses_userID')
     if request.method == "GET":
         if param_id == 0:
             p_form = parameter_form
@@ -20,29 +17,18 @@ def parameter_add(request,param_id=0):
             p_form = parameter_form(instance=parameter)
         context={
                 'p_form': p_form,
-                'first_name': first_name,
-                'user_id': user_id,
                 }
         return render(request, "epe_app/parameter_add.html", context)
     else:
         if param_id == 0:
             p_form = parameter_form(request.POST)
             if p_form.is_valid():
-                # Generate Random requirement number
-                p_form.save()
-                try:
-                    last_id = prameter_info.objects.latest('id').id
-                    param_number=100000+last_id
-                except ObjectDoesNotExist:
-                    param_number=100000
-                    # param_num_next = str('param_') + str(randint(10000, 99999))
-                param_num_next=str('p_') + str(param_number)
-                print("Requirement parameter_form is Valid")
-                last_id = prameter_info.objects.latest('id').id
-                prameter_info.objects.filter(id=last_id).update(p_id=param_num_next)
-                param_id = prameter_info.objects.get(p_id=param_num_next).id
-                messages.SUCCESS(request, 'Record Updated Successfully')
-                return redirect('/epe/parameter_update/'+ str(last_id))
+                parameter_instance = p_form.save(commit=False)
+                parameter_instance.save()
+                parameter_instance.p_id = f"S_{1000000 + parameter_instance.id}"
+                parameter_instance.save(update_fields=['p_id'])
+                messages.success(request, 'Record Updated Successfully')
+                return redirect(f'/epe/parameter_update/{parameter_instance.id}')
             else:
                 print("Requirement parameter_form is Not Valid")
                 messages.error(request, 'Record Not Updated Successfully')

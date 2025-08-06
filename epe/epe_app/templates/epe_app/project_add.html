@@ -41,7 +41,7 @@
             </div>
           </div>
 
-          <div class="col-12 text-center">
+          <div class="d-flex col justify-content-center ">
             {% for message in messages %}
             <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %} py-1 mb-2">
               {{ message }}
@@ -62,5 +62,4 @@
     </div>
   </form>
 </div>
-
 {% endblock content %}

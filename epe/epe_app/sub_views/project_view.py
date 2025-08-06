@@ -1,5 +1,4 @@
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator
 from django.db.models import Q
 
@@ -30,22 +29,12 @@ def project_add(request,project_id=0):
             p_form = project_form(request.POST)
             if p_form.is_valid():
                 # Generate Random requirement number
-                p_form.save()
-                # try:
-                #     last_id = project_info.objects.latest('id').id
-                #     project_number=100000+last_id
-                # except ObjectDoesNotExist:
-                #     project_number=100000
-                #     # project_num_next = str('project_') + str(randint(10000, 99999))
-                # project_num_next=str('pro_') + str(project_number)
-                # print("Requirement project_form is Valid")
-                # last_id = project_info.objects.latest('id').id
-                # project_info.objects.filter(id=last_id).update(p_id=project_num_next)
-                # project_id = project_info.objects.get(p_id=project_num_next).id
-                messages.success(request, 'Record Updated Successfully')                #     last_id = project_info.objects.latest('id').id
-                last_id = project_info.objects.latest('id').id
-
-                return redirect('/epe/project_update/'+ str(last_id))
+                project_instance = p_form.save(commit=False)
+                project_instance.save()
+                project_instance.p_project_id = f"S_{1000000 + project_instance.id}"
+                project_instance.save(update_fields=['p_project_id'])
+                messages.success(request, 'Record Updated Successfully')
+                return redirect(f'/epe/project_update/{project_instance.id}')
             else:
                 print("Requirement project_form is Not Valid")
                 messages.error(request, 'Record Not Updated Successfully')
