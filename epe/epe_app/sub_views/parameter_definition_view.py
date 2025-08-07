@@ -4,7 +4,7 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import JsonResponse
 
-from ..forms import parameter_definition_form
+from ..forms import parameter_definition_form,parameter_definition_lov_form
 from ..models import prameter_definition_info,parameter_definition_lov_info
 from django.shortcuts import render, redirect
 
@@ -18,10 +18,15 @@ def parameter_definition_add(request,param_def_id=0):
         else:
             parameter_definition=prameter_definition_info.objects.get(pk=param_def_id)
             pd_form = parameter_definition_form(instance=parameter_definition)
+        pd_lov_form = parameter_definition_lov_form
+        request.session['ses_parameter_definition_id'] = param_def_id
+        parameter_definition_lov_list=parameter_definition_lov_info.objects.filter(pdl_parameter_definition=param_def_id)
         context={
                 'pd_form': pd_form,
+                'pd_lov_form': pd_lov_form,
                 'first_name': first_name,
                 'user_id': user_id,
+                'parameter_definition_lov_list': parameter_definition_lov_list,
                 }
         return render(request, "epe_app/parameter_definition_add.html", context)
     else:
@@ -30,8 +35,8 @@ def parameter_definition_add(request,param_def_id=0):
             if pd_form.is_valid():
                 parameter_def_instance = pd_form.save(commit=False)
                 parameter_def_instance.save()
-                parameter_def_instance.p_id = f"S_{1000000 + parameter_def_instance.id}"
-                parameter_def_instance.save(update_fields=['p_id'])
+                parameter_def_instance.pd_id = f"S_{1000000 + parameter_def_instance.id}"
+                parameter_def_instance.save(update_fields=['pd_id'])
                 messages.success(request, 'Record Updated Successfully')
                 return redirect(f'/epe/param_def_update/{parameter_def_instance.id}')
             else:
