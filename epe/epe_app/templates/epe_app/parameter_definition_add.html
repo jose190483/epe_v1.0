@@ -81,22 +81,33 @@
 <!-- Modal for adding new consigner -->
 <div class="modal fade" id="addLOVModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
-    <form id="add_addLOVForm_form" method="POST" action="{% url 'add_parameter_definition_lov' %}">
-      {% csrf_token %}
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Add List of Values</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <input type="text" class="form-control" name="pdl_lov" id="pdl_lov" placeholder="Enter LOV" required>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add List of Values</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-    </form>
+
+      <div class="modal-body">
+        <!-- Wrap the form with lov-container div -->
+        <div id="lov-container" data-param-id="{{ parameter.id|default:'0' }}">
+          <form id="lov-form" method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label for="id_pdl_lov" class="form-label">Value</label>
+              {{ form.pdl_lov|add_class:"form-control" }}
+              <div id="lov-error" class="text-danger small mt-1"></div>
+            </div>
+          </form>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <!-- This is the real Save button -->
+        <button type="button" id="saveLovBtn" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
   </div>
 </div>
 {% endblock content %}
@@ -104,7 +115,7 @@
 {% block scripts %}
 <script>
   $(document).ready(function() {
-      datatype_change();
+    datatype_change();
   });
 </script>
 
@@ -114,59 +125,46 @@
     alert(data_type_val);
     if(data_type_val==5)
     {
-        document.getElementById("add_lov").disabled = false;
+      document.getElementById("add_lov").disabled = false;
     }
     else
     {
-        document.getElementById("add_lov").disabled = true;
+      document.getElementById("add_lov").disabled = true;
     }
   }
 </script>
 
 <script>
-	$(document).ready(function () {
-    function toTitleCase(str) {
-            return str.toLowerCase().replace(/\b\w/g, function (char) {
-                return char.toUpperCase();
-            });
-        }
-        $('#add_addLOVForm_form').submit(function (e) {
-        e.preventDefault();
-        var name = $(this).find('input[name="pdl_parameter_definition"]').val().trim();  // Trim here
+  document.getElementById('saveLovBtn').addEventListener('click', function () {
+    let form = document.getElementById('lov-form');
+    let formData = new FormData(form);
+    let paramId = document.getElementById('lov-container').dataset.paramId;
+    alert(`Parameter ID: ${paramId}`);
+    // Reset error field
+    document.getElementById("lov-error").innerText = "";
 
-        if (!name) {
-            alert("Please enter a LOV Value.");
-            return;
-        }
-        name = toTitleCase(pdl_parameter_definition);
-        $.ajax({
-            url: "{% url 'add_parameter_definition_lov' %}",
-            method: "POST",
-            data: {
-                name: name,
-                csrfmiddlewaretoken: '{{ csrf_token }}'
-            },
-            success: function (response) {
-        if (response.success) {
-            let newOption = new Option(response.name, response.id, true, true);
-            $('#pdl_lov').append(newOption).trigger('change');
-            $('#addLOVModal').modal('hide');
-            $('#addLOVModal')[0].reset();
-        } else {
-            if (response.id) {
-                // If it exists, select it instead of adding
-                let existingOption = new Option(response.name, response.id, true, true);
-                $('#pdl_lov').append(existingOption).trigger('change');
-                $('#addLOVModal').modal('hide');
-                $('#addLOVModal')[0].reset();
-            } else {
-                alert(response.error || "Name already exists.");
-            }
-        }
+    if (paramId === '0') {
+        document.getElementById("lov-error").innerText = "Please save the Parameter Definition before adding LOVs.";
+        return;
     }
 
-        });
+    fetch(`/epe/add-lov/${paramId}/`, {
+        method: "POST",
+        body: formData,
+        headers: {
+            'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+        }
+    }).then(response => response.json())
+      .then(data => {
+        if (data.success) {
+            // Optional: You can also close modal using Bootstrap API
+            alert(data.message);
+            location.reload();
+        } else {
+            document.getElementById("lov-error").innerText = Object.values(data.errors).join("\n");
+        }
     });
-    });
+});
 </script>
+
 {% endblock scripts %}
