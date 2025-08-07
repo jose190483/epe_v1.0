@@ -41,9 +41,8 @@
                   {% render_field pd_form.pd_unit_type class="form-select select2" %}
                 </div>
                 <div class="input-group input-group-sm mb-2">
-                  <span class="input-group-text" style="width:20%">Data Type</span>
+                  <span class="input-group-text">Data Type</span>
                   {% render_field pd_form.pd_datatype id="pd_datatype" onchange="datatype_change()" class="form-select select2" %}
-                  <button type="button" id="add_lov" class="btn btn-primary shadow-none" data-bs-toggle="modal" data-bs-target="#addLOVModal">Add</button>
                 </div>
                 <div class="input-group input-group-sm mb-2">
                   <span class="input-group-text">Digital Source</span>
@@ -78,93 +77,42 @@
     </div>
   </div>
 </form>
-<!-- Modal for adding new consigner -->
-<div class="modal fade" id="addLOVModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Add List of Values</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
+ {% include "epe_app/parameter_definition_lov_list_woh.html" %}
 
-      <div class="modal-body">
-        <!-- Wrap the form with lov-container div -->
-        <div id="lov-container" data-param-id="{{ parameter.id|default:'0' }}">
-          <form id="lov-form" method="post">
-            {% csrf_token %}
-            <div class="mb-3">
-              <label for="id_pdl_lov" class="form-label">Value</label>
-              {{ form.pdl_lov|add_class:"form-control" }}
-              <div id="lov-error" class="text-danger small mt-1"></div>
-            </div>
-          </form>
-        </div>
-
-      </div>
-
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <!-- This is the real Save button -->
-        <button type="button" id="saveLovBtn" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
 {% endblock content %}
 
 {% block scripts %}
 <script>
   $(document).ready(function() {
-    datatype_change();
+            {
+                var parameter_definition_id = "{{request.session.ses_parameter_definition_id}}"
+                var parameter_definition_id_val=document.getElementById("pdl_parameter_definition").value;
+                if(parameter_definition_id_val=="")
+                {
+                  document.getElementById("pdl_parameter_definition").value="{{request.session.ses_parameter_definition_id}}"
+                }
+                else
+                {
+                  document.getElementById("pdl_parameter_definition").value=parameter_definition_id_val
+                }
+            }
+
+      datatype_change();
   });
 </script>
 
 <script>
   function datatype_change() {
     var data_type_val=document.getElementById("pd_datatype").value;
-    alert(data_type_val);
     if(data_type_val==5)
     {
-      document.getElementById("add_lov").disabled = false;
+        document.getElementById("add_lov").disabled = false;
     }
     else
     {
-      document.getElementById("add_lov").disabled = true;
+        document.getElementById("add_lov").disabled = true;
     }
   }
-</script>
-
-<script>
-  document.getElementById('saveLovBtn').addEventListener('click', function () {
-    let form = document.getElementById('lov-form');
-    let formData = new FormData(form);
-    let paramId = document.getElementById('lov-container').dataset.paramId;
-    alert(`Parameter ID: ${paramId}`);
-    // Reset error field
-    document.getElementById("lov-error").innerText = "";
-
-    if (paramId === '0') {
-        document.getElementById("lov-error").innerText = "Please save the Parameter Definition before adding LOVs.";
-        return;
-    }
-
-    fetch(`/epe/add-lov/${paramId}/`, {
-        method: "POST",
-        body: formData,
-        headers: {
-            'X-CSRFToken': formData.get('csrfmiddlewaretoken')
-        }
-    }).then(response => response.json())
-      .then(data => {
-        if (data.success) {
-            // Optional: You can also close modal using Bootstrap API
-            alert(data.message);
-            location.reload();
-        } else {
-            document.getElementById("lov-error").innerText = Object.values(data.errors).join("\n");
-        }
-    });
-});
 </script>
 
 {% endblock scripts %}

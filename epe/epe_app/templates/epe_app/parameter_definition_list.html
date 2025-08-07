@@ -5,17 +5,17 @@
     <h5 class="shadow-sm rounded text-center bg-info text-white p-2">Parameter Definition List</h5>
 </div>
 
-<div class="d-flex gap-2 justify-content-start m-2">
-    <a href="{% url 'home_page' %}" class="btn btn-primary btn-sm">
-        <i class="fas fa-arrow-left"></i> Back
-    </a>
-    <a href="{% url 'param_def_insert' %}" class="btn btn-success btn-sm">
-        <i class="fas fa-plus"></i> Add
-    </a>
-</div>
 
-<hr>
 <div class="container_fluid shadow-box-table m-2 p-3">
+    <div class="d-flex gap-2 justify-content-start m-2">
+        <a href="{% url 'home_page' %}" class="btn btn-primary btn-sm">
+            <i class="fas fa-arrow-left"></i> Back
+        </a>
+        <a href="{% url 'param_def_insert' %}" class="btn btn-success btn-sm">
+            <i class="fas fa-plus"></i> Add
+        </a>
+    </div>
+    <hr>
     <table id="param_def_list" class="table table-striped table-bordered border-secondary-subtle table-responsive table-sm nowrap mt-2">
         <thead class="table-dark">
         <tr>

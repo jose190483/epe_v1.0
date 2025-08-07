@@ -4,10 +4,9 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import JsonResponse
 
-from ..forms import parameter_definition_form, ParameterDefinitionLovForm
+from ..forms import parameter_definition_form,parameter_definition_lov_form
 from ..models import prameter_definition_info,parameter_definition_lov_info
-from django.shortcuts import render, redirect, get_object_or_404
-
+from django.shortcuts import render, redirect
 
 @login_required(login_url='login_page')
 def parameter_definition_add(request,param_def_id=0):
@@ -16,16 +15,19 @@ def parameter_definition_add(request,param_def_id=0):
     if request.method == "GET":
         if param_def_id == 0:
             pd_form = parameter_definition_form
-            parameter_definition = None  # Add this line
         else:
             parameter_definition=prameter_definition_info.objects.get(pk=param_def_id)
             pd_form = parameter_definition_form(instance=parameter_definition)
+        pd_lov_form = parameter_definition_lov_form
+        request.session['ses_parameter_definition_id'] = param_def_id
+        parameter_definition_lov_list=parameter_definition_lov_info.objects.filter(pdl_parameter_definition=param_def_id)
         context={
-            'pd_form': pd_form,
-            'first_name': first_name,
-            'user_id': user_id,
-            'parameter': parameter_definition  # Add this to the context
-        }
+                'pd_form': pd_form,
+                'pd_lov_form': pd_lov_form,
+                'first_name': first_name,
+                'user_id': user_id,
+                'parameter_definition_lov_list': parameter_definition_lov_list,
+                }
         return render(request, "epe_app/parameter_definition_add.html", context)
     else:
         if param_def_id == 0:
@@ -33,8 +35,8 @@ def parameter_definition_add(request,param_def_id=0):
             if pd_form.is_valid():
                 parameter_def_instance = pd_form.save(commit=False)
                 parameter_def_instance.save()
-                parameter_def_instance.p_id = f"S_{1000000 + parameter_def_instance.id}"
-                parameter_def_instance.save(update_fields=['p_id'])
+                parameter_def_instance.pd_id = f"S_{1000000 + parameter_def_instance.id}"
+                parameter_def_instance.save(update_fields=['pd_id'])
                 messages.success(request, 'Record Updated Successfully')
                 return redirect(f'/epe/param_def_update/{parameter_def_instance.id}')
             else:
@@ -61,10 +63,10 @@ def parameter_definition_list(request):
     paginator = Paginator(param_def_list, 10000)
     page_obj = paginator.get_page(page_number)
     context = {
-        'param_def_list' : param_def_list,
-        'first_name': first_name,
-        'page_obj': page_obj,
-    }
+                'param_def_list' : param_def_list,
+                'first_name': first_name,
+                'page_obj': page_obj,
+                }
     return render(request,"epe_app/parameter_definition_list.html",context)
 
 @login_required(login_url='login_page')
@@ -80,10 +82,10 @@ def parameter_definition_search(request):
     paginator = Paginator(param_def_list, 50)
     page_obj = paginator.get_page(page_number)
     context = {
-        'param_def_list' : param_def_list,
-        'first_name': first_name,
-        'page_obj': page_obj,
-    }
+            'param_def_list' : param_def_list,
+            'first_name': first_name,
+            'page_obj': page_obj,
+            }
     return render(request,"epe_app/parameter_definition_list.html",context)
 #Delete param_def
 @login_required(login_url='login_page')
@@ -93,19 +95,14 @@ def parameter_definition_delete(request,param_def_id):
     return redirect('/epe/parameter_definition_search')
 
 @login_required(login_url='login_page')
-def add_lov(request, parameter_id):
-    parameter = get_object_or_404(prameter_definition_info, pk=parameter_id)
-
+def add_parameter_definition_lov(request):
     if request.method == 'POST':
-        form = ParameterDefinitionLovForm(request.POST, parameter=parameter)
-        if form.is_valid():
-            lov_instance = form.save(commit=False)
-            lov_instance.pdl_parameter_definition = parameter
-            lov_instance.save()
-            return JsonResponse({'success': True, 'message': 'LOV added successfully!'})
-        else:
-            return JsonResponse({'success': False, 'errors': form.errors})
-    else:
-        form = ParameterDefinitionLovForm()
-
-    return render(request, 'add_lov.html', {'form': form, 'parameter': parameter})
+        pdl_lov = request.POST.get('pdl_lov')
+        # pdl_parameter_definition = request.POST.get('pdl_parameter_definition')
+        if pdl_lov:
+            existing = parameter_definition_lov_info.objects.filter(pdl_lov__iexact=pdl_lov).first()
+            if existing:
+                return JsonResponse({'id': existing.id, 'pdl_lov': existing.pdl_lov})
+            new_lov = parameter_definition_lov_info.objects.create(pdl_lov=pdl_lov)
+            return JsonResponse({'id': new_lov.id, 'pdl_lov': new_lov.pdl_lov})
+    return JsonResponse({'error': 'Invalid request'}, status=400)

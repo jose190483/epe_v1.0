@@ -1,8 +1,7 @@
 from django.db import models
-from ..models import prameter_definition_info
-
+from ..models import prameter_definition_info,system_of_measurement_info
 class parameter_definition_lov_info(models.Model):
-    pdl_parameter_definition = models.ForeignKey(prameter_definition_info, on_delete=models.CASCADE)
+    pdl_parameter_definition=models.ForeignKey(prameter_definition_info,on_delete=models.CASCADE,blank=True,null=True)
     pdl_lov = models.CharField(max_length=200, default='')
 
     def __str__(self):
@@ -10,4 +9,3 @@ class parameter_definition_lov_info(models.Model):
 
     class Meta:
         ordering = ["pdl_lov"]
-        unique_together = ('pdl_parameter_definition', 'pdl_lov')  # Prevent duplicates
