@@ -2,26 +2,27 @@
 {% load widget_tweaks %}
 {% block content %}
 
-<div class="container my-4">
+<div class="d-flex justify-content-center">
   <form method="POST" action="">
     {% csrf_token %}
-    <div class="card shadow-sm">
+
+    <div class="card shadow-sm w-30 content-justify-center">
       <div class="card-header bg-dark text-white text-center">
         <h5 class="mb-0">Add/Update List of Values</h5>
       </div>
       <div class="card-body bg-light">
-        <div class="row g-3">
-          <div class="col-md-6 col-12">
-            <div class="input-group input-group-sm">
+        <div class="row">
+          <div class="col-auto">
+            <div class="input-group input-group-sm mb-3">
               <span class="input-group-text">Parameter Definition</span>
-              {% render_field p_form.pdl_parameter_definition class="form-control bg-secondary text-white" id="pdl_parameter_definition" disabled="disabled" %}
+              {% render_field pd_lov_form.pdl_parameter_definition class="form-select bg-secondary text-white" id="pdl_parameter_definition " %}
             </div>
-            <div class="input-group input-group-sm">
+            <div class="input-group input-group-sm mb-3">
               <span class="input-group-text">List of Values</span>
-              {% render_field p_form.pdl_lov class="form-control" id="pdl_lov"%}
+              {% render_field pd_lov_form.pdl_lov class="form-control" id="pdl_lov"%}
             </div>
           </div>
-        <hr>
+          <hr>
           <div class="d-flex col justify-content-center ">
             {% for message in messages %}
             <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %} py-1 mb-2">
@@ -34,7 +35,7 @@
           <button type="submit" class="btn btn-sm btn-success">
             <i class="fas fa-check"></i> Submit
           </button>
-          <a href="{% url 'parameter_list' %}" class="btn btn-sm btn-danger">
+          <a href="{% url 'parameter_definition_lov_cancel' %}" class="btn btn-sm btn-danger">
             <i class="fas fa-times"></i> Cancel
           </a>
         </div>

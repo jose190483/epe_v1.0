@@ -35,7 +35,7 @@ def parameter_definition_add(request,param_def_id=0):
             if pd_form.is_valid():
                 parameter_def_instance = pd_form.save(commit=False)
                 parameter_def_instance.save()
-                parameter_def_instance.pd_id = f"S_{1000000 + parameter_def_instance.id}"
+                parameter_def_instance.pd_id = f"PD_{1000000 + parameter_def_instance.id}"
                 parameter_def_instance.save(update_fields=['pd_id'])
                 messages.success(request, 'Record Updated Successfully')
                 return redirect(f'/epe/param_def_update/{parameter_def_instance.id}')

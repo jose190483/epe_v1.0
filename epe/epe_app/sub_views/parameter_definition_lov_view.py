@@ -33,8 +33,9 @@ def parameter_definition_lov_add(request,param_def_lov_id=0):
             if pd_lov_form.is_valid():
                 pd_lov_form.save()
                 messages.success(request, 'Record Updated Successfully')
-                # return redirect(f'/epe/param_def_lov_update/{parameter_def_lov_instance.id}')
-                return redirect(request.META['HTTP_REFERER'])
+                param_def_id = request.session.get('ses_parameter_definition_id')
+                return redirect(f'/epe/param_def_update/{param_def_id}')
+                # return redirect(request.META['HTTP_REFERER'])
             else:
                 print("Requirement parameter definition lov form is Not Valid")
                 messages.error(request, 'Record Not Updated Successfully')
@@ -50,8 +51,9 @@ def parameter_definition_lov_add(request,param_def_lov_id=0):
             else:
                 print("Requirement Form is Not Valid")
                 messages.error(request, 'Record Not Updated Successfully')
-            return redirect(request.META['HTTP_REFERER'])
-
+            # return redirect(request.META['HTTP_REFERER'])
+            param_def_id = request.session.get('ses_parameter_definition_id')
+            return redirect(f'/epe/param_def_update/{param_def_id}')
 @login_required(login_url='login_page')
 def parameter_definition_lov_list(request):
     first_name = request.session.get('first_name')
@@ -106,3 +108,10 @@ def load_lov(request):
         'pdl_lov':pdl_lov,
     }
     return HttpResponse(json.dumps(data))
+
+@login_required(login_url='login_page')
+def parameter_definition_lov_cancel(request):
+    param_def_id = request.session.get('ses_parameter_definition_id')
+
+    return redirect(f'/epe/param_def_update/{param_def_id}')
+
