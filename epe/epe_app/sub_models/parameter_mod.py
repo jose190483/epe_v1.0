@@ -1,5 +1,5 @@
 from django.db import models
-from ..models import dictionary_Info,component_Info,system_Info,project_info,unit_type_info,prameter_definition_info,uom_info
+from ..models import system_of_measurement_info,dictionary_Info,component_Info,system_Info,project_info,unit_type_info,prameter_definition_info,uom_info,parameter_definition_lov_info
 
 class prameter_info(models.Model):
     p_id = models.CharField(max_length=100, blank=True,null=True, default='')
@@ -11,6 +11,8 @@ class prameter_info(models.Model):
     p_component=models.ForeignKey(component_Info,on_delete=models.CASCADE,default=1)
     p_unit_type=models.ForeignKey(unit_type_info,on_delete=models.CASCADE,default=1)
     p_parameter_dictionary=models.ForeignKey(dictionary_Info,on_delete=models.CASCADE,default=1)
+    p_parameter_lov=models.ForeignKey(parameter_definition_lov_info,on_delete=models.CASCADE,blank=True,null=True)
+    p_parameter_unit_measurement = models.ForeignKey(system_of_measurement_info, on_delete=models.CASCADE, blank=True, null=True,default=1)
     p_value= models.FloatField(default=0.0)
 
 

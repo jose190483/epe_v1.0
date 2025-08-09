@@ -63,15 +63,22 @@
 
           <div class="col-md-6">
             <div class="input-group input-group-sm">
+              <span class="input-group-text">Measurement System</span>
+              {% render_field p_form.p_parameter_unit_measurement id="p_parameter_unit_measurement" class="form-select select2" %}
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="input-group input-group-sm">
               <span class="input-group-text">Unit Type</span>
-              {% render_field p_form.p_unit_type class="form-select select2" %}
+              {% render_field p_form.p_unit_type id="p_unit_type" class="form-select select2" %}
             </div>
           </div>
 
           <div class="col-md-6">
             <div class="input-group input-group-sm">
               <span class="input-group-text">UOM</span>
-              {% render_field p_form.p_uom class="form-select select2" %}
+              {% render_field p_form.p_uom id="p_uom" class="form-select select2" %}
             </div>
           </div>
 
@@ -82,13 +89,20 @@
             </div>
           </div>
 
+          <div class="col-md-6">
+            <div class="input-group input-group-sm">
+              <span class="input-group-text">LOV</span>
+              {% render_field p_form.p_parameter_lov class="form-select select2" %}
+            </div>
+          </div>
+
           <div class="d-flex col justify-content-center ">
-                {% for message in messages %}
-                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %} py-1 mb-2">
-                  {{ message }}
-                </div>
-                {% endfor %}
-              </div>
+            {% for message in messages %}
+            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %} py-1 mb-2">
+              {{ message }}
+            </div>
+            {% endfor %}
+          </div>
 
         </div>
 
@@ -105,3 +119,55 @@
   </form>
 </div>
 {% endblock content %}
+
+{% block scripts %}
+<script>
+	$("#p_parameter_unit_measurement").change(function () {
+       var measurement_system_id = $(this).val();
+       $.ajax({
+         url: '{% url 'load_units_type' %}',
+         data: {
+           'measurement_system_id': measurement_system_id,
+         },
+         success: function (data) {
+             console.log(data);
+             $('#p_unit_type').removeClass('disable_a_href');
+             $("#p_unit_type").empty();
+             $("#p_uom").empty();
+             var unit_type_name=JSON.parse(data)["unit_type_name"];
+             var unit_type_id=JSON.parse(data)["unit_type_id"];
+             var len = (unit_type_id).length;
+             $('#p_unit_type').empty().append("<option value='0'>--Select--</option>");
+             for( var i = 0; i<len; i++){
+                 $("#p_unit_type").append("<option value='"+unit_type_id[i]+"'>"+unit_type_name[i]+"</option>");
+             }
+         }
+       });
+     });
+</script>
+<script>
+	$("#p_unit_type").change(function () {
+       var unit_type_id = $(this).val();
+       system_measurement = document.getElementById("p_parameter_unit_measurement").value
+       $.ajax({
+         url: '{% url 'load_unit_of_measure' %}',
+         data: {
+           'unit_type_id': unit_type_id,
+           'system_measurement': system_measurement,
+         },
+         success: function (data) {
+             console.log(data);
+             $('#p_uom').removeClass('disable_a_href');
+             $("#p_uom").empty();
+             var uom_name=JSON.parse(data)["uom_name"];
+             var uom_id=JSON.parse(data)["uom_id"];
+             var len = (uom_id).length;
+             $('#p_uom').empty().append("<option value='0'>--Select--</option>");
+             for( var i = 0; i<len; i++){
+                 $("#p_uom").append("<option value='"+uom_id[i]+"'>"+uom_name[i]+"</option>");
+             }
+         }
+       });
+     });
+</script>
+{% endblock scripts %}

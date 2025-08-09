@@ -14,6 +14,6 @@ from .sub_models.system_mod import system_Info
 from .sub_models.component_mod import component_Info
 from .sub_models.project_mod import project_info
 from .sub_models.parameter_definition_mod import prameter_definition_info
-from .sub_models.parameter_mod import prameter_info
 from .sub_models.uom_mod_1 import uom_info_1
 from.sub_models.parameter_definition_lov_mod import parameter_definition_lov_info
+from .sub_models.parameter_mod import prameter_info

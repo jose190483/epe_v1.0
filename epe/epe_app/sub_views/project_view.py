@@ -31,7 +31,7 @@ def project_add(request,project_id=0):
                 # Generate Random requirement number
                 project_instance = p_form.save(commit=False)
                 project_instance.save()
-                project_instance.p_project_id = f"S_{1000000 + project_instance.id}"
+                project_instance.p_project_id = f"P_{1000000 + project_instance.id}"
                 project_instance.save(update_fields=['p_project_id'])
                 messages.success(request, 'Record Updated Successfully')
                 return redirect(f'/epe/project_update/{project_instance.id}')

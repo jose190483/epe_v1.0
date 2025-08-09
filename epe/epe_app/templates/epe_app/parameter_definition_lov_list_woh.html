@@ -75,10 +75,10 @@
                 <a class="btn btn-sm btn-primary" href="{% url 'parameter_definition_lov_update' param_def_lov.id %}">
                     <i class="far fa-edit"></i>
                 </a>
-                <!-- editLOV-->
-                <button type="button" class="btn btn-primary shadow-none" onclick="load_lov({{param_def_lov.id}})" id="edit_lov_btn" data-bs-toggle="modal" data-bs-target="#edit_lov">
-                    Edit
-                </button>
+<!--                &lt;!&ndash; editLOV&ndash;&gt;-->
+<!--                <button type="button" class="btn btn-primary shadow-none" onclick="load_lov({{param_def_lov.id}})" id="edit_lov_btn" data-bs-toggle="modal" data-bs-target="#edit_lov">-->
+<!--                    Edit-->
+<!--                </button>-->
                 <!-- Modal -->
                 <div class="modal fade" id="edit_lov" tabindex="-1" aria-labelledby="edit_lovLabel" aria-hidden="true">
                     <div class="modal-dialog">
@@ -92,7 +92,7 @@
                                     {% csrf_token %}
                                     <div class="input-group input-group-sm mb-2">
                                         <span class="input-group-text">ID</span>
-                                        {% render_field pd_lov_form.id class="form-control" id="lov_id_edit" %}
+                                        {% render_field pd_lov_form.pk class="form-control" id="lov_id_edit" %}
                                     </div>
                                     <div class="input-group input-group-sm mb-2">
                                         <span class="input-group-text">Parameter Definition</span>
@@ -166,6 +166,8 @@
           'lov_id': lov_id
         },
         success: function (data) {
+            var abc=document.getElementById("lov_id_edit").value
+            alert(abc)
             var lov_id=JSON.parse(data)["lov_id"];
             var pdl_parameter_definition=JSON.parse(data)["pdl_parameter_definition"];
             var pdl_lov=JSON.parse(data)["pdl_lov"];

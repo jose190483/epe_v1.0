@@ -9,3 +9,5 @@ class parameter_form(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(parameter_form,self).__init__(*args, **kwargs)
         self.fields['p_uom'].empty_label = "--Select--"
+        self.fields['p_parameter_unit_measurement'].empty_label = "--Select--"
+        self.fields['p_parameter_lov'].empty_label = "--Select--"

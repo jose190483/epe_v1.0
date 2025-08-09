@@ -25,5 +25,7 @@ urlpatterns = [
     path('parameter_definition_lov_list/', views.parameter_definition_lov_list, name='parameter_definition_lov_list'),  # List parameter_definition_lov
     path('parameter_definition_lov_delete/<int:param_def_lov_id>/', views.parameter_definition_lov_delete, name='parameter_definition_lov_delete'),  # Delete parameter_definition_lov_delete
     path('load_lov/', views.load_lov, name='load_lov'),  # load load_lov
-
+    path('parameter_definition_lov_cancel/', views.parameter_definition_lov_cancel, name='parameter_definition_lov_cancel'),  # parameter_definition_lov_cancel
+    path('load_units_type/', views.load_units_type, name='load_units_type'),  # load_units_type
+    path('load_unit_of_measure/', views.load_unit_of_measure, name='load_unit_of_measure'),  # load_unit_of_measure
 ]

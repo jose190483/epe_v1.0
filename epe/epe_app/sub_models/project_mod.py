@@ -6,7 +6,7 @@ class project_info(models.Model):
     p_location= models.CharField(max_length=100, null=True,default='')
 
     class Meta:
-        ordering = ["p_project_id"]
+        ordering = ["p_project_name"]
 
     def __str__(self):
-        return str(self.p_project_id)
+        return str(self.p_project_name)
