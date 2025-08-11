@@ -77,29 +77,10 @@
     </div>
   </div>
 </form>
- {% include "epe_app/parameter_definition_lov_list_woh.html" %}
 
 {% endblock content %}
 
 {% block scripts %}
-<script>
-  $(document).ready(function() {
-            {
-                var parameter_definition_id = "{{request.session.ses_parameter_definition_id}}"
-                var parameter_definition_id_val=document.getElementById("pdl_parameter_definition").value;
-                if(parameter_definition_id_val=="")
-                {
-                  document.getElementById("pdl_parameter_definition").value="{{request.session.ses_parameter_definition_id}}"
-                }
-                else
-                {
-                  document.getElementById("pdl_parameter_definition").value=parameter_definition_id_val
-                }
-            }
-
-      datatype_change();
-  });
-</script>
 
 <script>
   function datatype_change() {
