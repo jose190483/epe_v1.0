@@ -23,16 +23,23 @@ def parameter_add(request,param_id=0):
             parameter=prameter_info.objects.get(pk=param_id)
             p_form = parameter_form(instance=parameter)
             pd_lov_form = parameter_definition_lov_form
-            parameter_definition=prameter_info.objects.get(pk=param_id).p_definition
-            parameter_definition_id=prameter_info.objects.get(pk=param_id).p_definition.id
+            parameter_definition_instance=prameter_info.objects.get(pk=param_id)
+            parameter_definition=parameter_definition_instance.p_definition
+            parameter_definition_id=parameter_definition_instance.p_definition.id
+            system_short_name=parameter_definition_instance.p_system_short
+            equipment_short_name=parameter_definition_instance.p_equipment_short
+            parameter_name=parameter_definition_instance.p_name
+            parameter_combo=str(system_short_name)+str('_')+str(equipment_short_name)+str('_')+str(parameter_name)
             request.session['ses_parameter_id'] = param_id
             parameter_definition_lov_list = parameter_definition_lov_info.objects.filter(pdl_parameter_definition=parameter_definition)
             parameter_data_type=prameter_definition_info.objects.get(pk=parameter_definition_id).pd_datatype.id
+            print('parameter_data_type',parameter_data_type)
             context={
                 'p_form': p_form,
                 'pd_lov_form': pd_lov_form,
                 'parameter_definition_lov_list': parameter_definition_lov_list,
                 'parameter_data_type': parameter_data_type,
+                'parameter_combo': parameter_data_type,
             }
         return render(request, "epe_app/parameter_add.html", context)
     else:
@@ -131,9 +138,10 @@ def load_system_short_name_equipment_name(request):
     # Fetch Unit Details
     system_short_name = list(system_short_Info.objects.filter(ss_system_name=system_id).order_by('ss_system_short_name').values_list('ss_system_short_name',flat=True).distinct())
     system_short_name_id = list(system_short_Info.objects.filter(ss_system_short_name__in=system_short_name).values_list('id',flat=True))
+    # system_short_name_id = system_short_Info.objects.get(ss_system_name=system_id).id
     equipment_name=list(equipmentInfo.objects.filter(equipment_system_name=system_id).values_list('equipment_name',flat=True).distinct())
     equipment_name_id=list(equipmentInfo.objects.filter(equipment_name__in=equipment_name).values_list('id',flat=True))
-
+    print('system_short_name_id',system_short_name_id)
     data = {
         'system_short_name':system_short_name,
         'system_short_name_id':system_short_name_id,

@@ -29,7 +29,7 @@
           <div class="col-md-6">
             <div class="input-group input-group-sm">
               <span class="input-group-text">System Name</span>
-              {% render_field p_form.p_system id="p_system" class="form-select select2" %}
+              {% render_field p_form.p_system id="p_system" class="form-select select2"  %}
             </div>
           </div>
           <div class="col-md-6">
@@ -49,7 +49,7 @@
           <div class="col-md-6">
             <div class="input-group input-group-sm">
               <span class="input-group-text">Equipment Short Name</span>
-              {% render_field p_form.p_equipment_short id="p_equipment_short" class="form-select select2" disabled="True"%}
+              {% render_field p_form.p_equipment_short id="p_equipment_short" class="form-select select2"  disabled="True"%}
             </div>
           </div>
 
@@ -92,7 +92,12 @@
               {% render_field p_form.p_parameter_def_data_type id="p_parameter_def_data_type" class="form-control"  disabled="True" %}
             </div>
           </div>
-
+          <div class="col-md-6">
+            <div class="input-group input-group-sm">
+              <span class="input-group-text">Parameter Name Combo</span>
+              {% render_field p_form.p_parameter_name_combo id="p_parameter_name_combo" class="form-control" disabled="True" %}
+            </div>
+          </div>
 
           <div class="d-flex col justify-content-center ">
             {% for message in messages %}
@@ -125,6 +130,7 @@
 <script>
   $(document).ready(function() {
             {
+                document.getElementById("p_parameter_name_combo").value="{{parameter_combo}}"
                 document.getElementById("p_parameter_def_data_type").value="{{parameter_data_type}}"
                 var parameter_definition_id = document.getElementById("p_definition").value
                 var parameter_definition_id_val=document.getElementById("pdl_parameter_definition").value;
@@ -146,6 +152,7 @@
                   document.getElementById("param_def_lov").style.display = "none";
                 }
             }
+
   });
 </script>
 <script>
@@ -182,7 +189,6 @@
        success: function (data) {
            console.log(data);
            document.getElementById("p_system_short").disabled = false;
-           $("#p_system_short").empty();
            document.getElementById("p_equipment_name").disabled = false;
            $("#p_equipment_name").empty();
            $('#p_equipment_short').empty().append("<option value='0'>--Select--</option>");
@@ -190,13 +196,13 @@
            var equipment_name_id=JSON.parse(data)["equipment_name_id"];
            var system_short_name=JSON.parse(data)["system_short_name"];
            var system_short_name_id=JSON.parse(data)["system_short_name_id"];
-           var len_ssn = (system_short_name).length;
+           var len_ssn = (system_short_name_id).length;
            $('#p_system_short').empty().append("<option value='0'>--Select--</option>");
            for( var i = 0; i<len_ssn; i++){
                $("#p_system_short").append("<option value='"+system_short_name_id[i]+"'>"+system_short_name[i]+"</option>");
            }
 
-           var len_en = (system_short_name).length;
+           var len_en = (equipment_name_id).length;
            $('#p_equipment_name').empty().append("<option value='0'>--Select--</option>");
            for( var i = 0; i<len_en; i++){
                $("#p_equipment_name").append("<option value='"+equipment_name_id[i]+"'>"+equipment_name[i]+"</option>");
