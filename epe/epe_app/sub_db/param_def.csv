@@ -1,2 +1,2 @@
-1	PD_100001	Linear Velocity	test	5	1	1	130
-5	PD_1000005	Acceleration	Acceleration	5	1	1	1
+1,PD_100001,Linear Velocity,test,5,1,1,130
+5,PD_1000005,Acceleration,Acceleration,5,1,1,1
