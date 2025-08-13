@@ -1,0 +1,1395 @@
+1,Acceleration,cm/s²,1
+2,Acceleration,dm/s²,1
+3,Acceleration,ft/s²,2
+4,Acceleration,gn,1
+5,Acceleration,in/s²,2
+6,Acceleration,mm/s²,1
+7,Acceleration,m/s²,1
+8,Acceleration,µm/ms²,1
+9,Amount Of Substance,kmol,1
+10,Amount Of Substance,mmol,1
+11,Amount Of Substance,mol,1
+12,Amount Of Substance,mol,2
+13,Amount Of Substance,µmol,1
+14,Angle,°,1
+15,Angle,°,2
+16,Angle,rev,2
+17,Angle,?-rad,1
+18,Angle,rad,1
+19,Angle,rev,1
+20,Angular Acceleration,°/ms²,1
+21,Angular Acceleration,°/s²,1
+22,Angular Acceleration,m°/s²,1
+23,Angular Acceleration,°/s²,2
+24,Angular Acceleration,m°/s²,2
+25,Angular Acceleration,rev/min²,2
+26,Angular Acceleration,rev/s²,2
+27,Angular Acceleration,rad/ms²,1
+28,Angular Acceleration,rad/s²,1
+29,Angular Acceleration,rev/min²,1
+30,Angular Acceleration,rev/s²,1
+31,Angular Jerk,°/ms³,1
+32,Angular Jerk,°/s³,1
+33,Angular Jerk,°/s³,2
+34,Angular Jerk,rad/ms³,1
+35,Angular Jerk,rad/s³,1
+36,Angular Jerk,rev/min³,1
+37,Angular Jerk,rev/s³,1
+38,Angular Momentum,lbf-ft-s,2
+39,Angular Momentum,lbf-in-s,2
+40,Angular Momentum,mN-mm-s,1
+41,Angular Momentum,N-dm-s,1
+42,Angular Momentum,N-mm-s,1
+43,Angular Momentum,N-m-s,1
+44,Angular Momentum,µN-µm-ms,1
+45,Angular Momentum Per Unit Angle,lbf-ft-s/°,2
+46,Angular Momentum Per Unit Angle,lbf-ft-s/rad,2
+47,Angular Momentum Per Unit Angle,lbf-in-s/°,2
+48,Angular Momentum Per Unit Angle,lbf-in-s/rad,2
+49,Angular Momentum Per Unit Angle,mN-mm-s/°,1
+50,Angular Momentum Per Unit Angle,mN-mm-s/rad,1
+51,Angular Momentum Per Unit Angle,N-dm-s/°,1
+52,Angular Momentum Per Unit Angle,N-dm-s/rad,1
+53,Angular Momentum Per Unit Angle,N-mm-s/°,1
+54,Angular Momentum Per Unit Angle,N-mm-s/rad,1
+55,Angular Momentum Per Unit Angle,N-m-s/°,1
+56,Angular Momentum Per Unit Angle,N-m-s/rad,1
+57,Angular Momentum Per Unit Angle,µN-µm-ms/°,1
+58,Angular Momentum Per Unit Angle,µN-µm-ms/rad,1
+59,Angular Velocity,°/ms,1
+60,Angular Velocity,°/s,1
+61,Angular Velocity,°/s,2
+62,Angular Velocity,rev/min,2
+63,Angular Velocity,rev/s,2
+64,Angular Velocity,rad/ms,1
+65,Angular Velocity,rad/s,1
+66,Angular Velocity,rev/min,1
+67,Angular Velocity,rev/s,1
+68,ApparentPower,kVA,1
+69,ApparentPower,lbf-in/s,2
+70,ApparentPower,MVA,1
+71,ApparentPower,kVA,2
+72,ApparentPower,µVA,1
+73,ApparentPower,VA,1
+74,Area,cm²,1
+75,Area,dam²,1
+76,Area,dm²,1
+77,Area,ft²,2
+78,Area,hm²,1
+79,Area,in²,2
+80,Area,km²,1
+81,Area,mi²,2
+82,Area,mm²,1
+83,Area,m²,1
+84,Area,µm²,1
+85,Area,yd²,2
+86,BatteryCapacity,A-h,1
+87,BatteryCapacity,A-s,1
+88,BatteryCapacity,mA-h,1
+89,BatteryCapacity,A-h,2
+90,BitTransmissionRate,bit/s,1
+91,BitTransmissionRate,Gbit/s,1
+92,BitTransmissionRate,kbit/s,1
+93,BitTransmissionRate,Mbit/s,1
+94,BitTransmissionRate,Gbit/s,2
+95,ByteDataVolume,byte,1
+96,ByteDataVolume,Gbyte,1
+97,ByteDataVolume,kbyte,1
+98,ByteDataVolume,Mbyte,1
+99,ByteDataVolume,Gbyte,2
+100,ByteDataVolume,Tbyte,1
+101,Capacitance,A²-s²/(lbf-in),2
+102,Capacitance,F,1
+103,Capacitance,MF,1
+104,Capacitance,mF,1
+105,Capacitance,nF,1
+106,Capacitance,µF,2
+107,Capacitance,pF,1
+108,Capacitance,µF,1
+109,Coefficient per Unit Length,1/Å,1
+110,Coefficient per Unit Length,1/cm,1
+111,Coefficient per Unit Length,1/dm,1
+112,Coefficient per Unit Length,1/ft,2
+113,Coefficient per Unit Length,1/in,2
+114,Coefficient per Unit Length,1/km,1
+115,Coefficient per Unit Length,1/m,1
+116,Coefficient per Unit Length,1/mi,2
+117,Coefficient per Unit Length,1/mm,1
+118,Coefficient per Unit Length,1/nm,1
+119,Coefficient per Unit Length,1/µm,1
+120,Coefficient Per Unit Mass,in/lbf-s² ,2
+121,Coefficient Per Unit Mass,1/kg,1
+122,Coefficient Per Unit Mass,1/mg,1
+123,Coefficient Per Unit Time,1/h,1
+124,Coefficient Per Unit Time,1/min,1
+125,Coefficient Per Unit Time,1/ms,1
+126,Coefficient Per Unit Time,1/h,2
+127,Coefficient Per Unit Time,1/s,1
+128,Coefficient Per Unit Time Cubed,1/h³,1
+129,Coefficient Per Unit Time Cubed,1/min³,1
+130,Coefficient Per Unit Time Cubed,1/ms³,1
+131,Coefficient Per Unit Time Cubed,1/s³,2
+132,Coefficient Per Unit Time Cubed,1/s³,1
+133,Coefficient Per Unit Time Squared,1/h²,1
+134,Coefficient Per Unit Time Squared,1/min²,1
+135,Coefficient Per Unit Time Squared,1/ms²,1
+136,Coefficient Per Unit Time Squared,1/s²,2
+137,Coefficient Per Unit Time Squared,1/s²,1
+138,Comparative Toxic Unit for Human,CTUh,1
+139,Comparative Toxic Unit for Human,CTUh,2
+140,Concentration,mol%,1
+141,Concentration,mol%,2
+142,Concentration,vol%,2
+143,Concentration,wt%,2
+144,Concentration,vol%,1
+145,Concentration,wt%,1
+146,Conductance per Unit Length,BTU/(h-ft-°F),2
+147,Conductance per Unit Length,BTU/(h-in-°F),2
+148,Conductance per Unit Length,BTU/(s-ft-°F),2
+149,Conductance per Unit Length,BTU/(s-in-°F),2
+150,Conductance per Unit Length,lbf-in/(s-in-°F),2
+151,Conductance per Unit Length,lbf-in/(s-in-R),2
+152,Conductance per Unit Length,mW/(mm-°C),1
+153,Conductance per Unit Length,nW/(µm-K),1
+154,Conductance per Unit Length,µW/(mm-°C),1
+155,Conductance per Unit Length,µW/(mm-K),1
+156,Conductance per Unit Length,W/(cm-°C),1
+157,Conductance per Unit Length,W/(dm-°C),1
+158,Conductance per Unit Length,W/(mm-°C),1
+159,Conductance per Unit Length,W/(m-°C),1
+160,Conductance per Unit Length,W/(m-K),1
+161,Convection Coefficient,µW/(mm²-°C),1
+162,Convection Coefficient,BTU/(s-in²-°F),2
+163,Convection Coefficient,BTU/(h-ft²-°F),2
+164,Convection Coefficient,BTU/(h-in²-°F),2
+165,Convection Coefficient,BTU/(s-ft²-°F),2
+166,Convection Coefficient,lbf-in/(s-in²-°F),2
+167,Convection Coefficient,lbf-in/(s-in²-°R),2
+168,Convection Coefficient,mW/(mm²-°C),1
+169,Convection Coefficient,mW/(mm²-K),1
+170,Convection Coefficient,nW/(µm²-K),1
+171,Convection Coefficient,µW/(mm²-K),1
+172,Convection Coefficient,W/(mm²-°C),1
+173,Convection Coefficient,W/(cm²-°C),1
+174,Convection Coefficient,W/(dm²-K),1
+175,Convection Coefficient,W/(in²-°C),1
+176,Convection Coefficient,W/(mm²-K),1
+177,Convection Coefficient,W/(m²-°C),1
+178,Convection Coefficient,W/(m²-K),1
+179,Counting,Each,1
+180,Counting,dz,1
+181,Counting,GR,1
+182,Current,A,1
+183,Current,kA,1
+184,Current,mA,1
+185,Current,µA,1
+186,Current,A,2
+187,Current,kA,2
+188,Current,mA,2
+189,Current,µA,2
+190,Current Density,A/dm³,1
+191,Current Density,A/in³,2
+192,Current Density,A/m³,1
+193,Current Density,A/mm³,1
+194,Current Density,A/nm³,1
+195,Current Density,A/µm³,1
+196,Current Density,mA/in³,2
+197,Current Density,mA/m³,1
+198,Current Density,mA/mm³,1
+199,Current Density,mA/µm³,1
+200,Current Density Area,A/dm²,1
+201,Current Density Area,A/in²,2
+202,Current Density Area,A/mm²,1
+203,Current Density Area,A/m²,1
+204,Current Density Area,A/nm²,1
+205,Current Density Area,A/µm²,1
+206,Current Density Area,mA/in²,2
+207,Current Density Area,mA/mm²,1
+208,Current Density Area,mA/m²,1
+209,Current Density Area,mA/µm²,1
+210,Diffusion Resistance,h/km,1
+211,Diffusion Resistance,h/mi,2
+212,Diffusion Resistance,min/ft,2
+213,Diffusion Resistance,ms/µm,1
+214,Diffusion Resistance,s/cm,1
+215,Diffusion Resistance,s/dm,1
+216,Diffusion Resistance,s/ft,2
+217,Diffusion Resistance,s/in,2
+218,Diffusion Resistance,s/m,1
+219,Diffusion Resistance,s/mm,1
+220,Diffusivity,cm²/s,1
+221,Diffusivity,dm²/s,1
+222,Diffusivity,ft²/h,2
+223,Diffusivity,ft²/s,2
+224,Diffusivity,in²/s,2
+225,Diffusivity,mm²/s,1
+226,Diffusivity,m²/h,1
+227,Diffusivity,m²/s,1
+228,Diffusivity,µm²/ms,1
+229,Dissipation Rate of Energy per Unit Mass,dm²/s³,1
+230,Dissipation Rate of Energy per Unit Mass,ft²/s³,2
+231,Dissipation Rate of Energy per Unit Mass,in²/s³,2
+232,Dissipation Rate of Energy per Unit Mass,mm²/s³,1
+233,Dissipation Rate of Energy per Unit Mass,m²/s³,1
+234,Dissipation Rate of Energy per Unit Mass,µm²/ms³,1
+235,DynamicViscosity,g/(cm-s),1
+236,DynamicViscosity,kg/(dm-s),1
+237,DynamicViscosity,kg/(mm-s),1
+238,DynamicViscosity,kg/(m-s),1
+239,DynamicViscosity,lbf-s/ft²,2
+240,DynamicViscosity,lbf-s/in²,2
+241,DynamicViscosity,lbm/(ft-s),2
+242,DynamicViscosity,lbm/(in-s),2
+243,DynamicViscosity,mg/(µm-ms),1
+244,DynamicViscosity,mN-s/mm²,1
+245,DynamicViscosity,mPa-s,1
+246,DynamicViscosity,N-s/cm²,1
+247,DynamicViscosity,N-s/dm²,1
+248,DynamicViscosity,N-s/mm²,1
+249,DynamicViscosity,N-s/m²,1
+250,DynamicViscosity,Pa-s,1
+251,Electrical Capacitance,A²-s²/(lbf-in),2
+252,Electrical Capacitance,MF,1
+253,Electrical Capacitance,mF,1
+254,Electrical Capacitance,nF,1
+255,Electrical Capacitance,pF,1
+256,Electrical Capacitance,µF,1
+257,Electrical Conductance,A²-s/(lbf-in),2
+258,Electrical Conductance,kS,1
+259,Electrical Conductance,MS,1
+260,Electrical Conductance,S,1
+261,Electrical Conductivity,A²-s/(lbf-in²),2
+262,Electrical Conductivity,kS/µm,1
+263,Electrical Conductivity,S/dm,1
+264,Electrical Conductivity,MS/dm,1
+265,Electrical Conductivity,MS/cm,1
+266,Electrical Conductivity,MS/m,1
+267,Electrical Conductivity,MS/mm,1
+268,Electrical Conductivity,S/m,1
+269,ElectricalResistance,K?,1
+270,ElectricalResistance,lbf-in/(s-A²),2
+271,ElectricalResistance,M?,1
+272,ElectricalResistance,m?,1
+273,ElectricalResistance,K?,2
+274,ElectricalResistance,M?,2
+275,ElectricalResistance,m?,2
+276,ElectricalResistance,?,2
+277,ElectricalResistance,µ?,2
+278,ElectricalResistance,?,1
+279,ElectricalResistance,µ?,1
+280,Electrical Resistivity,k?-ft,2
+281,Electrical Resistivity,k?-m,1
+282,Electrical Resistivity,lbf-in²/(s-A²),2
+283,Electrical Resistivity,M?-ft,2
+284,Electrical Resistivity,M?-m,1
+285,Electrical Resistivity,m?-µm,1
+286,Electrical Resistivity,?-cm,1
+287,Electrical Resistivity,?-dm,1
+288,Electrical Resistivity,?-ft,2
+289,Electrical Resistivity,?-in,2
+290,Electrical Resistivity,?-m,1
+291,Electrical Resistivity,?-mm,1
+292,Electrical Resistivity,µ?-mm,1
+293,Electric Charge,A-h,1
+294,Electric Charge,A-s,1
+295,Electric Charge,kA-h,1
+296,Electric Charge,kA-s,1
+297,Electric Charge,mA-h,1
+298,Electric Charge,mA-ms,1
+299,Electric Charge,mA-s,1
+300,Electric Charge,kA-h,2
+301,ElectricCurrent,A,1
+302,ElectricCurrent,kA,1
+303,ElectricCurrent,mA,1
+304,ElectricCurrent,µA,1
+305,ElectricCurrent,A,2
+306,ElectricCurrent,kA,2
+307,ElectricCurrent,mA,2
+308,ElectricCurrent,µA,2
+309,Electric Field Strength,lbf/(A-s),2
+310,Electric Field Strength,mV/in,2
+311,Electric Field Strength,mV/m,1
+312,Electric Field Strength,mV/mm,1
+313,Electric Field Strength,mV/µm,1
+314,Electric Field Strength,µV/mm,1
+315,Electric Field Strength,µV/µm,1
+316,Electric Field Strength,V/dm,1
+317,Electric Field Strength,V/in,2
+318,Electric Field Strength,V/m,1
+319,Electric Field Strength,V/mm,1
+320,Electric Field Strength,V/nm,1
+321,Electric Field Strength,V/µm,1
+322,Electric Flux Density,A-s/dm²,1
+323,Electric Flux Density,A-s/in²,2
+324,Electric Flux Density,A-s/mm²,1
+325,Electric Flux Density,A-s/m²,1
+326,Electric Flux Density,A-s/nm²,1
+327,Electric Flux Density,A-s/µm²,1
+328,Electric Flux Density,mA-ms/µm²,1
+329,Electric Flux Density,mA-s/in²,2
+330,Electric Flux Density,mA-s/mm²,1
+331,Electric Flux Density,mA-s/m²,1
+332,Electric Flux Density,mA-s/µm²,1
+333,Energy,BTU,2
+334,Energy,cN-cm,1
+335,Energy,dyn-cm,1
+336,Energy,erg,1
+337,Energy,J,1
+338,Energy,kgf-cm,1
+339,Energy,kgf-m,1
+340,Energy,kgf-mm,1
+341,Energy,kN-m,1
+342,Energy,kW-h,1
+343,Energy,lbf-ft,2
+344,Energy,lbf-in,2
+345,Energy,lbm-ft²/s²,2
+346,Energy,µJ,1
+347,Energy,MJ,1
+348,Energy,mN-mm,1
+349,Energy,N-m,1
+350,Energy,N-mm,1
+351,Energy,mJ,1
+352,Energy,N-dm,1
+353,Energy,nW-ms,1
+354,Energy,pdl-ft,2
+355,Energy,pJ,1
+356,Energy,µN-µm,1
+357,Energy,µW-s,1
+358,Energy,W-h,1
+359,Energy,W-s,1
+360,EnergyContent,kW-h,1
+361,EnergyContent,lbf-in,2
+362,EnergyContent,nW-ms,1
+363,EnergyContent,µW-s,1
+364,EnergyContent,W-h,1
+365,EnergyContent,W-s,1
+366,Energy per Unit Mass,dm²/s²,1
+367,Energy per Unit Mass,ft²/s²,2
+368,Energy per Unit Mass,in²/s²,2
+369,Energy per Unit Mass,mm²/s²,1
+370,Energy per Unit Mass,m²/s²,1
+371,Energy per Unit Mass,µm²/ms²,1
+372,Fatigue Life,Duty Cycles,1
+373,Fatigue Life,Duty Cycles,2
+374,Fatigue Strength Coefficient,mN/mm²(kPa),1
+375,Fatigue Strength Coefficient,N/dm²,1
+376,Fatigue Strength Coefficient,N/mm²(MPa),1
+377,Fatigue Strength Coefficient,Pa(N/m²),1
+378,Fatigue Strength Coefficient,lbf/in²(psi),2
+379,Fatigue Strength Coefficient,µN/µm²,1
+380,Force,cN,1
+381,Force,dyn,1
+382,Force,kgf,1
+383,Force,kN,1
+384,Force,MN,1
+385,Force,mN,1
+386,Force,N,1
+387,Force,nN,1
+388,Force,pdl,2
+389,Force,lbf,2
+390,Force,µN,1
+391,Force Per Unit Angle,cN/°,1
+392,Force Per Unit Angle,cN/rad,1
+393,Force Per Unit Angle,kgf/°,1
+394,Force Per Unit Angle,kgf/rad,1
+395,Force Per Unit Angle,lbf/°,2
+396,Force Per Unit Angle,lbf/rad,2
+397,Force Per Unit Angle,mN/°,1
+398,Force Per Unit Angle,mN/rad,1
+399,Force Per Unit Angle,N/°,1
+400,Force Per Unit Angle,N/rad,1
+401,Force Per Unit Angle,pdl/°,2
+402,Force Per Unit Angle,pdl/rad,2
+403,Force Per Unit Angle,µN/°,1
+404,Force Per Unit Angle,µN/rad,1
+405,Force Per Unit Length,BTU/ft²,2
+406,Force Per Unit Length,BTU/in²,2
+407,Force Per Unit Length,cN/cm,1
+408,Force Per Unit Length,J/cm²,1
+409,Force Per Unit Length,J/dm²,1
+410,Force Per Unit Length,J/m²,1
+411,Force Per Unit Length,kgf/cm,1
+412,Force Per Unit Length,kgf/m,1
+413,Force Per Unit Length,kgf/mm,1
+414,Force Per Unit Length,lbf-in/in²,2
+415,Force Per Unit Length,mN/mm,1
+416,Force Per Unit Length,N/dm,1
+417,Force Per Unit Length,N/m,1
+418,Force Per Unit Length,N/mm,1
+419,Force Per Unit Length,lbf/ft,2
+420,Force Per Unit Length,lbf/in,2
+421,Force Per Unit Length,pJ/µm²,1
+422,Force Per Unit Length,µJ/mm²,1
+423,Force Per Unit Length,µN/µm,1
+424,Force Per Unit Volume,cN/cm³,1
+425,Force Per Unit Volume,J/m?,2
+426,Force Per Unit Volume,kgf/cm³,1
+427,Force Per Unit Volume,kgf/m³,1
+428,Force Per Unit Volume,kgf/mm³,1
+429,Force Per Unit Volume,kg/(mm²-s²),1
+430,Force Per Unit Volume,kg/(m²-s²),1
+431,Force Per Unit Volume,lbf/ft³,2
+432,Force Per Unit Volume,lbf/in³,2
+433,Force Per Unit Volume,lbm/(ft²-s²),1
+434,Force Per Unit Volume,lbm/(in²-s²),2
+435,Force Per Unit Volume,mN/m³,1
+436,Force Per Unit Volume,mN/mm³,1
+437,Force Per Unit Volume,N/dm³,1
+438,Force Per Unit Volume,N/m³,1
+439,Force Per Unit Volume,N/mm³,1
+440,Force Per Unit Volume,µN/µm³,1
+441,Frequency,1/min,1
+442,Frequency,1/s,1
+443,Frequency,GHz,1
+444,Frequency,1/h,1
+445,Frequency,Hz,1
+446,Frequency,kHz,1
+447,Frequency,MHz,1
+448,Frequency,1/ms,1
+449,Frequency,1/min,2
+450,Frequency,1/s,2
+451,Frequency,GHz,2
+452,Frequency,1/h,2
+453,Frequency,Hz,2
+454,Frequency,kHz,2
+455,Frequency,MHz,2
+456,Frequency Cubed,GHz³,1
+457,Frequency Cubed,1/h³,1
+458,Frequency Cubed,Hz³,1
+459,Frequency Cubed,kHz³,1
+460,Frequency Cubed,MHz³,1
+461,Frequency Cubed,1/min³,1
+462,Frequency Cubed,1/ms³,1
+463,Frequency Cubed,GHz³,2
+464,Frequency Cubed,Hz³,2
+465,Frequency Cubed,kHz³,2
+466,Frequency Cubed,MHz³,2
+467,Frequency Cubed,1/s³,2
+468,Frequency Cubed,1/s³,1
+469,Frequency Squared,GHz²,1
+470,Frequency Squared,1/h²,1
+471,Frequency Squared,Hz²,1
+472,Frequency Squared,kHz²,1
+473,Frequency Squared,MHz²,1
+474,Frequency Squared,1/min²,1
+475,Frequency Squared,1/ms²,1
+476,Frequency Squared,GHz²,2
+477,Frequency Squared,Hz²,2
+478,Frequency Squared,kHz²,2
+479,Frequency Squared,MHz²,2
+480,Frequency Squared,1/s²,2
+481,Head Loss Coefficient,lbf-s/ft³,2
+482,Head Loss Coefficient,lbf-s/in³,2
+483,Head Loss Coefficient,mN-s/mm³,1
+484,Head Loss Coefficient,N-s/dm³,1
+485,Head Loss Coefficient,N-s/m³,1
+486,Head Loss Coefficient,µN-ms/µm³,1
+487,Heat Flow Rate,BTU/h,2
+488,Heat Flow Rate,BTU/min,2
+489,Heat Flow Rate,BTU/s,2
+490,Heat Flow Rate,hp,2
+491,Heat Flow Rate,kW,1
+492,Heat Flow Rate,lbf-ft/s,2
+493,Heat Flow Rate,lbf-in/s,2
+494,Heat Flow Rate,mW,1
+495,Heat Flow Rate,µW,1
+496,Heat Flow Rate,nW,1
+497,Heat Flow Rate,W,1
+498,Heat Flux,BTU/(s-in²),2
+499,Heat Flux,BTU/(h-ft²),2
+500,Heat Flux,BTU/(h-in²),2
+501,Heat Flux,BTU/(s-ft²),2
+502,Heat Flux,lbf-in/(s-in²),2
+503,Heat Flux,µW/mm²,1
+504,Heat Flux,mW/mm²,1
+505,Heat Flux,nW/µm²,1
+506,Heat Flux,W/mm²,1
+507,Heat Flux,W/cm²,1
+508,Heat Flux,W/dm²,1
+509,Heat Flux,W/in²,2
+510,Heat Flux,W/m²,1
+511,Heat Generation,BTU/(h-ft³),2
+512,Heat Generation,BTU/(h-in³),2
+513,Heat Generation,BTU/(s-in³),2
+514,Heat Generation,lbf-in/(s-in³),2
+515,Heat Generation,nW/µm³,1
+516,Heat Generation,µW/mm³,1
+517,Heat Generation,W/dm³,1
+518,Heat Generation,W/m³,1
+519,Heat Generation,W/mm³,1
+520,Illuminance,lm/ft²,2
+521,Illuminance,lm/in²,2
+522,Illuminance,lm/µm²,1
+523,Illuminance,lx,1
+524,Illuminance,Mlx,1
+525,Inductance,H,1
+526,Inductance,lbf-in/Å²,2
+527,Inductance,mH,1
+528,Inductance,nH,1
+529,Inductance,µH,1
+530,Jerk,dm/s³,1
+531,Jerk,ft/s³,2
+532,Jerk,in/s³,2
+533,Jerk,mm/s³,1
+534,Jerk,m/s³,1
+535,Jerk,µm/ms³,1
+536,Latent Heat per Mass,BTU/lbm,2
+537,Latent Heat per Mass,BTU-in/(lbf-s²),2
+538,Latent Heat per Mass,cal/g,1
+539,Latent Heat per Mass,J/kg,1
+540,Latent Heat per Mass,kJ/kg,1
+541,Latent Heat per Mass,lbf-in/lbm,2
+542,Latent Heat per Mass,lbf-in-in/(lbf-s²),2
+543,Latent Heat per Mass,mJ/Mg,1
+544,Latent Heat per Mass,pJ/mg,1
+545,Latent Heat per Mass,µJ/kg,1
+546,Length,Å,1
+547,Length,Bc,2
+548,Length,ch,2
+549,Length,Ch (Fr),1
+550,Length,cm,1
+551,Length,dam,1
+552,Length,dm,1
+553,Length,fm,1
+554,Length,ft,2
+555,Length,fur,2
+556,Length,ga,2
+557,Length,hh,2
+558,Length,hm,1
+559,Length,in,2
+560,Length,km,1
+561,Length,m,1
+562,Length,mi,2
+563,Length,µm,1
+564,Length,mil,2
+565,Length,mm,1
+566,Length,nm,1
+567,Length Per Revolution,ipr,2
+568,Length Per Revolution,mmpr,1
+569,Length,pm,2
+570,Length,th,2
+571,Length,yd,2
+572,Length Per Angle,cm/°,1
+573,Length Per Angle,cm/rad,1
+574,Length Per Angle,cm/rev,1
+575,Length Per Angle,dm/°,1
+576,Length Per Angle,dm/rad,1
+577,Length Per Angle,dm/rev,1
+578,Length Per Angle,ft/°,2
+579,Length Per Angle,ft/rad,2
+580,Length Per Angle,ft/rev,2
+581,Length Per Angle,in/°,2
+582,Length Per Angle,in/rad,2
+583,Length Per Angle,in/rev,2
+584,Length Per Angle,mm/°,1
+585,Length Per Angle,mm/rev,1
+586,Length Per Angle,mm/rad,1
+587,Length Per Angle,m/°,1
+588,Length Per Angle,m/rad,1
+589,Length Per Angle,m/rev,1
+590,Length Per Angle,µm/°,1
+591,Length Per Angle,µm/rad,1
+592,Length Per Unit Pressure,dm³/N,1
+593,Length Per Unit Pressure,ft³/lbf,2
+594,Length Per Unit Pressure,in³/lbf,2
+595,Length Per Unit Pressure,m³/mN,1
+596,Length Per Unit Pressure,m³/N,1
+597,Length Per Unit Pressure,mm³/mN,1
+598,Length Per Unit Pressure,mm³/N,1
+599,Length Per Unit Pressure,µm³/µN,1
+600,LineicResolution,dpi,1
+601,LineicResolution,dpi,2
+602,Luminance,cd/dm²,1
+603,Luminance,cd/ft²,2
+604,Luminance,cd/in²,2
+605,Luminance,cd/mm²,1
+606,Luminance,cd/m²,1
+607,Luminance,cd/µm²,1
+608,LuminousFlux,cd-deg²,2
+609,LuminousFlux,klm,1
+610,LuminousFlux,lm,1
+611,LuminousFlux,mlm,1
+612,LuminousIntensity,cd,1
+613,LuminousIntensity,kcd,1
+614,LuminousIntensity,mcd,1
+615,LuminousIntensity,cd,2
+616,LuminousIntensity,kcd,2
+617,LuminousIntensity,mcd,2
+618,Magnetic Conductivity,lbf/(s-Å²),2
+619,Magnetic Conductivity,m?/µm,1
+620,Magnetic Conductivity,?/dm,1
+621,Magnetic Conductivity,?/m,1
+622,Magnetic Conductivity,µ?/mm,1
+623,Magnetic Field Strength,A/dm,1
+624,Magnetic Field Strength,A/in,2
+625,Magnetic Field Strength,A/m,1
+626,Magnetic Field Strength,A/mm,1
+627,Magnetic Field Strength,kA/m,1
+628,Magnetic Field Strength,mA/mm,1
+629,Magnetic Field Strength,mA/µm,1
+630,Magnetic Field Strength,Oe,1
+631,Magnetic Flux,lbf-in/A,2
+632,Magnetic Flux,mWb,1
+633,Magnetic Flux,Mx,1
+634,Magnetic Flux,nWb,1
+635,Magnetic Flux,µWb,1
+636,Magnetic Flux,Wb,1
+637,Magnetic Flux Density,G,1
+638,Magnetic Flux Density,kT,1
+639,Magnetic Flux Density,lbf/(A-in),2
+640,Magnetic Flux Density,mG,1
+641,Magnetic Flux Density,mN/(A-mm),1
+642,Magnetic Flux Density,mT,1
+643,Magnetic Flux Density,N/(A-dm),1
+644,Magnetic Flux Density,N/(A-m),1
+645,Magnetic Flux Density,T,1
+646,Magnetic Flux Density,µT,1
+647,Magnetic Flux Density,Wb/m²,1
+648,Magnetic Vector Potential,lbf/A,2
+649,Magnetic Vector Potential,N/A,1
+650,Magnetic Vector Potential,nWb/µm,1
+651,Magnetic Vector Potential,µWb/mm,1
+652,Magnetic Vector Potential,Wb/dm,1
+653,Magnetic Vector Potential,Wb/m,1
+654,Mass,cg,1
+655,Mass,dag,1
+656,Mass,dg,1
+657,Mass,g,1
+658,Mass,Gg,1
+659,Mass,gr,2
+660,Mass,hg,1
+661,Mass,kg,1
+662,Mass,kgf-s²/cm,1
+663,Mass,kgf-s²/dm,1
+664,Mass,kgf-s²/m,1
+665,Mass,kgf-s²/mm,1
+666,Mass,Mg,1
+667,Mass,mg,1
+668,Mass,oz,2
+669,Mass,lb,2
+670,Mass,lbf-s²/in,2
+671,Mass,qr (qtr-UK),2
+672,Mass,qr (qtr-US),2
+673,Mass,Slug(lbf-s²/ft),2
+674,Mass,st (UK),2
+675,Mass,st (US),2
+676,Mass,t,1
+677,Mass,t (UK),2
+678,Mass,t (US),2
+679,Mass,µg,1
+680,Mass Density,Gg/hm³,1
+681,Mass Density,g/cm³,1
+682,Mass Density,g/l,1
+683,Mass Density,g/m³,1
+684,Mass Density,g/mm³,1
+685,Mass Density,kg/dm³,1
+686,Mass Density,kg/l,1
+687,Mass Density,kg/m³,1
+688,Mass Density,kg/mm³,1
+689,Mass Density,lbm/ft³,2
+690,Mass Density,mg/cm³,1
+691,Mass Density,Mg/mm³,1
+692,Mass Density,mg/µm³,1
+693,Mass Density,lb/in³,2
+694,Mass Density,lbf-s²/in?,2
+695,Mass Density,Slugs/ft³,2
+696,Mass Density,t/m³,1
+697,Mass Density,t/mm³,1
+698,Mass Density,µg/mm³,1
+699,MassFlowRate,g/h,1
+700,MassFlowRate,g/min,1
+701,MassFlowRate,g/s,1
+702,MassFlowRate,kg/h,1
+703,MassFlowRate,kg/min,1
+704,MassFlowRate,kg/s,1
+705,MassFlowRate,lbf-s/ft,2
+706,MassFlowRate,lbf-s/in,2
+707,MassFlowRate,lbm/h,2
+708,MassFlowRate,lbm/min,2
+709,MassFlowRate,lbm/s,2
+710,MassFlowRate,mg/ms,1
+711,MassFlowRate,Mg/s,1
+712,MassFlowRate,mN-s/mm,1
+713,MassFlowRate,N-s/dm,1
+714,MassFlowRate,N-s/m,1
+715,MassFlowRate,N-s/mm,1
+716,Mass Flux,kg/(mm²-s),1
+717,Mass Flux,kg/(m²-s),1
+718,Mass Flux,kg/(s-dm²),1
+719,Mass Flux,kg/(s-mm²),1
+720,Mass Flux,kg/(s-m²),1
+721,Mass Flux,lbf-s/ft³,2
+722,Mass Flux,lbf-s/in³,2
+723,Mass Flux,lbm/(ft²-s),2
+724,Mass Flux,lbm/(in²-s),2
+725,Mass Flux,lbm/(s-ft²),2
+726,Mass Flux,lbm/(s-in²),2
+727,Mass Flux,mg/(ms-µm²),1
+728,Mass Flux,mN-s/m³,1
+729,Mass Flux,mN-s/mm³,1
+730,Mass Flux,N-s/dm³,1
+731,Mass Flux,N-s/m³,1
+732,Mass Flux,N-s/mm³,1
+733,Mass Flux,µN-ms/µm³,1
+734,Mass Length,Gg-hm,1
+735,Mass Length,g-cm,1
+736,Mass Length,g-mm,1
+737,Mass Length,kg-dm,1
+738,Mass Length,kg-m,1
+739,Mass Length,kg-mm,1
+740,Mass Length,lbf-s²,2
+741,Mass Length,lbm-ft,2
+742,Mass Length,lbm-in,2
+743,Mass Length,mg-cm,1
+744,Mass Length,mg-µm,1
+745,Mass Length,µg-mm,1
+746,Mass Length Per Angle,g-mm/°,1
+747,Mass Length Per Angle,g-mm/rad,1
+748,Mass Length Per Angle,kg-mm/°,1
+749,Mass Length Per Angle,kg-mm/rad,1
+750,Mass Length Per Angle,kg-m/°,1
+751,Mass Length Per Angle,kg-m/rad,1
+752,Mass Length Per Angle,lbf/(s²-°),2
+753,Mass Length Per Angle,lbf/(s²-rad),2
+754,Mass Length Per Angle,lbm-ft/°,2
+755,Mass Length Per Angle,lbm-ft/rad,2
+756,Mass Length Per Angle,lbm-in/°,2
+757,Mass Length Per Angle,lbm-in/rad,2
+758,Mass Length Per Angle,mg-µm/°,1
+759,Mass Length Per Angle,mg-µm/rad,1
+760,Mass Length Per Angle,µg-mm/°,1
+761,Mass Length Per Angle,µg-mm/rad,1
+762,Mass Moment of Inertia,Gg-hm²,1
+763,Mass Moment of Inertia,g-cm²,1
+764,Mass Moment of Inertia,g-mm²,1
+765,Mass Moment of Inertia,kg-dm²,1
+766,Mass Moment of Inertia,kg-mm²,1
+767,Mass Moment of Inertia,kg-m²,1
+768,Mass Moment of Inertia,lbf-in-s²,2
+769,Mass Moment of Inertia,lbm-ft²,2
+770,Mass Moment of Inertia,lbm-in²,2
+771,Mass Moment of Inertia,mg-cm²,1
+772,Mass Moment of Inertia,mg-µm²,1
+773,Mass Moment of Inertia,µg-mm²,1
+774,Mass Moment of Inertia Per Angle,g-cm²/°,1
+775,Mass Moment of Inertia Per Angle,g-cm²/rad,1
+776,Mass Moment of Inertia Per Angle,g-mm²/°,1
+777,Mass Moment of Inertia Per Angle,g-mm²/rad,1
+778,Mass Moment of Inertia Per Angle,kg-dm²/°,1
+779,Mass Moment of Inertia Per Angle,kg-dm²/rad,1
+780,Mass Moment of Inertia Per Angle,kg-mm²/°,1
+781,Mass Moment of Inertia Per Angle,kg-mm²/rad,1
+782,Mass Moment of Inertia Per Angle,kg-m²/°,1
+783,Mass Moment of Inertia Per Angle,kg-m²/rad,1
+784,Mass Moment of Inertia Per Angle,lbf-in-s²/°,2
+785,Mass Moment of Inertia Per Angle,lbf-in-s²/rad,2
+786,Mass Moment of Inertia Per Angle,lbm-ft²/°,2
+787,Mass Moment of Inertia Per Angle,lbm-ft²/rad,2
+788,Mass Moment of Inertia Per Angle,lbm-in²/°,2
+789,Mass Moment of Inertia Per Angle,lbm-in²/rad,2
+790,Mass Moment of Inertia Per Angle,mg-µm²/°,1
+791,Mass Moment of Inertia Per Angle,mg-µm²/rad,1
+792,Mass per Unit Area,Gg/hm²,1
+793,Mass per Unit Area,g/cm²,1
+794,Mass per Unit Area,g/mm²,1
+795,Mass per Unit Area,kg/dm²,1
+796,Mass per Unit Area,kg/mm²,1
+797,Mass per Unit Area,kg/m²,1
+798,Mass per Unit Area,lbf-s²/ft³,2
+799,Mass per Unit Area,lbf-s²/in³,2
+800,Mass per Unit Area,lbm/ft²,2
+801,Mass per Unit Area,lbm/in²,2
+802,Mass per Unit Area,mg/cm²,1
+803,Mass per Unit Area,mg/µm²,1
+804,Mass per Unit Area,t/mm²,1
+805,Mass per Unit Area,t/m²,1
+806,Mass per Unit Area,µg/mm²,1
+807,Mass per Unit Length,g/cm,1
+808,Mass per Unit Length,kg/dm,1
+809,Mass per Unit Length,kg/m,1
+810,Mass per Unit Length,kg/mm,1
+811,Mass per Unit Length,lbf-s²/ft²,2
+812,Mass per Unit Length,lbf-s²/in²,2
+813,Mass per Unit Length,lbm/ft,2
+814,Mass per Unit Length,lbm/in,2
+815,Mass per Unit Length,mg/µm,1
+816,Mass per Unit Length,t/m,1
+817,Mass per Unit Length,t/mm,1
+818,MechanicalTension,bars,1
+819,MechanicalTension,hPa,1
+820,MechanicalTension,kPa,1
+821,MechanicalTension,mbar,1
+822,MechanicalTension,mPa,1
+823,MechanicalTension,Pa,1
+824,Molality,mol/kg,1
+825,Molality,mol/lbm,2
+826,Molality,mol-in/(lbf-s²),2
+827,Molality,µmol/mg,1
+828,Molar Concentration,mol/dm³,1
+829,Molar Concentration,mol/ft³,2
+830,Molar Concentration,mol/in³,2
+831,Molar Concentration,mol/m³,1
+832,Molar Concentration,mol/mm³,1
+833,Molar Concentration,µmol/µm³,1
+834,Moment,cN-cm,1
+835,Moment,dyn-cm,1
+836,Moment,kgf-cm,1
+837,Moment,kgf-m,1
+838,Moment,kgf-mm,1
+839,Moment,kN-m,1
+840,Moment,mN-mm,1
+841,Moment,N-m,1
+842,Moment,N-mm,1
+843,Moment,N-dm,1
+844,Moment,pdl-ft,2
+845,Moment,lbf-ft,2
+846,Moment,lbf-in,2
+847,Moment,µN-µm,1
+848,Moment of Inertia (Area),cm?,1
+849,Moment of Inertia (Area),dm?,1
+850,Moment of Inertia (Area),ft?,2
+851,Moment of Inertia (Area),hm?,1
+852,Moment of Inertia (Area),in?,2
+853,Moment of Inertia (Area),mm?,1
+854,Moment of Inertia (Area),m?,1
+855,Moment of Inertia (Area),µm?,1
+856,Moment Per Angle,lbf-ft/°,2
+857,Moment Per Angle,lbf-ft/rad,2
+858,Moment Per Angle,lbf-in/°,2
+859,Moment Per Angle,lbf-in/rad,2
+860,Moment Per Angle,mN-mm/°,1
+861,Moment Per Angle,mN-mm/rad,1
+862,Moment Per Angle,N-dm/°,1
+863,Moment Per Angle,N-dm/rad,1
+864,Moment Per Angle,N-mm/°,1
+865,Moment Per Angle,N-mm/rad,1
+866,Moment Per Angle,N-m/°,1
+867,Moment Per Angle,N-m/rad,1
+868,Moment Per Angle,µN-µm/°,1
+869,Moment Per Angle,µN-µm/rad,1
+870,Momentum,kg-dm/s,1
+871,Momentum,kg-mm/s,1
+872,Momentum,kg-m/s,1
+873,Momentum,lbf-s,2
+874,Momentum,lbm-ft/s,2
+875,Momentum,lbm-in/s,2
+876,Momentum,mg-µm/ms,1
+877,Momentum Per Angle,kg-mm/(s-°),1
+878,Momentum Per Angle,kg-mm/(s-rad),1
+879,Momentum Per Angle,kg-m/(s-°),1
+880,Momentum Per Angle,kg-m/(s-rad),1
+881,Momentum Per Angle,lbf-s/°,2
+882,Momentum Per Angle,lbf-s/rad,2
+883,Momentum Per Angle,lbm-ft/(s-°),2
+884,Momentum Per Angle,lbm-ft/(s-rad),2
+885,Momentum Per Angle,lbm-in/(s-°),2
+886,Momentum Per Angle,lbm-in/(s-rad),2
+887,Momentum Per Angle,mg-µm/ms/°,1
+888,Momentum Per Angle,mg-µm/ms/rad,1
+889,Momentum Per Angle,mN-s/°,1
+890,Momentum Per Angle,mN-s/rad,1
+891,Momentum Per Angle,N-s/°,1
+892,Momentum Per Angle,N-s/rad,1
+893,Momentum Per Angle,µN-ms/°,1
+894,Momentum Per Angle,µN-ms/rad,1
+895,NeutralRatio,%,2
+896,NeutralRatio,Promile,2
+897,NeutralRatio,%,1
+898,NeutralRatio,Promile,1
+899,Non-Converting,2 piece,1
+900,Non-Converting,3 piece,1
+901,Non-Converting,4 piece,1
+902,Non-Converting,5 piece,1
+903,Non-Converting,As Required,1
+904,Non-Converting,cone,1
+905,Non-Converting,2 piece,2
+906,Non-Converting,3 piece,2
+907,Non-Converting,4 piece,2
+908,Non-Converting,5 piece,2
+909,Non-Converting,As Required,2
+910,Non-Converting,cone,2
+911,Non-Converting,pair,2
+912,Non-Converting,Per Length,2
+913,Non-Converting,Per Roll/Reel,2
+914,Non-Converting,Per Weight,2
+915,Non-Converting,piece,2
+916,Non-Converting,spool,2
+917,Non-Converting,Per Length,1
+918,Non-Converting,Per Roll/Reel,1
+919,Non-Converting,Per Weight,1
+920,Non-Converting,piece,1
+921,Non-Converting,spool,1
+922,Non-Converting,Unitless,1
+923,Non-Converting,units,1
+924,Per Angle,1/°,1
+925,Per Angle,1/°,2
+926,Per Angle,1/rev,2
+927,Per Angle,1/(?-rad),1
+928,Per Angle,1/rad,1
+929,Per Angle,1/rev,1
+930,Per Angle Squared,1/°²,1
+931,Per Angle Squared,1/(?-rad)²,1
+932,Per Angle Squared,1/rad²,1
+933,Per Angle Squared,1/rev²,1
+934,Per Area,1/dm²,1
+935,Per Area,1/cm²,1
+936,Per Area,1/ft²,2
+937,Per Area,1/in²,2
+938,Per Area,1/m²,1
+939,Per Area,1/mm²,1
+940,Per Area,1/µm²,1
+941,Per Frequency,1/GHz,1
+942,Per Frequency,1/Hz,1
+943,Per Frequency,1/kHz,1
+944,Per Frequency,1/MHz,1
+945,Per Frequency,1/GHz,2
+946,Per Frequency,1/Hz,2
+947,Per Frequency,1/kHz,2
+948,Per Frequency,1/MHz,2
+949,Per Volume,1/dm³,1
+950,Per Volume,1/cm³,1
+951,Per Volume,1/ft³,2
+952,Per Volume,1/in³,2
+953,Per Volume,1/m³,1
+954,Per Volume,1/mm³,1
+955,Per Volume,1/µm³,1
+956,Power,BTU/h,2
+957,Power,BTU/min,2
+958,Power,BTU/s,2
+959,Power,hp,2
+960,Power,kW,1
+961,Power,lbf-ft/s,2
+962,Power,lbf-in/s,2
+963,Power,lbm-ft²/s³,2
+964,Power,MW,1
+965,Power,mW,1
+966,Power,kW,2
+967,Power,W,2
+968,Power,nW,1
+969,Power,µW,1
+970,Power,W,1
+971,Power to Mass Ratio,BTU/(h-lbm),2
+972,Power to Mass Ratio,BTU/(min-lbm),2
+973,Power to Mass Ratio,BTU/(s-lbm),2
+974,Power to Mass Ratio,dm²/ms³,1
+975,Power to Mass Ratio,ft²/s³,2
+976,Power to Mass Ratio,in²/s³,2
+977,Power to Mass Ratio,kW/kg,1
+978,Power to Mass Ratio,mm²/s³,1
+979,Power to Mass Ratio,m²/s³,1
+980,Power to Mass Ratio,nW/mg,1
+981,Power to Mass Ratio,µm²/ms³,1
+982,Power to Mass Ratio,µW/g,1
+983,Power to Mass Ratio,µW/kg,1
+984,Power to Mass Ratio,W/g,1
+985,Power to Mass Ratio,W/kg,1
+986,Power to Mass Ratio,W/lbm,2
+987,Pressure,atm,2
+988,Pressure,bar,2
+989,Pressure,cN/cm²,1
+990,Pressure,hPa,1
+991,Pressure,inH2O,2
+992,Pressure,inHg,2
+993,Pressure,kgf/cm²,1
+994,Pressure,kgf/mm²,1
+995,Pressure,kgf/m²,1
+996,Pressure,mbar,1
+997,Pressure,mmH2O,1
+998,Pressure,mmHg,1
+999,Pressure,mN-mm/mm³,1
+1000,Pressure,mN/mm²(kPa),1
+1001,Pressure,mPa,1
+1002,Pressure,N-mm/mm³,1
+1003,Pressure,N-m/m³,1
+1004,Pressure,N/cm²,1
+1005,Pressure,N/dm²,1
+1006,Pressure,N/mm²(MPa),1
+1007,Pressure,Pa(N/m²),1
+1008,Pressure,N-dm/dm³,1
+1009,Pressure,pdl/ft²,2
+1010,Pressure,pdl-ft/ft³,2
+1011,Pressure,lbf-ft/ft³,2
+1012,Pressure,lbf-in/in³,2
+1013,Pressure,lbf/ft²,2
+1014,Pressure,lbf/in²(psi),2
+1015,Pressure,µN/µm²,1
+1016,Pressure,µN-µm/µm³,1
+1017,Pressure Per Unit Length,J/m?,2
+1018,Pressure Per Unit Length,kg/(mm²-s²),1
+1019,Pressure Per Unit Length,kg/(m²-s²),1
+1020,Pressure Per Unit Length,lbf/ft³,2
+1021,Pressure Per Unit Length,lbf/in³,2
+1022,Pressure Per Unit Length,lbm/(ft²-s²),1
+1023,Pressure Per Unit Length,lbm/(in²-s²),2
+1024,Pressure Per Unit Length,mN/m³,1
+1025,Pressure Per Unit Length,mN/mm³,1
+1026,Pressure Per Unit Length,N/dm³,1
+1027,Pressure Per Unit Length,N/m³,1
+1028,Pressure Per Unit Length,N/mm³,1
+1029,Pressure Per Unit Length,µN/µm³,1
+1030,Pressure Per Unit Velocity,kg/(mm²-s),1
+1031,Pressure Per Unit Velocity,kg/(m²-s),1
+1032,Pressure Per Unit Velocity,lbf-s/ft³,2
+1033,Pressure Per Unit Velocity,lbf-s/in³,2
+1034,Pressure Per Unit Velocity,lbm/(ft²-s),2
+1035,Pressure Per Unit Velocity,lbm/(in²-s),2
+1036,Pressure Per Unit Velocity,mN-s/m³,1
+1037,Pressure Per Unit Velocity,mN-s/mm³,1
+1038,Pressure Per Unit Velocity,N-s/dm³,1
+1039,Pressure Per Unit Velocity,N-s/m³,1
+1040,Pressure Per Unit Velocity,N-s/mm³,1
+1041,Pressure Per Unit Velocity,µN-ms/µm³,1
+1042,Sound,dB,1
+1043,Specific Heat,BTU/(lb-°F),2
+1044,Specific Heat,BTU-in/(lbf-s²-°F),2
+1045,Specific Heat,J/(kg-K),1
+1046,Specific Heat,kJ/(kg-K),1
+1047,Specific Heat,lbf-in/(lbm-°F),2
+1048,Specific Heat,lbf-in-in/(lbf-s²-°F),2
+1049,Specific Heat,lbf-in-in/(lbf-s²-°R),2
+1050,Specific Heat,µJ/(kg-K),1
+1051,Specific Heat,mJ/(Mg-K),1
+1052,Specific Heat,pJ/(mg-K),1
+1053,Static Flow Resistivity,g/(s-cm³),1
+1054,Static Flow Resistivity,g/(s-mm³),1
+1055,Static Flow Resistivity,kg/(s-mm³),1
+1056,Static Flow Resistivity,lbf-s/in?,2
+1057,Static Flow Resistivity,lbm/(s-in³),2
+1058,Static Flow Resistivity,mg/(ms-µm³),1
+1059,Static Flow Resistivity,mN-s/mm?,1
+1060,Static Flow Resistivity,N-s/cm?,1
+1061,Static Flow Resistivity,N-s/dm?,1
+1062,Static Flow Resistivity,N-s/mm?,1
+1063,Static Flow Resistivity,N-s/m?,1
+1064,Strain,cm/cm,1
+1065,Strain,dm/dm,1
+1066,Strain,ft/ft,2
+1067,Strain,in/in,2
+1068,Strain,m/m,1
+1069,Strain,mm/mm,1
+1070,Strain,m/m,2
+1071,Strain,mm/mm,2
+1072,Strain,µm/µm,1
+1073,Strain Energy,cN-cm,1
+1074,Strain Energy,kgf-m,1
+1075,Strain Energy,kgf-mm,1
+1076,Strain Energy,mN-mm,1
+1077,Strain Energy,N-m,1
+1078,Strain Energy,N-mm,1
+1079,Strain Energy,N-dm,1
+1080,Strain Energy,pdl-ft,2
+1081,Strain Energy,lbf-ft,2
+1082,Strain Energy,lbf-in,2
+1083,Strain Energy,µN-µm,1
+1084,Strain Energy Density,mN-mm/mm³,1
+1085,Strain Energy Density,N-mm/mm³,1
+1086,Strain Energy Density,N-m/m³,1
+1087,Strain Energy Density,N-dm/dm³,1
+1088,Strain Energy Density,pdl-ft/ft³,2
+1089,Strain Energy Density,lbf-ft/ft³,2
+1090,Strain Energy Density,lbf-in/in³,2
+1091,Strain Energy Density,µN-µm/µm³,1
+1092,Stress,cN/cm²,1
+1093,Stress,kgf/cm²,1
+1094,Stress,kgf/mm²,1
+1095,Stress,kgf/m²,1
+1096,Stress,lbf/ft²,2
+1097,Stress,mN/mm²(kPa),1
+1098,Stress,N/cm²,1
+1099,Stress,N/dm²,1
+1100,Stress,N/mm²(MPa),1
+1101,Stress,Pa(N/m²),1
+1102,Stress,pdl/ft²,2
+1103,Stress,lbf/in²(psi),2
+1104,Stress,µN/µm²,1
+1105,Stress Compliance,cm²/N,1
+1106,Stress Compliance,dm²/N,1
+1107,Stress Compliance,ft²/lbf,2
+1108,Stress Compliance,1/psi,2
+1109,Stress Compliance,1/kPa,1
+1110,Stress Compliance,1/MPa,1
+1111,Stress Compliance,1/Pa,1
+1112,Stress Compliance,µm²/µN,1
+1113,SymbolTransmissionRate,Bd,1
+1114,SymbolTransmissionRate,MBd,1
+1115,SymbolTransmissionRate,Bd,2
+1116,Temperature,°C,1
+1117,Temperature,°F,2
+1118,Temperature,K,1
+1119,Temperature,°R,2
+1120,Temperature Change Rate,°C/h,1
+1121,Temperature Change Rate,°C/min,1
+1122,Temperature Change Rate,°C/s,1
+1123,Temperature Change Rate,°F/h,2
+1124,Temperature Change Rate,°F/min,2
+1125,Temperature Change Rate,°F/s,2
+1126,Temperature Change Rate,°R/h,2
+1127,Temperature Change Rate,°R/min,2
+1128,Temperature Change Rate,°R/s,2
+1129,Temperature Change Rate,K/h,1
+1130,Temperature Change Rate,K/min,1
+1131,Temperature Change Rate,K/ms,1
+1132,Temperature Change Rate,K/s,1
+1133,Temperature Difference,?°C,1
+1134,Temperature Difference,?°F,2
+1135,Temperature Difference,?°R,2
+1136,Temperature Difference,?K,1
+1137,Temperature Gradient,°C/dm,1
+1138,Temperature Gradient,°C/m,1
+1139,Temperature Gradient,°C/mm,1
+1140,Temperature Gradient,°F/ft,2
+1141,Temperature Gradient,°F/in,2
+1142,Temperature Gradient,°R/in,2
+1143,Temperature Gradient,K/mm,1
+1144,Temperature Gradient,K/µm,1
+1145,Thermal Capacitance,BTU/°F,2
+1146,Thermal Capacitance,cal/°F,2
+1147,Thermal Capacitance,J/°C,1
+1148,Thermal Capacitance,J/K,1
+1149,Thermal Capacitance,kJ/°C,1
+1150,Thermal Capacitance,lbf-ft/°F,2
+1151,Thermal Capacitance,lbf-in/°F,2
+1152,Thermal Capacitance,lbf-in/°R,2
+1153,Thermal Capacitance,pJ/K,1
+1154,Thermal Capacitance,µJ/°C,1
+1155,Thermal Capacitance,µJ/K,1
+1156,Thermal Conductance,BTU/(h-°F),2
+1157,Thermal Conductance,BTU/(min-°F),2
+1158,Thermal Conductance,BTU/(s-°F),2
+1159,Thermal Conductance,lbf-in/(s-°F),2
+1160,Thermal Conductance,lbf-in/(s-°R),2
+1161,Thermal Conductance,mW/°C,1
+1162,Thermal Conductance,nW/K,1
+1163,Thermal Conductance,µW/°C,1
+1164,Thermal Conductance,µW/K,1
+1165,Thermal Conductance,W/°C,1
+1166,Thermal Conductance,W/K,1
+1167,Thermal Conductivity,BTU/(h-ft-°F),2
+1168,Thermal Conductivity,BTU/(s-in-°F),2
+1169,Thermal Conductivity,BTU/(h-in-°F),2
+1170,Thermal Conductivity,BTU/(s-ft-°F),2
+1171,Thermal Conductivity,lbf-in/(s-in-°F),2
+1172,Thermal Conductivity,lbf-in/(s-in-°R),2
+1173,Thermal Conductivity,µW/(mm-°C),1
+1174,Thermal Conductivity,mW/(mm-°C),1
+1175,Thermal Conductivity,mW/(mm-K),1
+1176,Thermal Conductivity,nW/(µm-K),1
+1177,Thermal Conductivity,µW/(mm-K),1
+1178,Thermal Conductivity,W/(cm-°C),1
+1179,Thermal Conductivity,W/(dm-°C),1
+1180,Thermal Conductivity,W/(dm-K),1
+1181,Thermal Conductivity,W/(m-K),1
+1182,Thermal Conductivity,W/(mm-°C),1
+1183,Thermal Conductivity,W/(m-°C),1
+1184,Thermal Expansion Coefficient,1/°C,1
+1185,Thermal Expansion Coefficient,1/°F,2
+1186,Thermal Expansion Coefficient,1/K,1
+1187,Thermal Expansion Coefficient,1/°R,2
+1188,Thermal Energy,BTU,2
+1189,Thermal Energy,cN-cm,1
+1190,Thermal Energy,erg,1
+1191,Thermal Energy,J,1
+1192,Thermal Energy,kgf-m,1
+1193,Thermal Energy,kgf-mm,1
+1194,Thermal Energy,lbf-ft,2
+1195,Thermal Energy,lbf-in,2
+1196,Thermal Energy,µJ,1
+1197,Thermal Energy,mJ,1
+1198,Thermal Energy,pdl-ft,2
+1199,Thermal Energy,pJ,1
+1200,Thermal Energy per Area,BTU/ft²,2
+1201,Thermal Energy per Area,BTU/in²,2
+1202,Thermal Energy per Area,J/cm²,1
+1203,Thermal Energy per Area,J/dm²,1
+1204,Thermal Energy per Area,J/m²,1
+1205,Thermal Energy per Area,lbf-in/in²,2
+1206,Thermal Energy per Area,pJ/µm²,1
+1207,Thermal Energy per Area,µJ/mm²,1
+1208,Thermal PID Derivative Term Constant,ms/K,1
+1209,Thermal PID Derivative Term Constant,s/°C,1
+1210,Thermal PID Derivative Term Constant,s/°F,2
+1211,Thermal PID Derivative Term Constant,s/K,1
+1212,Thermal PID Derivative Term Constant,s/°R,2
+1213,Thermal PID Gain,1/°C,1
+1214,Thermal PID Gain,1/°F,2
+1215,Thermal PID Gain,1/K,1
+1216,Thermal PID Gain,1/°R,2
+1217,Thermal PID Integral Term Constant,1/(°C-s),1
+1218,Thermal PID Integral Term Constant,1/(°F-s),2
+1219,Thermal PID Integral Term Constant,1/(K-ms),1
+1220,Thermal PID Integral Term Constant,1/(K-s),1
+1221,Thermal PID Integral Term Constant,1/(°R-s),2
+1222,Thermal Resistance,°C/mW,1
+1223,Thermal Resistance,°C/µW,1
+1224,Thermal Resistance,°C/W,1
+1225,Thermal Resistance,°F-h/BTU,2
+1226,Thermal Resistance,°F-min/BTU,2
+1227,Thermal Resistance,°F-s/BTU,2
+1228,Thermal Resistance,°F-s/(lbf-in),2
+1229,Thermal Resistance,°R-s/(lbf-in),2
+1230,Thermal Resistance,K/nW,1
+1231,Thermal Resistance,K/µW,1
+1232,Thermal Resistance,K/W,1
+1233,Time,d,1
+1234,Time,h,1
+1235,Time,min,1
+1236,Time,ms,1
+1237,Time,h,2
+1238,Time,min,2
+1239,Time,s,2
+1240,Time,s,1
+1241,Time,µs,1
+1242,Transmission Loss,(lbf-in/s)/(lbf-in/s),2
+1243,Transmission Loss,nW/nW,1
+1244,Transmission Loss,µW/µW,1
+1245,Transmission Loss,W/W,1
+1246,Tsai-Wu Coefficient,dm?/N²,1
+1247,Tsai-Wu Coefficient,in?/lbf²,2
+1248,Tsai-Wu Coefficient,mm?/mN²,1
+1249,Tsai-Wu Coefficient,mm?/N²,1
+1250,Tsai-Wu Coefficient,m?/N²,1
+1251,Tsai-Wu Coefficient,µm?/µN²,1
+1252,Velocity,cm/s,1
+1253,Velocity,dm/s,1
+1254,Velocity,ft/s,2
+1255,Velocity,ft/min,2
+1256,Velocity,ipm,2
+1257,Velocity,in/s,2
+1258,Velocity,km/h,1
+1259,Velocity,mph,2
+1260,Velocity,mmpm,1
+1261,Velocity,mm/s,1
+1262,Velocity,m/min,1
+1263,Velocity,m/s,1
+1264,Velocity,sfm,2
+1265,Velocity,smm,1
+1266,Velocity,µm/ms,1
+1267,Velocity Per Pressure,dm³/(N-s),1
+1268,Velocity Per Pressure,ft³/(lbf-s),2
+1269,Velocity Per Pressure,ft²-s/lbm,2
+1270,Velocity Per Pressure,in³/(lbf-s),2
+1271,Velocity Per Pressure,in²-s/lbm,2
+1272,Velocity Per Pressure,m³/(mN-s),1
+1273,Velocity Per Pressure,m³/(N-s),1
+1274,Velocity Per Pressure,mm³/(mN-s),1
+1275,Velocity Per Pressure,mm³/(N-s),1
+1276,Velocity Per Pressure,mm²-s/kg,1
+1277,Velocity Per Pressure,m²-s/kg,1
+1278,Velocity Per Pressure,µm³/(µN-ms),1
+1279,Viscous Damping,kg/s,1
+1280,Viscous Damping,lbf-s/in,2
+1281,Viscous Damping,lbm/s,2
+1282,Viscous Damping,mg/ms,1
+1283,Viscous Damping,mN-s/mm,1
+1284,Viscous Damping,N-s/dm,1
+1285,Viscous Damping,N-s/m,1
+1286,Viscous Damping,N-s/mm,1
+1287,Voltage,kV,1
+1288,Voltage,lbf-in/(Å-s),2
+1289,Voltage,mV,1
+1290,Voltage,µV,1
+1291,Voltage,V,1
+1292,Voltage per Angular Velocity,lbf-in/(A-°),2
+1293,Voltage per Angular Velocity,lbf-in/(A-rad),2
+1294,Voltage per Angular Velocity,mV-min/rev,1
+1295,Voltage per Angular Velocity,mV-s/°,1
+1296,Voltage per Angular Velocity,mV-s/rad,1
+1297,Voltage per Angular Velocity,µV-min/rev,1
+1298,Voltage per Angular Velocity,µV-ms/°,1
+1299,Voltage per Angular Velocity,µV-ms/rad,1
+1300,Voltage per Angular Velocity,µV-s/°,1
+1301,Voltage per Angular Velocity,µV-s/rad,1
+1302,Voltage per Angular Velocity,V-min/rev,1
+1303,Voltage per Angular Velocity,V-s/°,1
+1304,Voltage per Angular Velocity,V-s/rad,1
+1305,Voltage per Temperature,lbf-in/(Å-s-°F),2
+1306,Voltage per Temperature,lbf-in/(Å-s-°R),2
+1307,Voltage per Temperature,µV/°C,1
+1308,Voltage per Temperature,µV/K,1
+1309,Voltage per Temperature,V/°C,1
+1310,Voltage per Temperature,V/°F,2
+1311,Voltage per Temperature,V/K,1
+1312,Voltage per Temperature,V/°R,2
+1313,Volume,cl,1
+1314,Volume,cm³,1
+1315,Volume,cup (UK),2
+1316,Volume,cup (US),2
+1317,Volume,dal,1
+1318,Volume,dam³,1
+1319,Volume,dl,1
+1320,Volume,dm³,1
+1321,Volume,fl,1
+1322,Volume,fl oz (UK),2
+1323,Volume,fl oz (US),2
+1324,Volume,ft³,2
+1325,Volume,gal (UK),2
+1326,Volume,gal (US),2
+1327,Volume,gi (UK),2
+1328,Volume,gi (US),2
+1329,Volume,hl,1
+1330,Volume,in³,2
+1331,Volume,kl,1
+1332,Volume,km³,1
+1333,Volume,l,1
+1334,Volume,m³,1
+1335,Volume,mi³,2
+1336,Volume,ml,1
+1337,Volume,mm³,1
+1338,Volume,nl,1
+1339,Volume,hm³,1
+1340,Volume,pl,1
+1341,Volume,pt (UK),2
+1342,Volume,pt (US),2
+1343,Volume,qt (UK),2
+1344,Volume,qt (US),2
+1345,Volume,µl,1
+1346,Volume,µm³,1
+1347,Volume,yd³,2
+1348,Volume Acceleration,cm³/s²,1
+1349,Volume Acceleration,dm³/s²,1
+1350,Volume Acceleration,ft³/h²,2
+1351,Volume Acceleration,ft³/min²,2
+1352,Volume Acceleration,ft³/s²,2
+1353,Volume Acceleration,in³/s²,2
+1354,Volume Acceleration,l/h²,1
+1355,Volume Acceleration,l/min²,1
+1356,Volume Acceleration,l/s²,1
+1357,Volume Acceleration,m³/h²,1
+1358,Volume Acceleration,m³/min²,1
+1359,Volume Acceleration,m³/s²,1
+1360,Volume Acceleration,mm³/s²,1
+1361,Volume Acceleration,µm³/ms²,1
+1362,Volume Charge Density,A-s/cm³,1
+1363,Volume Charge Density,A-s/dm³,1
+1364,Volume Charge Density,A-s/ft³,2
+1365,Volume Charge Density,A-s/in³,2
+1366,Volume Charge Density,A-s/m³,1
+1367,Volume Charge Density,A-s/mm³,1
+1368,Volume Charge Density,mA-ms/µm³,1
+1369,Volumetric Flow Rate,ft³/h,2
+1370,Volumetric Flow Rate,ft³/min(CFM),2
+1371,Volumetric Flow Rate,l/h,1
+1372,Volumetric Flow Rate,l/min,1
+1373,Volumetric Flow Rate,m³/h,1
+1374,Volumetric Flow Rate,m³/min,1
+1375,Volumetric Flow Rate,µm³/ms,1
+1376,Volumetric Flow Rate,cm³/s,1
+1377,Volumetric Flow Rate,dm³/min,1
+1378,Volumetric Flow Rate,ft³/s,2
+1379,Volumetric Flow Rate,in³/s,2
+1380,Volumetric Flow Rate,l/s,1
+1381,Volumetric Flow Rate,m³/s,1
+1382,Volumetric Flow Rate,ml/s,1
+1383,Volumetric Flow Rate,mm³/s,1
+1384,Volumetric Strain,cm³/cm³,1
+1385,Volumetric Strain,dm³/dm³,1
+1386,Volumetric Strain,in³/in³,2
+1387,Volumetric Strain,m³/m³,1
+1388,Volumetric Strain,mm³/mm³,1
+1389,Volumetric Strain,µm³/µm³,1
+1390,Warping constant,dm?,1
+1391,Warping constant,ft?,2
+1392,Warping constant,in?,2
+1393,Warping constant,m?,1
+1394,Warping constant,mm?,1
+1395,Warping constant,µm?,1
