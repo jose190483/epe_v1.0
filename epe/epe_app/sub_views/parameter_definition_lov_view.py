@@ -33,8 +33,8 @@ def parameter_definition_lov_add(request,param_def_lov_id=0):
             if pd_lov_form.is_valid():
                 pd_lov_form.save()
                 messages.success(request, 'Record Updated Successfully')
-                param_def_id = request.session.get('ses_parameter_definition_id')
-                return redirect(f'/epe/param_def_update/{param_def_id}')
+                param_id = request.session.get('ses_parameter_id')
+                return redirect(f'/epe/parameter_update/{param_id}')
                 # return redirect(request.META['HTTP_REFERER'])
             else:
                 print("Requirement parameter definition lov form is Not Valid")
@@ -52,8 +52,8 @@ def parameter_definition_lov_add(request,param_def_lov_id=0):
                 print("Requirement Form is Not Valid")
                 messages.error(request, 'Record Not Updated Successfully')
             # return redirect(request.META['HTTP_REFERER'])
-            param_def_id = request.session.get('ses_parameter_definition_id')
-            return redirect(f'/epe/param_def_update/{param_def_id}')
+            param_id = request.session.get('ses_parameter_id')
+            return redirect(f'/epe/parameter_update/{param_id}')
 @login_required(login_url='login_page')
 def parameter_definition_lov_list(request):
     first_name = request.session.get('first_name')
@@ -91,7 +91,7 @@ def parameter_definition_lov_search(request):
 def parameter_definition_lov_delete(request,param_def_lov_id):
     param_def = parameter_definition_lov_info.objects.get(pk=param_def_lov_id)
     param_def.delete()
-    return redirect('/epe/parameter_definition_lov_list')
+    return redirect('/epe/parameter_definition_lov_cancel')
 
 @login_required(login_url='login_page')
 def load_lov(request):
@@ -111,7 +111,6 @@ def load_lov(request):
 
 @login_required(login_url='login_page')
 def parameter_definition_lov_cancel(request):
-    param_def_id = request.session.get('ses_parameter_definition_id')
+    param_id = request.session.get('ses_parameter_id')
 
-    return redirect(f'/epe/param_def_update/{param_def_id}')
-
+    return redirect(f'/epe/parameter_update/{param_id}')

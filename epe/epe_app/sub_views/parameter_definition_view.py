@@ -3,11 +3,9 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import JsonResponse
-
-from ..forms import parameter_definition_form,parameter_definition_lov_form
-from ..models import prameter_definition_info,parameter_definition_lov_info
 from django.shortcuts import render, redirect
-
+from ..forms import parameter_definition_form
+from ..models import prameter_definition_info,parameter_definition_lov_info
 @login_required(login_url='login_page')
 def parameter_definition_add(request,param_def_id=0):
     first_name = request.session.get('first_name')
@@ -18,15 +16,11 @@ def parameter_definition_add(request,param_def_id=0):
         else:
             parameter_definition=prameter_definition_info.objects.get(pk=param_def_id)
             pd_form = parameter_definition_form(instance=parameter_definition)
-        pd_lov_form = parameter_definition_lov_form
-        request.session['ses_parameter_definition_id'] = param_def_id
-        parameter_definition_lov_list=parameter_definition_lov_info.objects.filter(pdl_parameter_definition=param_def_id)
+
         context={
                 'pd_form': pd_form,
-                'pd_lov_form': pd_lov_form,
                 'first_name': first_name,
                 'user_id': user_id,
-                'parameter_definition_lov_list': parameter_definition_lov_list,
                 }
         return render(request, "epe_app/parameter_definition_add.html", context)
     else:

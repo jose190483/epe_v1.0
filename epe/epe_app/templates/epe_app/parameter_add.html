@@ -15,49 +15,48 @@
           <div class="col-md-6">
             <div class="input-group input-group-sm">
               <span class="input-group-text">ID</span>
-              {% render_field p_form.p_id class="form-control bg-secondary text-white" id="p_id" disabled="disabled" %}
+              {% render_field p_form.p_id class="form-control bg-secondary text-white" id="p_id" disabled="True" %}
             </div>
           </div>
-
           <div class="col-md-6">
             <div class="input-group input-group-sm">
-              <span class="input-group-text">Project Name</span>
-              {% render_field p_form.p_project class="form-select select2" %}
+              <span class="input-group-text">Parameter Name(As Is)</span>
+              {% render_field p_form.p_name_as_is class="form-control" id="p_name_as_is" %}
             </div>
+
           </div>
 
           <div class="col-md-6">
             <div class="input-group input-group-sm">
               <span class="input-group-text">System Name</span>
-              {% render_field p_form.p_system class="form-select select2" %}
+              {% render_field p_form.p_system id="p_system" class="form-select select2"  %}
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="input-group input-group-sm">
+              <span class="input-group-text">System short Name</span>
+              {% render_field p_form.p_system_short id="p_system_short" class="form-select select2" disabled="True" %}
             </div>
           </div>
 
           <div class="col-md-6">
             <div class="input-group input-group-sm">
-              <span class="input-group-text">Component Name</span>
-              {% render_field p_form.p_component class="form-select select2" %}
+              <span class="input-group-text" >Equipment Name</span>
+              {% render_field p_form.p_equipment_name id="p_equipment_name" class="form-select select2" disabled="True"%}
             </div>
           </div>
 
           <div class="col-md-6">
             <div class="input-group input-group-sm">
-              <span class="input-group-text">Parameter Dictionary</span>
-              {% render_field p_form.p_parameter_dictionary class="form-select select2" %}
+              <span class="input-group-text">Equipment Short Name</span>
+              {% render_field p_form.p_equipment_short id="p_equipment_short" class="form-select select2"  disabled="True"%}
             </div>
           </div>
 
           <div class="col-md-6">
             <div class="input-group input-group-sm">
               <span class="input-group-text">Parameter Definition</span>
-              {% render_field p_form.p_definition class="form-select select2" %}
-            </div>
-          </div>
-
-          <div class="col-md-6">
-            <div class="input-group input-group-sm">
-              <span class="input-group-text">Parameter Name</span>
-              {% render_field p_form.p_name class="form-control" %}
+              {% render_field p_form.p_definition id="p_definition" class="form-select select2" %}
             </div>
           </div>
 
@@ -67,7 +66,6 @@
               {% render_field p_form.p_parameter_unit_measurement id="p_parameter_unit_measurement" class="form-select select2" %}
             </div>
           </div>
-
           <div class="col-md-6">
             <div class="input-group input-group-sm">
               <span class="input-group-text">Unit Type</span>
@@ -84,15 +82,20 @@
 
           <div class="col-md-6">
             <div class="input-group input-group-sm">
-              <span class="input-group-text">Value</span>
-              {% render_field p_form.p_value class="form-control" %}
+              <span class="input-group-text">Parameter Name</span>
+              {% render_field p_form.p_name class="form-control" %}
             </div>
           </div>
-
+           <div class="col-md-6">
+            <div class="input-group input-group-sm">
+              <span class="input-group-text">Parameter Data Type</span>
+              {% render_field p_form.p_parameter_def_data_type id="p_parameter_def_data_type" class="form-control"  disabled="True" %}
+            </div>
+          </div>
           <div class="col-md-6">
             <div class="input-group input-group-sm">
-              <span class="input-group-text">LOV</span>
-              {% render_field p_form.p_parameter_lov class="form-select select2" %}
+              <span class="input-group-text">Parameter Name Combo</span>
+              {% render_field p_form.p_parameter_name_combo id="p_parameter_name_combo" class="form-control" disabled="True" %}
             </div>
           </div>
 
@@ -118,56 +121,143 @@
     </div>
   </form>
 </div>
+<div class="container" id="param_def_lov" style="display:none;">
+{% include "epe_app/parameter_definition_lov_list_woh.html" %}
+</div>
 {% endblock content %}
 
 {% block scripts %}
 <script>
-	$("#p_parameter_unit_measurement").change(function () {
-       var measurement_system_id = $(this).val();
-       $.ajax({
-         url: '{% url 'load_units_type' %}',
-         data: {
-           'measurement_system_id': measurement_system_id,
-         },
-         success: function (data) {
-             console.log(data);
-             $('#p_unit_type').removeClass('disable_a_href');
-             $("#p_unit_type").empty();
-             $("#p_uom").empty();
-             var unit_type_name=JSON.parse(data)["unit_type_name"];
-             var unit_type_id=JSON.parse(data)["unit_type_id"];
-             var len = (unit_type_id).length;
-             $('#p_unit_type').empty().append("<option value='0'>--Select--</option>");
-             for( var i = 0; i<len; i++){
-                 $("#p_unit_type").append("<option value='"+unit_type_id[i]+"'>"+unit_type_name[i]+"</option>");
-             }
-         }
-       });
-     });
+  $(document).ready(function() {
+            {
+                document.getElementById("p_parameter_name_combo").value="{{parameter_combo}}"
+                document.getElementById("p_parameter_def_data_type").value="{{parameter_data_type}}"
+                var parameter_definition_id = document.getElementById("p_definition").value
+                var parameter_definition_id_val=document.getElementById("pdl_parameter_definition").value;
+                if(parameter_definition_id_val=="")
+                {
+                  document.getElementById("pdl_parameter_definition").value=parameter_definition_id
+                }
+                else
+                {
+                  document.getElementById("pdl_parameter_definition").value=parameter_definition_id_val
+                }
+
+                if({{parameter_data_type}}==5)
+                {
+                  document.getElementById("param_def_lov").style.display = "block";
+                }
+                else
+                {
+                  document.getElementById("param_def_lov").style.display = "none";
+                }
+            }
+
+  });
 </script>
 <script>
-	$("#p_unit_type").change(function () {
-       var unit_type_id = $(this).val();
-       system_measurement = document.getElementById("p_parameter_unit_measurement").value
-       $.ajax({
-         url: '{% url 'load_unit_of_measure' %}',
-         data: {
-           'unit_type_id': unit_type_id,
-           'system_measurement': system_measurement,
-         },
-         success: function (data) {
-             console.log(data);
-             $('#p_uom').removeClass('disable_a_href');
-             $("#p_uom").empty();
-             var uom_name=JSON.parse(data)["uom_name"];
-             var uom_id=JSON.parse(data)["uom_id"];
-             var len = (uom_id).length;
-             $('#p_uom').empty().append("<option value='0'>--Select--</option>");
-             for( var i = 0; i<len; i++){
-                 $("#p_uom").append("<option value='"+uom_id[i]+"'>"+uom_name[i]+"</option>");
-             }
-         }
-       });
+  $("#p_equipment_name").change(function () {
+     var equipment_id = $(this).val();
+     $.ajax({
+       url: '{% url 'load_equipment_short_name' %}',
+       data: {
+         'equipment_id': equipment_id,
+       },
+       success: function (data) {
+           console.log(data);
+           document.getElementById("p_equipment_short").disabled = false;
+           $("#p_equipment_short").empty();
+           var equipment_short_name=JSON.parse(data)["equipment_short_name"];
+           var equipment_short_name_id=JSON.parse(data)["equipment_short_name_id"];
+           var len_ssn = (equipment_short_name).length;
+           $('#p_equipment_short').empty().append("<option value='0'>--Select--</option>");
+           for( var i = 0; i<len_ssn; i++){
+               $("#p_equipment_short").append("<option value='"+equipment_short_name_id[i]+"'>"+equipment_short_name[i]+"</option>");
+           }
+       }
      });
+   });
+</script>
+<script>
+  $("#p_system").change(function () {
+     var system_id = $(this).val();
+     $.ajax({
+       url: '{% url 'load_system_short_name_equipment_name' %}',
+       data: {
+         'system_id': system_id,
+       },
+       success: function (data) {
+           console.log(data);
+           document.getElementById("p_system_short").disabled = false;
+           document.getElementById("p_equipment_name").disabled = false;
+           $("#p_equipment_name").empty();
+           $('#p_equipment_short').empty().append("<option value='0'>--Select--</option>");
+           var equipment_name=JSON.parse(data)["equipment_name"];
+           var equipment_name_id=JSON.parse(data)["equipment_name_id"];
+           var system_short_name=JSON.parse(data)["system_short_name"];
+           var system_short_name_id=JSON.parse(data)["system_short_name_id"];
+           var len_ssn = (system_short_name_id).length;
+           $('#p_system_short').empty().append("<option value='0'>--Select--</option>");
+           for( var i = 0; i<len_ssn; i++){
+               $("#p_system_short").append("<option value='"+system_short_name_id[i]+"'>"+system_short_name[i]+"</option>");
+           }
+
+           var len_en = (equipment_name_id).length;
+           $('#p_equipment_name').empty().append("<option value='0'>--Select--</option>");
+           for( var i = 0; i<len_en; i++){
+               $("#p_equipment_name").append("<option value='"+equipment_name_id[i]+"'>"+equipment_name[i]+"</option>");
+           }
+       }
+     });
+   });
+</script>
+<script>
+  $("#p_parameter_unit_measurement").change(function () {
+     var measurement_system_id = $(this).val();
+     $.ajax({
+       url: '{% url 'load_units_type' %}',
+       data: {
+         'measurement_system_id': measurement_system_id,
+       },
+       success: function (data) {
+           console.log(data);
+           $('#p_unit_type').removeClass('disable_a_href');
+           $("#p_unit_type").empty();
+           $("#p_uom").empty();
+           var unit_type_name=JSON.parse(data)["unit_type_name"];
+           var unit_type_id=JSON.parse(data)["unit_type_id"];
+           var len = (unit_type_id).length;
+           $('#p_unit_type').empty().append("<option value='0'>--Select--</option>");
+           for( var i = 0; i<len; i++){
+               $("#p_unit_type").append("<option value='"+unit_type_id[i]+"'>"+unit_type_name[i]+"</option>");
+           }
+       }
+     });
+   });
+</script>
+<script>
+  $("#p_unit_type").change(function () {
+     var unit_type_id = $(this).val();
+     system_measurement = document.getElementById("p_parameter_unit_measurement").value
+     $.ajax({
+       url: '{% url 'load_unit_of_measure' %}',
+       data: {
+         'unit_type_id': unit_type_id,
+         'system_measurement': system_measurement,
+       },
+       success: function (data) {
+           console.log(data);
+           $('#p_uom').removeClass('disable_a_href');
+           $("#p_uom").empty();
+           var uom_name=JSON.parse(data)["uom_name"];
+           var uom_id=JSON.parse(data)["uom_id"];
+           var len = (uom_id).length;
+           $('#p_uom').empty().append("<option value='0'>--Select--</option>");
+           for( var i = 0; i<len; i++){
+               $("#p_uom").append("<option value='"+uom_id[i]+"'>"+uom_name[i]+"</option>");
+           }
+       }
+     });
+   });
 </script>
 {% endblock scripts %}
