@@ -39,7 +39,7 @@ def parameter_add(request,param_id=0):
                 'pd_lov_form': pd_lov_form,
                 'parameter_definition_lov_list': parameter_definition_lov_list,
                 'parameter_data_type': parameter_data_type,
-                'parameter_combo': parameter_data_type,
+                'parameter_combo': parameter_combo,
             }
         return render(request, "epe_app/parameter_add.html", context)
     else:

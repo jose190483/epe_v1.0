@@ -1,5 +1,5 @@
 from django import forms
-from ..models import prameter_info
+from ..models import prameter_info,system_Info,system_short_Info
 
 class parameter_form(forms.ModelForm):
     class Meta:
@@ -15,3 +15,10 @@ class parameter_form(forms.ModelForm):
         self.fields['p_equipment_short'].empty_label = "--Select--"
         self.fields['p_system'].empty_label = "--Select--"
         self.fields['p_system_short'].empty_label = "--Select--"
+
+        self.fields['p_system'].queryset = system_Info.objects.all()
+        self.fields['p_system_short'].queryset = system_short_Info.objects.all()
+
+        list(self.fields['p_system'].queryset)
+        list(self.fields['p_system_short'].queryset)
+

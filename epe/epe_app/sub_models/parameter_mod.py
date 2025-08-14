@@ -15,8 +15,8 @@ class prameter_info(models.Model):
     p_parameter_lov=models.ForeignKey(parameter_definition_lov_info,on_delete=models.CASCADE,blank=True,null=True)
     p_parameter_unit_measurement = models.ForeignKey(system_of_measurement_info, on_delete=models.CASCADE, blank=True, null=True)
     p_value= models.FloatField(default=0.0,blank=True,null=True)
-    p_equipment_name=models.ForeignKey(equipmentInfo,on_delete=models.PROTECT)
-    p_equipment_short=models.ForeignKey(equipment_shortInfo,on_delete=models.PROTECT)
+    p_equipment_name=models.ForeignKey(equipmentInfo,on_delete=models.PROTECT,null=True,blank=True)
+    p_equipment_short=models.ForeignKey(equipment_shortInfo,on_delete=models.PROTECT,null=True,blank=True)
     p_parameter_def_data_type=models.ForeignKey(datatype_Info,on_delete=models.PROTECT,null=True,blank=True)
     p_parameter_name_combo=models.CharField(max_length=100,blank=True, null=True)
 
