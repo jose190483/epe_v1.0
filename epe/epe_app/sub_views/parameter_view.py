@@ -7,9 +7,13 @@ from django.http import HttpResponse
 from ..forms import parameter_definition_lov_form
 from ..models import parameter_definition_lov_info
 from ..forms import parameter_form
-from ..models import datatype_Info,prameter_definition_info,equipment_shortInfo,equipmentInfo,system_short_Info,unit_type_info,uom_info,prameter_info
+from ..models import prameter_definition_info,equipment_shortInfo,equipmentInfo,system_short_Info,unit_type_info,uom_info,prameter_info
 from django.shortcuts import render, redirect
 from django.contrib import messages
+
+
+def normalize_combo(system, equipment, name):
+    return f"{str(system).strip().upper()}_{str(equipment).strip().upper()}_{str(name).strip().upper()}"
 
 @login_required(login_url='login_page')
 def parameter_add(request,param_id=0):
@@ -26,10 +30,6 @@ def parameter_add(request,param_id=0):
             parameter_definition_instance=prameter_info.objects.get(pk=param_id)
             parameter_definition=parameter_definition_instance.p_definition
             parameter_definition_id=parameter_definition_instance.p_definition.id
-            system_short_name=parameter_definition_instance.p_system_short
-            equipment_short_name=parameter_definition_instance.p_equipment_short
-            parameter_name=parameter_definition_instance.p_name
-            parameter_combo=str(system_short_name)+str('_')+str(equipment_short_name)+str('_')+str(parameter_name)
             request.session['ses_parameter_id'] = param_id
             parameter_definition_lov_list = parameter_definition_lov_info.objects.filter(pdl_parameter_definition=parameter_definition)
             parameter_data_type=prameter_definition_info.objects.get(pk=parameter_definition_id).pd_datatype.id
@@ -39,7 +39,6 @@ def parameter_add(request,param_id=0):
                 'pd_lov_form': pd_lov_form,
                 'parameter_definition_lov_list': parameter_definition_lov_list,
                 'parameter_data_type': parameter_data_type,
-                'parameter_combo': parameter_combo,
             }
         return render(request, "epe_app/parameter_add.html", context)
     else:
@@ -64,7 +63,20 @@ def parameter_add(request,param_id=0):
             parameter = prameter_info.objects.get(pk=param_id)
             p_form = parameter_form(request.POST,instance=parameter)
             if p_form.is_valid():
-                p_form.save()
+                parameter_definition_instance = prameter_info.objects.get(pk=param_id)
+                system_short_name = parameter_definition_instance.p_system_short
+                equipment_short_name = parameter_definition_instance.p_equipment_short
+                parameter_name = parameter_definition_instance.p_name
+                # parameter_combo=str(system_short_name)+str('_')+str(equipment_short_name)+str('_')+str(parameter_name)
+                parameter_combo = normalize_combo(system_short_name, equipment_short_name, parameter_name)
+                if prameter_info.objects.filter(p_parameter_name_combo__iexact=parameter_combo).exclude(
+                        pk=param_id).exists():
+                    # Already exists for a different record
+                    messages.error(request, f"Parameter combo '{parameter_combo}' already exists.")
+                    return redirect(request.META.get('HTTP_REFERER', '/'))
+                else:
+                    p_form.save()
+                    prameter_info.objects.filter(pk=param_id).update(p_parameter_name_combo=parameter_combo)
                 print("Parameter Form is Valid")
                 messages.success(request, 'Record Updated Successfully')
             else:

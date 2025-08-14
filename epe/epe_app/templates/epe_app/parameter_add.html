@@ -35,7 +35,7 @@
           <div class="col-md-6">
             <div class="input-group input-group-sm">
               <span class="input-group-text">System short Name</span>
-              {% render_field p_form.p_system_short id="p_system_short" class="form-select select2"  %}
+              {% render_field p_form.p_system_short id="p_system_short" class="select2"  %}
             </div>
           </div>
 
@@ -49,7 +49,7 @@
           <div class="col-md-6">
             <div class="input-group input-group-sm">
               <span class="input-group-text">Equipment Short Name</span>
-              {% render_field p_form.p_equipment_short id="p_equipment_short" class="form-select select2"  %}
+              {% render_field p_form.p_equipment_short id="p_equipment_short" class=" select2"  %}
             </div>
           </div>
 
@@ -79,19 +79,25 @@
               {% render_field p_form.p_uom id="p_uom" class="form-select select2" %}
             </div>
           </div>
-
+          <div class="col-md-6">
+          <div class="input-group input-group-sm mb-2">
+            <span class="input-group-text">Digital Source</span>
+            {% render_field p_form.p_digital_source class="form-select select2" multiple="multiple" %}
+          </div>
+          </div>
+          <div class="col-md-6">
+          <div class="input-group input-group-sm mb-2">
+            <span class="input-group-text">Owner</span>
+            {% render_field p_form.p_owner class="form-select select2" %}
+          </div>
+          </div>
           <div class="col-md-6">
             <div class="input-group input-group-sm">
               <span class="input-group-text">Parameter Name</span>
               {% render_field p_form.p_name class="form-control" %}
             </div>
           </div>
-           <div class="col-md-6">
-            <div class="input-group input-group-sm">
-              <span class="input-group-text">Parameter Data Type</span>
-              {% render_field p_form.p_parameter_def_data_type id="p_parameter_def_data_type" class="form-control"   %}
-            </div>
-          </div>
+
           <div class="col-md-6">
             <div class="input-group input-group-sm">
               <span class="input-group-text">Parameter Name Combo</span>
@@ -122,7 +128,7 @@
   </form>
 </div>
 <div class="container" id="param_def_lov" style="display:none;">
-{% include "epe_app/parameter_definition_lov_list_woh.html" %}
+  {% include "epe_app/parameter_definition_lov_list_woh.html" %}
 </div>
 {% endblock content %}
 
@@ -144,7 +150,6 @@
     } else {
       $("#pdl_parameter_definition").val(paramDefLovVal);
     }
-
     // Show/hide the param_def_lov div based on data type
     if (paramDataType === 5) {
       $("#param_def_lov").show();
@@ -152,9 +157,71 @@
       $("#param_def_lov").hide();
     }
 
-    $("#p_system_short").prop("disabled", true);
   });
 </script>
+
+<script>
+  $(document).ready(function () {
+    $("#p_system").on("change", function () {
+      const system_id = $(this).val();
+
+      if (!system_id || system_id === "0") {
+        $("#p_system_short, #p_equipment_name").empty().append("<option value='0'>--Select--</option>")
+                .prop("disabled", true).trigger('change.select2');
+        $("#p_equipment_short").empty().append("<option value='0'>--Select--</option>")
+                .prop("disabled", true).trigger('change.select2');
+        return;
+      }
+
+      $.ajax({
+        url: "{% url 'load_system_short_name_equipment_name' %}",
+        data: {
+          system_id: system_id,
+        },
+        success: function (data) {
+          try {
+            const parsed = JSON.parse(data);
+
+            const systemNames = parsed.system_short_name || [];
+            const systemIds = parsed.system_short_name_id || [];
+            const equipmentNames = parsed.equipment_name || [];
+            const equipmentIds = parsed.equipment_name_id || [];
+
+            // Populate System Short Name dropdown
+            const $systemShort = $("#p_system_short");
+            $systemShort.empty().append("<option value='0'>--Select--</option>");
+            for (let i = 0; i < systemNames.length; i++) {
+              $systemShort.append(`<option value="${systemIds[i]}">${systemNames[i]}</option>`);
+            }
+
+            $systemShort.prop("disabled", false).trigger("change.select2");
+
+            // Populate Equipment Name dropdown
+            const $equipmentName = $("#p_equipment_name");
+            $equipmentName.empty().append("<option value='0'>--Select--</option>");
+            for (let i = 0; i < equipmentNames.length; i++) {
+              $equipmentName.append(`<option value="${equipmentIds[i]}">${equipmentNames[i]}</option>`);
+            }
+            $equipmentName.prop("disabled", false).trigger("change.select2");
+
+            // Reset Equipment Short Name
+            $("#p_equipment_short").empty().append("<option value='0'>--Select--</option>")
+                    .prop("disabled", true).trigger('change.select2');
+
+          } catch (e) {
+            console.error("Invalid JSON response:", e);
+            alert("Error parsing system or equipment data.");
+          }
+        },
+        error: function (xhr, status, error) {
+          console.error("AJAX error:", error);
+          alert("Failed to load system short name and equipment.");
+        }
+      });
+    });
+  });
+</script>
+
 <script>
   $(document).ready(function () {
     $("#p_equipment_name").on("change", function () {
@@ -194,67 +261,6 @@
         error: function (xhr, status, error) {
           console.error("AJAX error:", error);
           alert("Failed to load equipment short names.");
-        }
-      });
-    });
-  });
-</script>
-
-<script>
-  $(document).ready(function () {
-    $("#p_system").on("change", function () {
-      const system_id = $(this).val();
-
-      if (!system_id || system_id === "0") {
-        $("#p_system_short, #p_equipment_name").empty().append("<option value='0'>--Select--</option>")
-          .prop("disabled", true).trigger('change.select2');
-        $("#p_equipment_short").empty().append("<option value='0'>--Select--</option>")
-          .prop("disabled", true).trigger('change.select2');
-        return;
-      }
-
-      $.ajax({
-        url: "{% url 'load_system_short_name_equipment_name' %}",
-        data: {
-          system_id: system_id,
-        },
-        success: function (data) {
-          try {
-            const parsed = JSON.parse(data);
-
-            const systemNames = parsed.system_short_name || [];
-            const systemIds = parsed.system_short_name_id || [];
-            const equipmentNames = parsed.equipment_name || [];
-            const equipmentIds = parsed.equipment_name_id || [];
-
-            // Populate System Short Name dropdown
-            const $systemShort = $("#p_system_short");
-            $systemShort.empty().append("<option value='0'>--Select--</option>");
-            for (let i = 0; i < systemNames.length; i++) {
-              $systemShort.append(`<option value="${systemIds[i]}">${systemNames[i]}</option>`);
-            }
-            $systemShort.prop("disabled", false).trigger("change.select2");
-
-            // Populate Equipment Name dropdown
-            const $equipmentName = $("#p_equipment_name");
-            $equipmentName.empty().append("<option value='0'>--Select--</option>");
-            for (let i = 0; i < equipmentNames.length; i++) {
-              $equipmentName.append(`<option value="${equipmentIds[i]}">${equipmentNames[i]}</option>`);
-            }
-            $equipmentName.prop("disabled", false).trigger("change.select2");
-
-            // Reset Equipment Short Name
-            $("#p_equipment_short").empty().append("<option value='0'>--Select--</option>")
-              .prop("disabled", true).trigger('change.select2');
-
-          } catch (e) {
-            console.error("Invalid JSON response:", e);
-            alert("Error parsing system or equipment data.");
-          }
-        },
-        error: function (xhr, status, error) {
-          console.error("AJAX error:", error);
-          alert("Failed to load system short name and equipment.");
         }
       });
     });

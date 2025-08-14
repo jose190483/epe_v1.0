@@ -15,10 +15,6 @@ class parameter_form(forms.ModelForm):
         self.fields['p_equipment_short'].empty_label = "--Select--"
         self.fields['p_system'].empty_label = "--Select--"
         self.fields['p_system_short'].empty_label = "--Select--"
-
-        self.fields['p_system'].queryset = system_Info.objects.all()
-        self.fields['p_system_short'].queryset = system_short_Info.objects.all()
-
-        list(self.fields['p_system'].queryset)
-        list(self.fields['p_system_short'].queryset)
+        self.fields['p_system_short'].empty_label = "--Select--"
+        self.fields['p_definition'].empty_label = "--Select--"
 
