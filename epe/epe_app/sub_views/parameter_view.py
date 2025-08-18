@@ -33,7 +33,6 @@ def parameter_add(request,param_id=0):
             request.session['ses_parameter_id'] = param_id
             parameter_definition_lov_list = parameter_definition_lov_info.objects.filter(pdl_parameter_definition=parameter_definition)
             parameter_data_type=prameter_definition_info.objects.get(pk=parameter_definition_id).pd_datatype.id
-            print('parameter_data_type',parameter_data_type)
             context={
                 'p_form': p_form,
                 'pd_lov_form': pd_lov_form,
@@ -49,6 +48,18 @@ def parameter_add(request,param_id=0):
                 parameter_instance.save()
                 parameter_instance.p_id = f"P_{1000000 + parameter_instance.id}"
                 parameter_instance.save(update_fields=['p_id'])
+                system_short_name = request.POST.get('p_system_short')
+                equipment_short_name = request.POST.get('p_equipment_short')
+                parameter_name = request.POST.get('p_name')
+                parameter_combo = normalize_combo(system_short_name, equipment_short_name, parameter_name)
+                if prameter_info.objects.filter(p_parameter_name_combo__iexact=parameter_combo).exclude(
+                        pk=param_id).exists():
+                    # Already exists for a different record
+                    messages.error(request, f"Parameter combo '{parameter_combo}' already exists.")
+                    return redirect(request.META.get('HTTP_REFERER', '/'))
+                else:
+                    p_form.save()
+                    prameter_info.objects.filter(pk=param_id).update(p_parameter_name_combo=parameter_combo)
                 messages.success(request, 'Record Updated Successfully')
                 return redirect(f'/epe/parameter_update/{parameter_instance.id}')
             else:
@@ -63,14 +74,13 @@ def parameter_add(request,param_id=0):
             parameter = prameter_info.objects.get(pk=param_id)
             p_form = parameter_form(request.POST,instance=parameter)
             if p_form.is_valid():
-                parameter_definition_instance = prameter_info.objects.get(pk=param_id)
-                system_short_name = parameter_definition_instance.p_system_short
-                equipment_short_name = parameter_definition_instance.p_equipment_short
-                parameter_name = parameter_definition_instance.p_name
+                system_short_name = request.POST.get('p_system_short')
+                equipment_short_name = request.POST.get('p_equipment_short')
+                parameter_name = request.POST.get('p_name')
                 # parameter_combo=str(system_short_name)+str('_')+str(equipment_short_name)+str('_')+str(parameter_name)
                 parameter_combo = normalize_combo(system_short_name, equipment_short_name, parameter_name)
-                if prameter_info.objects.filter(p_parameter_name_combo__iexact=parameter_combo).exclude(
-                        pk=param_id).exists():
+                print("Edit_parameter_combo",parameter_combo)
+                if prameter_info.objects.filter(p_parameter_name_combo__iexact=parameter_combo).exclude(pk=param_id).exists():
                     # Already exists for a different record
                     messages.error(request, f"Parameter combo '{parameter_combo}' already exists.")
                     return redirect(request.META.get('HTTP_REFERER', '/'))

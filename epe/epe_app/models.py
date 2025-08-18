@@ -1,6 +1,8 @@
 from django.db import models
 
 # Create your models here.
+from .sub_models.my_user_mod import MyUser
+from .sub_models.status_mod import status_Info
 from .sub_models.role_mod import RoleInfo
 from .sub_models.user_ext_mod import User_extInfo
 from .sub_models.dictionary_mod import dictionary_Info
@@ -18,3 +20,4 @@ from.sub_models.parameter_definition_lov_mod import parameter_definition_lov_inf
 from .sub_models.system_mod import system_Info,system_short_Info
 from .sub_models.equipment_mod import equipmentInfo,equipment_shortInfo
 from .sub_models.parameter_mod import prameter_info
+

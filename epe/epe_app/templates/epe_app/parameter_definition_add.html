@@ -44,7 +44,12 @@
                   <span class="input-group-text">Data Type</span>
                   {% render_field pd_form.pd_datatype id="pd_datatype" onchange="datatype_change()" class="form-select select2" %}
                 </div>
+            <div class="input-group input-group-sm">
+              <span class="input-group-text">Status</span>
+              {% render_field pd_form.pd_status id="pd_status" class="form-select"  %}
+            </div>
               </div>
+                      {% render_field pd_form.pd_updated_by id="pd_updated_by" class="form-select"  %}
 
               <div class="d-flex col justify-content-center ">
                 {% for message in messages %}
@@ -73,6 +78,19 @@
 {% endblock content %}
 
 {% block scripts %}
+<script>
+  $(document).ready(function () {
+    const paramDataType = parseInt("{{ parameter_data_type }}");
+    const user_role = parseInt("{{ request.session.ses_userID }}");
+    const parameter_status= document.getElementById("pd_status").value
+    if(parameter_status === "4" && user_role !== 1) {
+      alert("You do not have permission to edit this record.");
+      $('.card-body').find('input, select, textarea, button').prop('disabled', true);
+      $(".container").find('button,table,a').prop('disabled', true);
+    }
+    document.getElementById("pd_updated_by").value =({{ request.session.ses_userID }});
+  });
+</script>
 
 <script>
   function datatype_change() {

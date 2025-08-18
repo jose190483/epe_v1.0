@@ -1,5 +1,5 @@
 from django.db import models
-from ..models import owner_info,digital_source_info,equipment_shortInfo,equipmentInfo,system_short_Info,system_of_measurement_info,system_Info,unit_type_info,prameter_definition_info,uom_info,parameter_definition_lov_info
+from ..models import MyUser,status_Info,owner_info,digital_source_info,equipment_shortInfo,equipmentInfo,system_short_Info,system_of_measurement_info,system_Info,unit_type_info,prameter_definition_info,uom_info,parameter_definition_lov_info
 
 class prameter_info(models.Model):
     p_id = models.CharField(max_length=100, blank=True,null=True, default='')
@@ -17,9 +17,13 @@ class prameter_info(models.Model):
     p_value= models.FloatField(default=0.0,blank=True,null=True)
     p_equipment_name=models.ForeignKey(equipmentInfo,on_delete=models.PROTECT,null=True,blank=True)
     p_equipment_short=models.ForeignKey(equipment_shortInfo,on_delete=models.PROTECT,null=True,blank=True)
-    p_parameter_name_combo=models.CharField(max_length=100,blank=True,null=True)
+    p_status=models.ForeignKey(status_Info,on_delete=models.PROTECT,null=True,blank=True,default=1)
+    p_parameter_name_combo=models.CharField(max_length=100)
     p_digital_source = models.ManyToManyField(digital_source_info)
     p_owner = models.ForeignKey(owner_info, on_delete=models.CASCADE, default=1)
+    p_updated_at = models.DateTimeField(null=True, auto_now=True)
+    p_updated_by = models.ForeignKey(MyUser, on_delete=models.CASCADE, null=True,
+                                            related_name='p_updated_by', db_column='p_updated_by')
 
     def __str__(self):
         return self.p_id

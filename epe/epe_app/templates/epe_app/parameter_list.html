@@ -22,7 +22,9 @@
             <th>Parameter Definition</th>
             <th>Unit Type</th>
             <th>UOM</th>
-            <th>Value</th>
+            <th>Status</th>
+            <th>Updated On</th>
+            <th>Updated By</th>
             <th>Edit</th>
             <th>Delete</th>
         </thead>
@@ -35,7 +37,9 @@
             <td> {{param.p_definition}}</td>
             <td> {{param.p_unit_type}}</td>
             <td> {{param.p_uom}}</td>
-            <td> {{param.p_value}}</td>
+            <td> {{param.p_status}}</td>
+            <td> {{param.p_updated_at}}</td>
+            <td> {{param.p_updated_by}}</td>
             <td class="text-center">
                 <a class="btn btn-sm btn-primary" href="{% url 'parameter_update' param.id %}" >
                     <i class="far fa-edit"></i>
@@ -57,6 +61,7 @@
 {% endblock content %}
 
 {% block scripts %}
+
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         new DataTable('#param_list', {

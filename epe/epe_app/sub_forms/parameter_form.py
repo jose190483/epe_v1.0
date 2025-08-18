@@ -17,4 +17,6 @@ class parameter_form(forms.ModelForm):
         self.fields['p_system_short'].empty_label = "--Select--"
         self.fields['p_system_short'].empty_label = "--Select--"
         self.fields['p_definition'].empty_label = "--Select--"
+        self.fields['p_status'].empty_label = "--Select--"
+        self.fields['p_updated_by'].empty_label = "--Select--"
 

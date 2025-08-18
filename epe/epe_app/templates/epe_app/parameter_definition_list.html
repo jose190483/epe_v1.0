@@ -23,6 +23,9 @@
             <th>Parameter Definition</th>
             <th>Name</th>
             <th>Unit Type</th>
+            <th>Status</th>
+            <th>Updated On</th>
+            <th>Updated By</th>
             <th>Edit</th>
             <th>Delete</th>
         </tr>
@@ -34,6 +37,9 @@
             <td>{{ param_def.pd_id }}</td>
             <td>{{ param_def.pd_name }}</td>
             <td>{{ param_def.pd_unit_type }}</td>
+            <td>{{ param_def.pd_status }}</td>
+            <td>{{ param_def.pd_updated_at }}</td>
+            <td>{{ param_def.pd_updated_by }}</td>
             <td class="text-center">
                 <a class="btn btn-sm btn-primary" href="{% url 'param_def_update' param_def.id %}">
                     <i class="far fa-edit"></i>

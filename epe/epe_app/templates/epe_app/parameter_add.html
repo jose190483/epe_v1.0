@@ -10,7 +10,7 @@
       <div class="card-header bg-dark text-white text-center">
         <h5 class="mb-0">Add/Update Parameter</h5>
       </div>
-      <div class="card-body bg-light">
+      <div class="card-body bg-light" id="parameter_form_id">
         <div class="row g-3">
           <div class="col-md-6">
             <div class="input-group input-group-sm">
@@ -80,16 +80,16 @@
             </div>
           </div>
           <div class="col-md-6">
-          <div class="input-group input-group-sm mb-2">
-            <span class="input-group-text">Digital Source</span>
-            {% render_field p_form.p_digital_source class="form-select select2" multiple="multiple" %}
-          </div>
+            <div class="input-group input-group-sm mb-2">
+              <span class="input-group-text">Digital Source</span>
+              {% render_field p_form.p_digital_source class="form-select select2" multiple="multiple" %}
+            </div>
           </div>
           <div class="col-md-6">
-          <div class="input-group input-group-sm mb-2">
-            <span class="input-group-text">Owner</span>
-            {% render_field p_form.p_owner class="form-select select2" %}
-          </div>
+            <div class="input-group input-group-sm mb-2">
+              <span class="input-group-text">Owner</span>
+              {% render_field p_form.p_owner class="form-select select2" %}
+            </div>
           </div>
           <div class="col-md-6">
             <div class="input-group input-group-sm">
@@ -101,18 +101,26 @@
           <div class="col-md-6">
             <div class="input-group input-group-sm">
               <span class="input-group-text">Parameter Name Combo</span>
-              {% render_field p_form.p_parameter_name_combo id="p_parameter_name_combo" class="form-control"  %}
+              {% render_field p_form.p_parameter_name_combo id="p_parameter_name_combo" class="form-control" readonly="True" %}
             </div>
           </div>
-
-          <div class="d-flex col justify-content-center ">
-            {% for message in messages %}
-            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %} py-1 mb-2">
-              {{ message }}
+          <div class="col-md-6">
+            <div class="input-group input-group-sm">
+              <span class="input-group-text">Status</span>
+              {% render_field p_form.p_status id="p_status" class="form-select"  %}
             </div>
-            {% endfor %}
           </div>
+        </div>
 
+        {% render_field p_form.p_updated_by id="p_updated_by" class="form-select" hidden="True" %}
+
+
+        <div class="d-flex col justify-content-center mt-4">
+          {% for message in messages %}
+          <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %} py-1 mb-2">
+            {{ message }}
+          </div>
+          {% endfor %}
         </div>
 
         <div class="d-flex justify-content-between mt-4">
@@ -135,10 +143,15 @@
 {% block scripts %}
 <script>
   $(document).ready(function () {
-    const paramCombo = "{{ parameter_combo }}";
     const paramDataType = parseInt("{{ parameter_data_type }}");
+    const user_role = parseInt("{{ request.session.ses_userID }}");
+    const parameter_status= document.getElementById("p_status").value
+    if(parameter_status === "4" && user_role !== 1) {
+      alert("You do not have permission to edit this record.");
+      $('.card-body').find('input, select, textarea, button').prop('disabled', true);
+      $(".container").find('button,table,a').prop('disabled', true);
+    }
 
-    $("#p_parameter_name_combo").val(paramCombo);
     $("#p_parameter_def_data_type").val(paramDataType);
 
     const paramDefId = $("#p_definition").val();
@@ -156,7 +169,7 @@
     } else {
       $("#param_def_lov").hide();
     }
-
+    document.getElementById("p_updated_by").value =({{ request.session.ses_userID }});
   });
 </script>
 
