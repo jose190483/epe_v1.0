@@ -44,14 +44,14 @@
                   <span class="input-group-text">Data Type</span>
                   {% render_field pd_form.pd_datatype id="pd_datatype" onchange="datatype_change()" class="form-select select2" %}
                 </div>
-            <div class="input-group input-group-sm">
-              <span class="input-group-text">Status</span>
-              {% render_field pd_form.pd_status id="pd_status" class="form-select"  %}
-            </div>
+                <div class="input-group input-group-sm">
+                  <span class="input-group-text">Status</span>
+                  {% render_field pd_form.pd_status id="pd_status" class="form-select"  %}
+                </div>
               </div>
-                      {% render_field pd_form.pd_updated_by id="pd_updated_by" class="form-select" hidden="True" %}
+              {% render_field pd_form.pd_updated_by id="pd_updated_by" class="form-select" hidden="True" %}
 
-              <div class="d-flex col justify-content-center ">
+              <div class="d-flex col justify-content-center mt-4">
                 {% for message in messages %}
                 <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %} py-1 mb-2">
                   {{ message }}

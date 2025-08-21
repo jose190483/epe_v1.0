@@ -48,18 +48,20 @@ def parameter_add(request,param_id=0):
                 parameter_instance.save()
                 parameter_instance.p_id = f"P_{1000000 + parameter_instance.id}"
                 parameter_instance.save(update_fields=['p_id'])
-                system_short_name = request.POST.get('p_system_short')
-                equipment_short_name = request.POST.get('p_equipment_short')
+
+                system_short_name = (system_short_Info.objects.get(ss_system_name=request.POST.get('p_system'))).ss_system_short_name
+                equipment_short_name = equipment_shortInfo.objects.get(es_equipment_name=request.POST.get('p_equipment_short')).es_equipment_short_name
                 parameter_name = request.POST.get('p_name')
+
                 parameter_combo = normalize_combo(system_short_name, equipment_short_name, parameter_name)
-                if prameter_info.objects.filter(p_parameter_name_combo__iexact=parameter_combo).exclude(
-                        pk=param_id).exists():
+                print("parameter_combo_add", parameter_combo)
+                if prameter_info.objects.filter(p_parameter_name_combo__iexact=parameter_combo).exclude(pk=param_id).exists():
                     # Already exists for a different record
                     messages.error(request, f"Parameter combo '{parameter_combo}' already exists.")
                     return redirect(request.META.get('HTTP_REFERER', '/'))
                 else:
                     p_form.save()
-                    prameter_info.objects.filter(pk=param_id).update(p_parameter_name_combo=parameter_combo)
+                    prameter_info.objects.filter(pk=parameter_instance.id).update(p_parameter_name_combo=parameter_combo)
                 messages.success(request, 'Record Updated Successfully')
                 return redirect(f'/epe/parameter_update/{parameter_instance.id}')
             else:
@@ -74,8 +76,8 @@ def parameter_add(request,param_id=0):
             parameter = prameter_info.objects.get(pk=param_id)
             p_form = parameter_form(request.POST,instance=parameter)
             if p_form.is_valid():
-                system_short_name = request.POST.get('p_system_short')
-                equipment_short_name = request.POST.get('p_equipment_short')
+                system_short_name = (system_short_Info.objects.get(ss_system_name=request.POST.get('p_system'))).ss_system_short_name
+                equipment_short_name = equipment_shortInfo.objects.get(es_equipment_name=request.POST.get('p_equipment_short')).es_equipment_short_name
                 parameter_name = request.POST.get('p_name')
                 # parameter_combo=str(system_short_name)+str('_')+str(equipment_short_name)+str('_')+str(parameter_name)
                 parameter_combo = normalize_combo(system_short_name, equipment_short_name, parameter_name)
@@ -106,10 +108,10 @@ def parameter_list(request):
     paginator = Paginator(param_list, 10000)
     page_obj = paginator.get_page(page_number)
     context = {
-                'param_list' : param_list,
-                'first_name': first_name,
-                'page_obj': page_obj,
-                }
+        'param_list' : param_list,
+        'first_name': first_name,
+        'page_obj': page_obj,
+    }
     return render(request,"epe_app/parameter_list.html",context)
 
 @login_required(login_url='login_page')
@@ -125,10 +127,10 @@ def parameter_search(request):
     paginator = Paginator(param_list, 50)
     page_obj = paginator.get_page(page_number)
     context = {
-            'param_list' : param_list,
-            'first_name': first_name,
-            'page_obj': page_obj,
-            }
+        'param_list' : param_list,
+        'first_name': first_name,
+        'page_obj': page_obj,
+    }
     return render(request,"epe_app/parameter_list.html",context)
 #Delete param
 @login_required(login_url='login_page')

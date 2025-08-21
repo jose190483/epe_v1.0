@@ -8,3 +8,7 @@ from .sub_views.parameter_definition_view import parameter_definition_add,parame
 from .sub_views.project_view import project_add,project_delete,project_list,project_search
 from .sub_views.parameter_view import parameter_add,parameter_delete,parameter_list,parameter_search,load_units_type,load_unit_of_measure,load_system_short_name_equipment_name,load_equipment_short_name
 from .sub_views.parameter_definition_lov_view import parameter_definition_lov_add,parameter_definition_lov_list,parameter_definition_lov_delete,parameter_definition_lov_search,load_lov,parameter_definition_lov_cancel
+from .sub_views.search_keywords import search_keywords
+from .sub_views.manage_pdfs import manage_pdfs
+from .sub_views.export_csv import export_csv
+from .sub_views.compare_pdfs import pdf_compare_view

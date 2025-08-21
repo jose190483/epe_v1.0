@@ -1,53 +1,77 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+from django.db import IntegrityError
 from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from ..forms import parameter_definition_form
 from ..models import prameter_definition_info,parameter_definition_lov_info
 @login_required(login_url='login_page')
-def parameter_definition_add(request,param_def_id=0):
+def parameter_definition_add(request, param_def_id=0):
     first_name = request.session.get('first_name')
     user_id = request.session.get('ses_userID')
+
     if request.method == "GET":
         if param_def_id == 0:
-            pd_form = parameter_definition_form
+            pd_form = parameter_definition_form()
         else:
-            parameter_definition=prameter_definition_info.objects.get(pk=param_def_id)
+            parameter_definition = prameter_definition_info.objects.get(pk=param_def_id)
             pd_form = parameter_definition_form(instance=parameter_definition)
 
-        context={
+        context = {
+            'pd_form': pd_form,
+            'first_name': first_name,
+            'user_id': user_id,
+        }
+        return render(request, "epe_app/parameter_definition_add.html", context)
+
+    else:
+        if param_def_id == 0:
+            pd_form = parameter_definition_form(request.POST)
+            if pd_form.is_valid():
+                parameter_def_instance = pd_form.save(commit=False)
+                try:
+                    parameter_def_instance.save()
+                    parameter_def_instance.pd_id = f"PD_{1000000 + parameter_def_instance.id}"
+                    parameter_def_instance.save(update_fields=['pd_id'])
+                    messages.success(request, 'Record Updated Successfully')
+                    return redirect(f'/epe/param_def_update/{parameter_def_instance.id}')
+                except IntegrityError:
+                    pd_form.add_error('pd_name', "This name already exists. Please choose a different one.")
+            else:
+                messages.error(request, 'Record Not Updated Successfully')
+
+            # ✅ Re-render form with errors
+            context = {
                 'pd_form': pd_form,
                 'first_name': first_name,
                 'user_id': user_id,
-                }
-        return render(request, "epe_app/parameter_definition_add.html", context)
-    else:
-        if param_def_id == 0:
-            pd_form = parameter_definition_form(request.POST,request.FILES)
-            if pd_form.is_valid():
-                parameter_def_instance = pd_form.save(commit=False)
-                parameter_def_instance.save()
-                parameter_def_instance.pd_id = f"PD_{1000000 + parameter_def_instance.id}"
-                parameter_def_instance.save(update_fields=['pd_id'])
-                messages.success(request, 'Record Updated Successfully')
-                return redirect(f'/epe/param_def_update/{parameter_def_instance.id}')
-            else:
-                print("Requirement parameter_definition_form is Not Valid")
-                messages.error(request, 'Record Not Updated Successfully')
-                return redirect(request.META['HTTP_REFERER'])
+            }
+            return render(request, "epe_app/parameter_definition_add.html", context)
+
         else:
             parameter_definition = prameter_definition_info.objects.get(pk=param_def_id)
-            pd_form = parameter_definition_form(request.POST,request.FILES,instance=parameter_definition)
+            pd_form = parameter_definition_form(request.POST, instance=parameter_definition)
             if pd_form.is_valid():
-                pd_form.save()
-                print("Requirement Form is Valid")
-                messages.success(request, 'Record Updated Successfully')
+                try:
+                    pd_form.save()
+                    messages.success(request, 'Record Updated Successfully')
+                except IntegrityError:
+                    pd_form.add_error('pd_name', "This name already exists. Please choose a different one.")
+                    messages.error(request, 'Record Not Updated Successfully')
             else:
-                print("Requirement Form is Not Valid")
                 messages.error(request, 'Record Not Updated Successfully')
-            return redirect(request.META['HTTP_REFERER'])
+
+            # ✅ Re-render form with errors
+            context = {
+                'pd_form': pd_form,
+                'first_name': first_name,
+                'user_id': user_id,
+            }
+            return render(request, "epe_app/parameter_definition_add.html", context)
+
+
 
 @login_required(login_url='login_page')
 def parameter_definition_list(request):
