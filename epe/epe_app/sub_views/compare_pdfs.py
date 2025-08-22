@@ -2,7 +2,7 @@ import fitz
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.core.files.storage import FileSystemStorage
-
+from django.conf import settings
 import pymupdf as fitz  # PyMuPDF
 import os
 from difflib import SequenceMatcher
@@ -43,11 +43,9 @@ def compare_pdfs_and_highlight(source_pdf_path, compare_pdf_path, threshold=0.75
 
     return output_path
 
-print("Function updated to use line-by-line comparison with 75% fuzzy matching threshold.")
-
-
 def pdf_compare_view(request):
     if request.method == 'POST' and request.FILES.get('source_pdf') and request.FILES.get('compare_pdf'):
+        print("I am here in pdf_compare_view")
         source_pdf = request.FILES['source_pdf']
         compare_pdf = request.FILES['compare_pdf']
 
@@ -55,14 +53,33 @@ def pdf_compare_view(request):
         source_path = fs.save(source_pdf.name, source_pdf)
         compare_path = fs.save(compare_pdf.name, compare_pdf)
 
-        output_path = compare_pdfs_and_highlight(fs.path(source_path), fs.path(compare_path))
+        source_full_path = fs.path(source_path)
+        compare_full_path = fs.path(compare_path)
 
-        with open(output_path, 'rb') as f:
+        # Define output folder
+        output_folder = os.path.join(settings.MEDIA_ROOT, 'pdf_outputs')
+        os.makedirs(output_folder, exist_ok=True)
+
+        # Call your comparison function and get output path
+        output_path = compare_pdfs_and_highlight(source_full_path, compare_full_path)
+
+        # Move the output file to the output folder
+        output_filename = os.path.basename(output_path)
+        final_output_path = os.path.join(output_folder, output_filename)
+        os.rename(output_path, final_output_path)
+
+        # Delete the uploaded source and compare PDFs
+        os.remove(source_full_path)
+        os.remove(compare_full_path)
+
+        # Return the output PDF as response
+        with open(final_output_path, 'rb') as f:
             response = HttpResponse(f.read(), content_type='application/pdf')
             response['Content-Disposition'] = 'attachment; filename="highlighted_comparison.pdf"'
             return response
 
     return render(request, 'epe_app/pdf_compare.html')
+
 
 
 

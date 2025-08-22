@@ -1,42 +1,22 @@
+{% extends "epe_app/base.html" %}
 
-<!DOCTYPE html>
-{% load static %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>PDF Comparison Tool</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
-</head>
-<body>
-<nav class="navbar navbar-dark bg-dark mb-4">
-    <div class="container-fluid">
-        <div class="row w-100 align-items-center">
-            <!-- Left Spacer -->
-            <div class="col-3 text-start"></div>
-
-            <!-- Center Logo + Title -->
-            <div class="col-6 text-center">
-                <div class="d-flex justify-content-center align-items-center">
-                    <img src="{% static 'images/logo.png' %}" alt="Logo" width="50" height="50" class="me-3">
-                    <h1 class="mb-0 display-5 text-white">Intelligent Keyword Search</h1>
-                </div>
-            </div>
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-center mb-3">
+        <div class="d-inline-flex p-2 bg-info rounded-3"><h5>Compare Two PDFs</h5></div>
+    </div>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3 w-50 ">
+            <label for="source_pdf" class="form-label">Upload Source PDF:</label>
+            <input class="form-control" type="file" name="source_pdf"  id="source_pdf" required>
         </div>
-    </div>
-</nav>
-    <div class="container">
-        <h2>Compare Two PDFs</h2>
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <label for="source_pdf">Upload Source PDF:</label>
-            <input type="file" name="source_pdf" id="source_pdf" required>
+        <div class="mb-3 w-50">
+            <label for="compare_pdf" class="form-label">Upload PDF to Compare:</label>
+            <input class="form-control" type="file" name="compare_pdf"  id="compare_pdf" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Compare and Highlight</button>
+    </form>
 
-            <label for="compare_pdf">Upload PDF to Compare:</label>
-            <input type="file" name="compare_pdf" id="compare_pdf" required>
-
-            <button type="submit">Compare and Highlight</button>
-        </form>
-    </div>
-</body>
-</html>
+</div>
+{% endblock content %}

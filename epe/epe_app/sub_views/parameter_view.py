@@ -3,7 +3,7 @@ import json
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Q
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from ..forms import parameter_definition_lov_form
 from ..models import parameter_definition_lov_info
 from ..forms import parameter_form
@@ -141,70 +141,67 @@ def parameter_delete(request,param_id):
 
 @login_required(login_url='login_page')
 def load_equipment_short_name(request):
-    # Fetch unit Type
     equipment_id = request.GET.get('equipment_id')
-    # Fetch Unit Details
-    equipment_short_name = list(equipment_shortInfo.objects.filter(es_equipment_name=equipment_id).order_by('es_equipment_short_name').values_list('es_equipment_short_name',flat=True).distinct())
-    equipment_short_name_id = list(equipment_shortInfo.objects.filter(es_equipment_short_name__in=equipment_short_name).values_list('id',flat=True))
-    print('equipment_short_name',equipment_short_name)
-    print('equipment_short_name_id',equipment_short_name_id)
-    data = {
 
-        'equipment_short_name': equipment_short_name,
-        'equipment_short_name_id': equipment_short_name_id,
-    }
-    return HttpResponse(json.dumps(data))
-    # return JsonResponse((data))
+    try:
+        equipment_short = equipment_shortInfo.objects.get(es_equipment_name=equipment_id)
+        data = {
+            'equipment_short_name': equipment_short.es_equipment_short_name,
+            'equipment_short_name_id': equipment_short.id,
+        }
+        return JsonResponse(data)
+    except equipment_shortInfo.DoesNotExist:
+        return JsonResponse({'error': 'Equipment not found'}, status=404)
+
 @login_required(login_url='login_page')
 def load_system_short_name_equipment_name(request):
     # Fetch unit Type
     system_id = request.GET.get('system_id')
+    print('system_id',system_id)
     # Fetch Unit Details
-    system_short_name = list(system_short_Info.objects.filter(ss_system_name=system_id).order_by('ss_system_short_name').values_list('ss_system_short_name',flat=True).distinct())
-    system_short_name_id = list(system_short_Info.objects.filter(ss_system_short_name__in=system_short_name).values_list('id',flat=True))
-    # system_short_name_id = system_short_Info.objects.get(ss_system_name=system_id).id
+    system_short_name_id = system_short_Info.objects.get(ss_system_name=system_id).id
+    system_short_name = system_short_Info.objects.get(ss_system_name=system_id).ss_system_short_name
     equipment_name=list(equipmentInfo.objects.filter(equipment_system_name=system_id).values_list('equipment_name',flat=True).distinct())
     equipment_name_id=list(equipmentInfo.objects.filter(equipment_name__in=equipment_name).values_list('id',flat=True))
     print('system_short_name_id',system_short_name_id)
     data = {
-        'system_short_name':system_short_name,
         'system_short_name_id':system_short_name_id,
+        'system_short_name':system_short_name,
         'equipment_name': equipment_name,
         'equipment_name_id': equipment_name_id,
     }
-    return HttpResponse(json.dumps(data))
-    # return JsonResponse((data))
+    # return HttpResponse(json.dumps(data))
+    return JsonResponse(data)
 
 @login_required(login_url='login_page')
+
 def load_units_type(request):
-    # Fetch unit Type
-    measurement_system_id = request.GET.get('measurement_system_id')
-    # Fetch Unit Details
-    unit_type_id = list(uom_info.objects.filter(uom_system_of_measurement__in=measurement_system_id).order_by('uom_unit_type').values_list('uom_unit_type',flat=True).distinct())
-    unit_type_name=list(unit_type_info.objects.filter(pk__in=unit_type_id).values_list('ut_name',flat=True))
+    parameter_definition_id = request.GET.get('parameter_definition_id')
 
-    data = {
-        'unit_type_id':unit_type_id,
-        'unit_type_name': unit_type_name,
-    }
-    return HttpResponse(json.dumps(data))
-    # return JsonResponse((data))
+    try:
+        # Fetch Unit Type ID from parameter definition
+        unit_type_id = prameter_definition_info.objects.get(pk=parameter_definition_id).pd_unit_type.id
+        unit_type= prameter_definition_info.objects.get(pk=parameter_definition_id).pd_unit_type.ut_name
+        print('unit_type_id', unit_type_id)
+        print('unit_type',unit_type)
+        # Fetch UOMs for the unit type
+        uoms = uom_info.objects.filter(uom_unit_type=unit_type_id).values('id', 'uom_symbol')
 
-@login_required(login_url='login_page')
-def load_unit_of_measure(request):
-    # Fetch unit Type
-    unit_type_id = request.GET.get('unit_type_id')
-    system_measurement = request.GET.get('system_measurement')
-    print("unit_type_id",unit_type_id)
-    # Fetch Unit Details
-    uom_id = list(uom_info.objects.filter(uom_system_of_measurement=system_measurement,uom_unit_type__in=unit_type_id).order_by('id').values_list('id',flat=True).distinct())
-    print('uom_id',list(uom_id))
-    uom_name=list(uom_info.objects.filter(pk__in=uom_id).values_list('uom_symbol',flat=True))
-    print('uom_name',list(uom_name))
+        # Prepare lists
+        uom_id = [uom['id'] for uom in uoms]
+        uom_name = [uom['uom_symbol'] for uom in uoms]
+        data = {
+            'unit_type_id': unit_type_id,
+            'unit_type': unit_type,
+            'uom_id': uom_id,
+            'uom_name': uom_name,
+        }
 
-    data = {
-        'uom_id':uom_id,
-        'uom_name': uom_name,
-    }
-    return HttpResponse(json.dumps(data))
-    # return JsonResponse((data))
+        return JsonResponse(data)
+
+    except prameter_definition_info.DoesNotExist:
+        return JsonResponse({'error': 'Parameter definition not found'}, status=404)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+

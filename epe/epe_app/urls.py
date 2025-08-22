@@ -27,7 +27,6 @@ urlpatterns = [
     path('load_lov/', views.load_lov, name='load_lov'),  # load load_lov
     path('parameter_definition_lov_cancel/', views.parameter_definition_lov_cancel, name='parameter_definition_lov_cancel'),  # parameter_definition_lov_cancel
     path('load_units_type/', views.load_units_type, name='load_units_type'),  # load_units_type
-    path('load_unit_of_measure/', views.load_unit_of_measure, name='load_unit_of_measure'),  # load_unit_of_measure
     path('load_system_short_name_equipment_name/', views.load_system_short_name_equipment_name, name='load_system_short_name_equipment_name'),  # load_system_short_name_equipment_name
     path('load_equipment_short_name/', views.load_equipment_short_name, name='load_equipment_short_name'),  # load_equipment_short_name
     path('search_keywords', views.search_keywords, name='search_keywords'),
