@@ -1,0 +1,22 @@
+{% extends "epe_app/base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-center mb-3">
+        <div class="d-inline-flex p-2 bg-info rounded-3"><h5>Compare Two PDFs</h5></div>
+    </div>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3 w-50 ">
+            <label for="source_pdf" class="form-label">Upload Source PDF:</label>
+            <input class="form-control" type="file" name="source_pdf"  id="source_pdf" required>
+        </div>
+        <div class="mb-3 w-50">
+            <label for="compare_pdf" class="form-label">Upload PDF to Compare:</label>
+            <input class="form-control" type="file" name="compare_pdf"  id="compare_pdf" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Compare and Highlight</button>
+    </form>
+
+</div>
+{% endblock content %}

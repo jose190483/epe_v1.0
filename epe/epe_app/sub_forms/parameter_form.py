@@ -1,5 +1,5 @@
 from django import forms
-from ..models import prameter_info,system_Info,system_short_Info
+from ..models import prameter_info
 
 class parameter_form(forms.ModelForm):
     class Meta:
@@ -9,7 +9,6 @@ class parameter_form(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(parameter_form,self).__init__(*args, **kwargs)
         self.fields['p_uom'].empty_label = "--Select--"
-        self.fields['p_parameter_unit_measurement'].empty_label = "--Select--"
         self.fields['p_parameter_lov'].empty_label = "--Select--"
         self.fields['p_equipment_name'].empty_label = "--Select--"
         self.fields['p_equipment_short'].empty_label = "--Select--"
@@ -19,4 +18,5 @@ class parameter_form(forms.ModelForm):
         self.fields['p_definition'].empty_label = "--Select--"
         self.fields['p_status'].empty_label = "--Select--"
         self.fields['p_updated_by'].empty_label = "--Select--"
+        self.fields['p_unit_type'].empty_label = "--Select--"
 

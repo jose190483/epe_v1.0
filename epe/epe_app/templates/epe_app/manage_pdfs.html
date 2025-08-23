@@ -1,0 +1,48 @@
+{% extends "epe_app/base.html" %}
+
+{% block content %}
+<div class="container">
+    {% if message %}
+        <div class="alert alert-info">{{ message }}</div>
+    {% endif %}
+
+    <!-- Upload Form -->
+    <form method="post" enctype="multipart/form-data" class="mb-4">
+        {% csrf_token %}
+        <div class="card">
+            <div class="card-header bg-secondary text-white">Upload PDF Files</div>
+            <div class="card-body">
+                <input type="file" name="pdf_files" multiple class="form-control mb-2" accept=".pdf">
+                <button type="submit" class="btn btn-primary">Upload</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Search Filter -->
+    <div class="mb-3">
+        <input type="text" class="form-control" id="pdfSearch" onkeyup="filterPDFs()" placeholder="Search PDF by name...">
+    </div>
+
+    <!-- PDF List + Delete -->
+    <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="delete_selected" value="true">
+        <select name="selected_pdfs" multiple class="form-select mb-2" id="pdfList" size="10">
+            {% for file in pdf_files %}
+                <option value="{{ file }}">{{ file }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit" class="btn btn-danger">Delete Selected PDFs</button>
+    </form>
+</div>
+{% endblock content %}
+<script>
+function filterPDFs() {
+    let input = document.getElementById("pdfSearch").value.toLowerCase();
+    let options = document.getElementById("pdfList").options;
+    for (let i = 0; i < options.length; i++) {
+        let text = options[i].text.toLowerCase();
+        options[i].style.display = text.includes(input) ? "" : "none";
+    }
+}
+</script>
