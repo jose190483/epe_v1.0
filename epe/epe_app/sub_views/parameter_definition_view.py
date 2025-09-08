@@ -31,14 +31,11 @@ def parameter_definition_add(request, param_def_id=0):
             pd_form = parameter_definition_form(request.POST)
             if pd_form.is_valid():
                 parameter_def_instance = pd_form.save(commit=False)
-                try:
-                    parameter_def_instance.save()
-                    parameter_def_instance.pd_id = f"PD_{1000000 + parameter_def_instance.id}"
-                    parameter_def_instance.save(update_fields=['pd_id'])
-                    messages.success(request, 'Record Updated Successfully')
-                    return redirect(f'/epe/param_def_update/{parameter_def_instance.id}')
-                except IntegrityError:
-                    pd_form.add_error('pd_name', "This name already exists. Please choose a different one.")
+                parameter_def_instance.save()
+                parameter_def_instance.pd_id = f"PD_{1000000 + parameter_def_instance.id}"
+                parameter_def_instance.save(update_fields=['pd_id'])
+                messages.success(request, 'Record Updated Successfully')
+                return redirect(f'/epe/param_def_update/{parameter_def_instance.id}')
             else:
                 messages.error(request, 'Record Not Updated Successfully')
 
@@ -76,7 +73,7 @@ def parameter_definition_add(request, param_def_id=0):
 @login_required(login_url='login_page')
 def parameter_definition_list(request):
     first_name = request.session.get('first_name')
-    param_def_list= (prameter_definition_info.objects.all()).order_by('-id')
+    # param_def_list= (prameter_definition_info.objects.all()).order_by('-id')
     page_number = request.GET.get('page')
     paginator = Paginator(param_def_list, 10000)
     page_obj = paginator.get_page(page_number)
@@ -84,6 +81,7 @@ def parameter_definition_list(request):
                 'param_def_list' : param_def_list,
                 'first_name': first_name,
                 'page_obj': page_obj,
+                'request_user': request.user,
                 }
     return render(request,"epe_app/parameter_definition_list.html",context)
 

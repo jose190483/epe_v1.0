@@ -17,4 +17,4 @@ class prameter_definition_info(models.Model):
         return self.pd_name
 
     class Meta:
-        ordering = ["-pd_id"]
+        ordering = ["pd_name"]

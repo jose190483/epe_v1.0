@@ -4,7 +4,7 @@ from ..models import MyUser,status_Info,owner_info,digital_source_info,equipment
 class prameter_info(models.Model):
     p_id = models.CharField(max_length=100, blank=True,null=True, default='')
     p_name = models.CharField(max_length=100, null=True, default='')
-    p_name_as_is = models.CharField(max_length=100,  unique=True,null=True, default='')
+    p_name_as_is = models.CharField(max_length=100,null=True, default='')
     p_uom=models.ForeignKey(uom_info,on_delete=models.CASCADE)
     p_definition=models.ForeignKey(prameter_definition_info,on_delete=models.PROTECT)
     # p_project=models.ForeignKey(project_info,on_delete=models.CASCADE,default=1)
@@ -18,10 +18,10 @@ class prameter_info(models.Model):
     p_equipment_short=models.ForeignKey(equipment_shortInfo,on_delete=models.PROTECT,null=True,blank=True)
     p_status=models.ForeignKey(status_Info,on_delete=models.PROTECT,null=True,blank=True,default=1)
     p_parameter_name_combo=models.CharField(max_length=100,null=True,blank=True)
-    p_digital_source = models.ManyToManyField(digital_source_info)
-    p_owner = models.ForeignKey(owner_info, on_delete=models.CASCADE, default=1)
+    p_digital_source = models.ManyToManyField(digital_source_info,blank=True,null=True)
+    p_owner = models.ManyToManyField(owner_info, blank=True,null=True)
     p_updated_at = models.DateTimeField(null=True, auto_now=True)
-    p_updated_by = models.ForeignKey(MyUser, on_delete=models.CASCADE, null=True,
+    p_updated_by = models.ForeignKey(MyUser, on_delete=models.PROTECT, null=True,
                                             related_name='p_updated_by', db_column='p_updated_by')
 
     def __str__(self):

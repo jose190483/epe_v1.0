@@ -13,7 +13,7 @@ from django.contrib import messages
 
 
 def normalize_combo(system, equipment, name):
-    return f"{str(system).strip().upper()}_{str(equipment).strip().upper()}_{str(name).strip().upper()}"
+    return f"{str(system).strip().upper()} {str(equipment).strip().upper()} {str(name).strip().upper()}"
 
 @login_required(login_url='login_page')
 def parameter_add(request,param_id=0):
@@ -50,10 +50,10 @@ def parameter_add(request,param_id=0):
                 parameter_instance.save(update_fields=['p_id'])
 
                 system_short_name = (system_short_Info.objects.get(ss_system_name=request.POST.get('p_system'))).ss_system_short_name
-                equipment_short_name = equipment_shortInfo.objects.get(es_equipment_name=request.POST.get('p_equipment_short')).es_equipment_short_name
+                equipment_name = equipment_shortInfo.objects.get(es_equipment_name=request.POST.get('p_equipment_name')).es_equipment_name
                 parameter_name = request.POST.get('p_name')
 
-                parameter_combo = normalize_combo(system_short_name, equipment_short_name, parameter_name)
+                parameter_combo = normalize_combo(system_short_name, equipment_name, parameter_name)
                 print("parameter_combo_add", parameter_combo)
                 if prameter_info.objects.filter(p_parameter_name_combo__iexact=parameter_combo).exclude(pk=param_id).exists():
                     # Already exists for a different record
@@ -77,10 +77,10 @@ def parameter_add(request,param_id=0):
             p_form = parameter_form(request.POST,instance=parameter)
             if p_form.is_valid():
                 system_short_name = (system_short_Info.objects.get(ss_system_name=request.POST.get('p_system'))).ss_system_short_name
-                equipment_short_name = equipment_shortInfo.objects.get(es_equipment_name=request.POST.get('p_equipment_short')).es_equipment_short_name
+                equipment_name = equipment_shortInfo.objects.get(es_equipment_name=request.POST.get('p_equipment_name')).es_equipment_name
                 parameter_name = request.POST.get('p_name')
                 # parameter_combo=str(system_short_name)+str('_')+str(equipment_short_name)+str('_')+str(parameter_name)
-                parameter_combo = normalize_combo(system_short_name, equipment_short_name, parameter_name)
+                parameter_combo = normalize_combo(system_short_name, equipment_name, parameter_name)
                 print("Edit_parameter_combo",parameter_combo)
                 if prameter_info.objects.filter(p_parameter_name_combo__iexact=parameter_combo).exclude(pk=param_id).exists():
                     # Already exists for a different record

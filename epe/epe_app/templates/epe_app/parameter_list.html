@@ -17,33 +17,36 @@
         <thead class="table-dark">
         <tr>
             <th>ID</th>
-            <th>Paramerter</th>
-            <th>Name</th>
+            <th>Edit</th>
+            <th>Paramerter ID</th>
+            <th>Name (As IS)</th>
+            <th>Parameter Name</th>
             <th>Parameter Definition</th>
             <th>Unit Type</th>
             <th>UOM</th>
             <th>Status</th>
             <th>Updated On</th>
             <th>Updated By</th>
-            <th>Edit</th>
             <th>Delete</th>
         </thead>
         <tbody>
         {% for param in page_obj %}
         <tr>
             <td> {{param.id}}</td>
+            <td class="text-center">
+                <a class="btn btn-sm btn-primary" href="{% url 'parameter_update' param.id %}" >
+                    <i class="far fa-edit"></i>
+                </a>
+            </td>
             <td> {{param.p_id}}</td>
-            <td> {{param.p_name}}</td>
+            <td> {{param.p_name_as_is}}</td>
+            <td> {{param.p_parameter_name_combo}}</td>
             <td> {{param.p_definition}}</td>
             <td> {{param.p_unit_type}}</td>
             <td> {{param.p_uom}}</td>
             <td> {{param.p_status}}</td>
             <td> {{param.p_updated_at}}</td>
             <td> {{param.p_updated_by}}</td>
-            <td class="text-center">
-                <a class="btn btn-sm btn-primary" href="{% url 'parameter_update' param.id %}" >
-                    <i class="far fa-edit"></i>
-                </a>
             <td class="text-center">
                 <form action="{% url 'parameter_delete' param.id %}" method="post" onclick="return confirm('Are you sure?');">
                     {% csrf_token %}

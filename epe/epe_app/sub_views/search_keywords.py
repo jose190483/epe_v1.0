@@ -12,7 +12,6 @@ def search_keywords(request):
     not_found_keywords = []
     message = ''
     keywords = []
-
     if request.method == 'POST':
         # ✅ Handle clear PDFs
         if request.POST.get('clear_pdfs') == 'true':
@@ -40,19 +39,30 @@ def search_keywords(request):
         # ✅ Handle keyword search
         keywords = request.POST.get('keywords', '')
         keywords = [kw.strip().lower() for kw in keywords.split(',') if kw.strip()]
-
+        print('keywords', keywords)
         if keywords:
+            print("Searching PDFs...")
             pdf_files = [f for f in os.listdir(PDF_FOLDER) if f.endswith('.pdf')]
+            print('pdf_files', pdf_files)
             for pdf_name in pdf_files:
                 pdf_path = os.path.join(PDF_FOLDER, pdf_name)
                 doc = fitz.open(pdf_path)
-
+                print('Opened PDF:', pdf_name)
                 for page_num, page in enumerate(doc, start=1):
 
-                    blocks = page.get_text('blocks') or []
-                    text = ' '.join(block[4] for block in blocks if isinstance(block[4], str))
-                    text_normalized = re.sub(r'\s+', ' ', text).lower()
+                    # blocks = page.get_text('blocks') or []
+                    # text = ' '.join(block[4] for block in blocks if isinstance(block[4], str))
+                    # text_normalized = re.sub(r'\s+', ' ', text).lower()
+                    #
+                    # for kw in keywords:
+                    #     if kw in text_normalized:
+                    #         pattern = re.compile(re.escape(kw), re.IGNORECASE)
+                    #         highlighted_text = pattern.sub(r'<mark>\g<0></mark>', text)
+                    #         highlighted_results[kw].append((pdf_name, page_num, highlighted_text))
 
+                    text = page.get_text("text")  # instead of 'blocks'
+                    text_normalized = re.sub(r'\s+', ' ', text).lower()
+                    print('text_normalized',text_normalized)
                     for kw in keywords:
                         if kw in text_normalized:
                             pattern = re.compile(re.escape(kw), re.IGNORECASE)
