@@ -20,8 +20,12 @@
             <th>Edit</th>
             <th>Paramerter ID</th>
             <th>Name (As IS)</th>
+            <th>System Short</th>
+            <th>Equipment</th>
             <th>Parameter Name</th>
+            <th>Parameter Name Combo</th>
             <th>Parameter Definition</th>
+            <th>Owner</th>
             <th>Unit Type</th>
             <th>UOM</th>
             <th>Status</th>
@@ -40,8 +44,19 @@
             </td>
             <td> {{param.p_id}}</td>
             <td> {{param.p_name_as_is}}</td>
+            <td> {{param.p_system_short}}</td>
+            <td> {{param.p_equipment_name}}</td>
+            <td> {{param.p_name}}</td>
             <td> {{param.p_parameter_name_combo}}</td>
             <td> {{param.p_definition}}</td>
+<!--            <td> {{param.p_owner}}</td>-->
+
+            <td>
+                {% for owner in param.p_owner.all %}
+                {{ owner }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </td>
+
             <td> {{param.p_unit_type}}</td>
             <td> {{param.p_uom}}</td>
             <td> {{param.p_status}}</td>

@@ -122,3 +122,18 @@ def add_parameter_definition_lov(request):
             new_lov = parameter_definition_lov_info.objects.create(pdl_lov=pdl_lov)
             return JsonResponse({'id': new_lov.id, 'pdl_lov': new_lov.pdl_lov})
     return JsonResponse({'error': 'Invalid request'}, status=400)
+
+@login_required(login_url='login_page')
+def list_parameter_definition_lov(request):
+    print('Hi')
+    param_def_lov_list= (parameter_definition_lov_info.objects.all()).order_by('-id')
+    print('param_def_lov_list',param_def_lov_list)
+    page_number = request.GET.get('page')
+    paginator = Paginator(param_def_lov_list, 10000)
+    page_obj = paginator.get_page(page_number)
+    context = {
+        'param_def_lov_list': param_def_lov_list,
+        'page_obj': page_obj,
+        'request_user': request.user,
+    }
+    return render(request, "epe_app/parameter_definition_lov_list.html", context)

@@ -34,4 +34,6 @@ urlpatterns = [
     path('export_csv/', views.export_csv, name='export_csv'),
     path('pdf_compare/', views.pdf_compare_view, name='pdf_compare'),
     path('home_page', views.home_view, name='home_page'),
+    path('parameter_definition_lov_info/', views.list_parameter_definition_lov, name='parameter_definition_lov_info'),
+    path('download/<str:filename>/', views.download_marked_pdf, name='download_marked_pdf'),
 ]

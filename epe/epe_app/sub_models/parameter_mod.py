@@ -17,7 +17,7 @@ class prameter_info(models.Model):
     p_equipment_name=models.ForeignKey(equipmentInfo,on_delete=models.PROTECT,null=True,blank=True)
     p_equipment_short=models.ForeignKey(equipment_shortInfo,on_delete=models.PROTECT,null=True,blank=True)
     p_status=models.ForeignKey(status_Info,on_delete=models.PROTECT,null=True,blank=True,default=1)
-    p_parameter_name_combo=models.CharField(max_length=100,null=True,blank=True)
+    p_parameter_name_combo=models.CharField(max_length=150,null=True,blank=True)
     p_digital_source = models.ManyToManyField(digital_source_info,blank=True,null=True)
     p_owner = models.ManyToManyField(owner_info, blank=True,null=True)
     p_updated_at = models.DateTimeField(null=True, auto_now=True)
