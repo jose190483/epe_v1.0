@@ -166,7 +166,7 @@
                                 {% for pdf in as_is_pdf_files %}
                                 <tr>
                                     <td class="text-center">
-                                        {% url {{ pdf }}</a>
+                                        <a target="_blank" href="{% url 'download_marked_pdf' pdf %}"> {{ pdf }}</a>
                                     </td>
                                 </tr>
                                 {% endfor %}
