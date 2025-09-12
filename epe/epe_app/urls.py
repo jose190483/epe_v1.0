@@ -37,4 +37,5 @@ urlpatterns = [
     path('parameter_definition_lov_info/', views.list_parameter_definition_lov, name='parameter_definition_lov_info'),
     path('download/<str:filename>/', views.download_marked_pdf, name='download_marked_pdf'),
     path('parameter_similarity/', views.parameter_similarity_view, name='parameter_similarity'),
+    path('parameter_analysis/', views.parameter_analysis_view, name='parameter_analysis'),
 ]

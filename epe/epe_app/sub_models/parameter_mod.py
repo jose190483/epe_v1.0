@@ -23,7 +23,8 @@ class prameter_info(models.Model):
     p_updated_at = models.DateTimeField(null=True, auto_now=True)
     p_updated_by = models.ForeignKey(MyUser, on_delete=models.PROTECT, null=True,
                                             related_name='p_updated_by', db_column='p_updated_by')
-
+    p_parameter_prefix = models.CharField(max_length=150, null=True, blank=True)
+    p_parameter_suffix = models.CharField(max_length=150, null=True, blank=True)
     def __str__(self):
         return self.p_id
 

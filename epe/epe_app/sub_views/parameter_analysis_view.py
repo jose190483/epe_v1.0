@@ -1,0 +1,137 @@
+from django.shortcuts import render
+from django.http import HttpResponse
+from ..models import prameter_info, system_Info, equipmentInfo
+import os
+import fitz  # PyMuPDF
+import re
+from datetime import datetime
+from rapidfuzz import fuzz
+import pandas as pd
+from django.conf import settings
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+
+PDF_FOLDER = os.path.join(settings.MEDIA_ROOT, 'pdfs')
+PDF_FOLDER_MARKED = os.path.join(settings.MEDIA_ROOT, 'marked_pdf')
+FUZZY_THRESHOLD = 80
+
+def normalize(text):
+    return re.sub(r'\s+', ' ', text).strip().lower()
+
+def search_and_highlight(pdf_path, keywords, prefix, timestamp):
+    doc = fitz.open(pdf_path)
+    highlighted_results = {}
+    not_found = []
+
+    for kw in keywords:
+        found = False
+        for page in doc:
+            text = page.get_text("text")
+            if kw in normalize(text) or fuzz.ratio(kw, normalize(text)) >= FUZZY_THRESHOLD:
+                matches = page.search_for(kw)
+                for rect in matches:
+                    highlight = page.add_highlight_annot(rect)
+                    highlight.set_colors(stroke=(0, 1, 1))
+                    highlight.update()
+                found = True
+                highlighted_results.setdefault(kw, []).append(text)
+        if not found:
+            not_found.append(kw)
+
+    marked_filename = f"{prefix}_marked_{timestamp}.pdf"
+    marked_path = os.path.join(PDF_FOLDER_MARKED, marked_filename)
+    doc.save(marked_path)
+    doc.close()
+
+    return {
+        'pdfs_scanned': 1,
+        'keywords_entered': len(keywords),
+        'keywords_matched': len(highlighted_results),
+        'keywords_not_found': len(not_found),
+        'duplicate_keywords': len([kw for kw in keywords if keywords.count(kw) > 1]),
+        'found_summary': highlighted_results,
+        'not_found_keywords': not_found,
+        'marked_pdf': marked_filename
+    }
+
+def parameter_analysis_view(request):
+    systems = system_Info.objects.all()
+    equipments = equipmentInfo.objects.all()
+    context = {'systems': systems, 'equipments': equipments}
+
+    if request.method == 'POST' and 'analyze' in request.POST:
+        system_id = request.POST.get('system')
+        equipment_id = request.POST.get('equipment')
+
+        parameters = prameter_info.objects.select_related('p_definition').filter(
+            p_system_id=system_id,
+            p_equipment_name_id=equipment_id
+        )
+
+        as_is_pdf = request.FILES.get('as_is_pdf')
+        to_be_pdf = request.FILES.get('to_be_pdf')
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+
+        if as_is_pdf:
+            as_is_path = os.path.join(PDF_FOLDER, f"as_is_{timestamp}.pdf")
+            with open(as_is_path, 'wb+') as f:
+                for chunk in as_is_pdf.chunks():
+                    f.write(chunk)
+
+        if to_be_pdf:
+            to_be_path = os.path.join(PDF_FOLDER, f"to_be_{timestamp}.pdf")
+            with open(to_be_path, 'wb+') as f:
+                for chunk in to_be_pdf.chunks():
+                    f.write(chunk)
+
+        # Normalize keywords
+        as_is_keywords = [normalize(p.p_name_as_is) for p in parameters if p.p_name_as_is]
+        to_be_keywords = [normalize(p.p_parameter_name_combo) for p in parameters if p.p_parameter_name_combo]
+
+        # Identify duplicates
+        def get_duplicates(keyword_list):
+            return list(set([kw for kw in keyword_list if keyword_list.count(kw) > 1]))
+
+        as_is_duplicates = get_duplicates(as_is_keywords)
+        to_be_duplicates = get_duplicates(to_be_keywords)
+
+        # Run analysis
+        if as_is_pdf:
+            as_is_result = search_and_highlight(as_is_path, as_is_keywords, 'as_is', timestamp)
+            as_is_result['duplicate_keywords_list'] = as_is_duplicates
+            context['as_is_results'] = as_is_result
+
+        if to_be_pdf:
+            to_be_result = search_and_highlight(to_be_path, to_be_keywords, 'to_be', timestamp)
+            to_be_result['duplicate_keywords_list'] = to_be_duplicates
+            context['to_be_results'] = to_be_result
+
+        # TF-IDF Similarity Calculation
+        param_texts = [p.p_name for p in parameters]
+        def_texts = [p.p_definition.pd_name for p in parameters]
+
+        df = pd.DataFrame({
+            'parameter': param_texts,
+            'parameter_definition': def_texts
+        })
+
+        vectorizer = TfidfVectorizer().fit(df['parameter'] + df['parameter_definition'])
+        param_vectors = vectorizer.transform(df['parameter'])
+        def_vectors = vectorizer.transform(df['parameter_definition'])
+
+        similarity_scores = cosine_similarity(param_vectors, def_vectors).diagonal()
+        df['matching_score'] = similarity_scores
+
+        context['similarity_scores'] = df.to_dict(orient='records')
+
+        context['as_is_pdf_files'] = [
+            f for f in os.listdir(PDF_FOLDER_MARKED)
+            if f.endswith('.pdf') and 'as_is' in f.lower()
+        ]
+        context['to_be_pdf_files'] = [
+            f for f in os.listdir(PDF_FOLDER_MARKED)
+            if f.endswith('.pdf') and 'to_be' in f.lower()
+        ]
+
+    return render(request, 'epe_app/parameter_analysis.html', context)
+
