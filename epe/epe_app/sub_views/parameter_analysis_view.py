@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from ..models import prameter_info, system_Info, equipmentInfo
+from ..models import prameter_info, system_Info, equipmentInfo,system_short_Info
 import os
 import fitz  # PyMuPDF
 import re
@@ -18,7 +18,7 @@ FUZZY_THRESHOLD = 80
 def normalize(text):
     return re.sub(r'\s+', ' ', text).strip().lower()
 
-def search_and_highlight(pdf_path, keywords, prefix, timestamp):
+def search_and_highlight(pdf_path, keywords, prefix, timestamp, system_short_name, equipment_name):
     doc = fitz.open(pdf_path)
     highlighted_results = {}
     not_found = []
@@ -27,18 +27,33 @@ def search_and_highlight(pdf_path, keywords, prefix, timestamp):
         found = False
         for page in doc:
             text = page.get_text("text")
-            if kw in normalize(text) or fuzz.ratio(kw, normalize(text)) >= FUZZY_THRESHOLD:
+            normalized_text = normalize(text)
+
+            if kw in normalized_text or fuzz.ratio(kw, normalized_text) >= FUZZY_THRESHOLD:
                 matches = page.search_for(kw)
                 for rect in matches:
-                    highlight = page.add_highlight_annot(rect)
-                    highlight.set_colors(stroke=(0, 1, 1))
-                    highlight.update()
+                    # Define dot size
+                    dot_size = 5  # Adjust for visibility
+
+                    # Calculate position for the dot (slightly to the right of the match)
+                    dot_x = rect.x1 + 2
+                    dot_y = rect.y0 + (rect.y1 - rect.y0) / 2  # Vertically centered
+
+                    dot_rect = fitz.Rect(dot_x, dot_y, dot_x + dot_size, dot_y + dot_size)
+
+                    # Add a red filled circle annotation
+                    dot_annot = page.add_circle_annot(dot_rect)
+                    dot_annot.set_colors(stroke=(1, 0, 0), fill=(1, 0, 0))  # Red color
+                    dot_annot.set_border(width=0.5)
+                    dot_annot.update()
+
                 found = True
                 highlighted_results.setdefault(kw, []).append(text)
+
         if not found:
             not_found.append(kw)
 
-    marked_filename = f"{prefix}_marked_{timestamp}.pdf"
+    marked_filename = f"{system_short_name}_{equipment_name}_{prefix}_marked_{timestamp}.pdf"
     marked_path = os.path.join(PDF_FOLDER_MARKED, marked_filename)
     doc.save(marked_path)
     doc.close()
@@ -54,6 +69,7 @@ def search_and_highlight(pdf_path, keywords, prefix, timestamp):
         'marked_pdf': marked_filename
     }
 
+
 def parameter_analysis_view(request):
     systems = system_Info.objects.all()
     equipments = equipmentInfo.objects.all()
@@ -68,18 +84,32 @@ def parameter_analysis_view(request):
             p_equipment_name_id=equipment_id
         )
 
+        # Get the system object
+        system_obj = system_Info.objects.get(id=system_id)
+
+        # Get the short name from system_short_Info
+        system_short_obj = system_short_Info.objects.filter(ss_system_name=system_obj).first()
+        system_short_name = system_short_obj.ss_system_short_name if system_short_obj else 'N/A'
+
+        # Get the equipment object
+        equipment_obj = equipmentInfo.objects.get(id=equipment_id)
+        equipment_name = equipment_obj.equipment_name
+
+        # Clean up old files for this system + equipment
+        delete_old_files(system_short_name, equipment_name)
+
         as_is_pdf = request.FILES.get('as_is_pdf')
         to_be_pdf = request.FILES.get('to_be_pdf')
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
         if as_is_pdf:
-            as_is_path = os.path.join(PDF_FOLDER, f"as_is_{timestamp}.pdf")
+            as_is_path = os.path.join(PDF_FOLDER, f"{system_short_name}_{equipment_name}_as_is_{timestamp}.pdf")
             with open(as_is_path, 'wb+') as f:
                 for chunk in as_is_pdf.chunks():
                     f.write(chunk)
 
         if to_be_pdf:
-            to_be_path = os.path.join(PDF_FOLDER, f"to_be_{timestamp}.pdf")
+            to_be_path = os.path.join(PDF_FOLDER, f"{system_short_name}_{equipment_name}_to_be_{timestamp}.pdf")
             with open(to_be_path, 'wb+') as f:
                 for chunk in to_be_pdf.chunks():
                     f.write(chunk)
@@ -97,12 +127,12 @@ def parameter_analysis_view(request):
 
         # Run analysis
         if as_is_pdf:
-            as_is_result = search_and_highlight(as_is_path, as_is_keywords, 'as_is', timestamp)
+            as_is_result = search_and_highlight(as_is_path, as_is_keywords, 'as_is', timestamp,system_short_name,equipment_name)
             as_is_result['duplicate_keywords_list'] = as_is_duplicates
             context['as_is_results'] = as_is_result
 
         if to_be_pdf:
-            to_be_result = search_and_highlight(to_be_path, to_be_keywords, 'to_be', timestamp)
+            to_be_result = search_and_highlight(to_be_path, to_be_keywords, 'to_be', timestamp,system_short_name,equipment_name)
             to_be_result['duplicate_keywords_list'] = to_be_duplicates
             context['to_be_results'] = to_be_result
 
@@ -134,4 +164,25 @@ def parameter_analysis_view(request):
         ]
 
     return render(request, 'epe_app/parameter_analysis.html', context)
+
+
+def delete_old_files(system_short_name, equipment_name):
+    prefix = f"{system_short_name}_{equipment_name}_"
+
+    # Delete old uploaded PDFs
+    for f in os.listdir(PDF_FOLDER):
+        if f.startswith(prefix) and f.endswith('.pdf'):
+            try:
+                os.remove(os.path.join(PDF_FOLDER, f))
+            except Exception as e:
+                print(f"Error deleting {f}: {e}")
+
+    # Delete old marked PDFs
+    for f in os.listdir(PDF_FOLDER_MARKED):
+        if f.startswith(prefix) and f.endswith('.pdf'):
+            try:
+                os.remove(os.path.join(PDF_FOLDER_MARKED, f))
+            except Exception as e:
+                print(f"Error deleting {f}: {e}")
+
 
