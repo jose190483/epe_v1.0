@@ -1,82 +1,78 @@
 {% extends "epe_app/base.html" %}
 
 {% block content %}
-<div class="d-flex justify-content-center "><h5 class="shadow-sm rounded rounded text-center bg-info p-2">Parameter List</h5></div>
-<div class="d-flex gap-2 justify-content-start m-2">
-    <a href="{% url 'home_page' %}" class="btn btn-primary btn-sm">
-        <i class="fas fa-arrow-left"></i> Back
-    </a>
-    <a href="{% url 'parameter_insert' %}" class="btn btn-success btn-sm">
-        <i class="fas fa-plus"></i> Add
-    </a>
-    <a href="{% url 'export_parameters_csv' %}" class="btn btn-warning btn-sm">
-        <i class="fas fa-plus"></i> Download CSV
-    </a>
+<div class="d-flex justify-content-center">
+    <h5 class="shadow-sm rounded text-center bg-info text-white p-2">MRT Parameter Master List</h5>
 </div>
 
-<hr>
 <div class="container_fluid shadow-box-table m-2 p-3">
-    <table id="param_list" class="table table-striped table-bordered border-secondary-subtle table-responsive table-sm nowrap mt-2">
+    <div class="d-flex gap-2 justify-content-start m-2">
+        <a href="{% url 'home_page' %}" class="btn btn-primary btn-sm">
+            <i class="fas fa-arrow-left"></i> Back
+        </a>
+
+    </div>
+    <hr>
+    <table id="param_def_list" class="table table-striped table-bordered border-secondary-subtle table-responsive table-sm nowrap mt-2">
         <thead class="table-dark">
         <tr>
             <th>ID</th>
-            <th>Edit</th>
             <th>Paramerter ID</th>
-            <th>Name (As IS)</th>
-            <th>System Short</th>
+            <th>System</th>
             <th>Equipment</th>
-            <th>Parameter Name</th>
             <th>Parameter Name Combo</th>
             <th>Parameter Definition</th>
-            <th>Owner</th>
-            <th>Unit Type</th>
-            <th>UOM</th>
-            <th>Status</th>
+            <th>Parameter Status</th>
+            <th>MRT Parameter</th>
+            <th>Default Value</th>
+            <th>MRT Status</th>
             <th>Updated On</th>
             <th>Updated By</th>
+            <th>Edit</th>
             <th>Delete</th>
+        </tr>
         </thead>
         <tbody>
-        {% for param in page_obj %}
+        {% for param_def in page_obj %}
         <tr>
-            <td> {{param.id}}</td>
+            <td>{{ param_def.id }}</td>
+            <td>{{ param_def.p_id }}</td>
+            <td>{{ param_def.p_system }}</td>
+            <td>{{ param_def.p_equipment_name }}</td>
+            <td>{{ param_def.p_parameter_name_combo }}</td>
+            <td>{{ param_def.p_definition }}</td>
+            <td>{{ param_def.p_status }}</td>
+            <td>{{ param_def.mrt_info.mrt_parameter }}</td>
+            <td>{{ param_def.mrt_info.mrt_default_value }}</td>
+            <td>{{ param_def.mrt_info.mrt_status }}</td>
+            <td>{{ param_def.mrt_info.mrt_updated_at }}</td>
+            <td>{{ param_def.mrt_info.mrt_updated_by }}</td>
             <td class="text-center">
-                <a class="btn btn-sm btn-primary" href="{% url 'parameter_update' param.id %}" >
+                {% if param_def.mrt_info %}
+                <a class="btn btn-sm btn-primary" href="{% url 'mrt_parameter_update' param_def.mrt_info.id %}">
                     <i class="far fa-edit"></i>
                 </a>
+                {% else %}
+                <a class="btn btn-sm btn-primary" href="{% url 'mrt_parameter_insert' param_def.id %}">
+                    <i class="far fa-edit"></i>
+                </a>
+                {% endif %}
             </td>
-            <td> {{param.p_id}}</td>
-            <td> {{param.p_name_as_is}}</td>
-            <td> {{param.p_system_short}}</td>
-            <td> {{param.p_equipment_name}}</td>
-            <td> {{param.p_name}}</td>
-            <td> {{param.p_parameter_name_combo}}</td>
-            <td> {{param.p_definition}}</td>
-<!--            <td> {{param.p_owner}}</td>-->
-
-            <td>
-                {% for owner in param.p_owner.all %}
-                {{ owner }}{% if not forloop.last %}, {% endif %}
-                {% endfor %}
-            </td>
-
-            <td> {{param.p_unit_type}}</td>
-            <td> {{param.p_uom}}</td>
-            <td> {{param.p_status}}</td>
-            <td> {{param.p_updated_at}}</td>
-            <td> {{param.p_updated_by}}</td>
             <td class="text-center">
-                <form action="{% url 'parameter_delete' param.id %}" method="post" onclick="return confirm('Are you sure?');">
+                {% if param_def.mrt_info %}
+                <form action="{% url 'mrt_parameter_delete' param_def.mrt_info.id %}" method="post" onsubmit="return confirm('Are you sure?');">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-sm btn-danger">
                         <i class="fas fa-trash-alt"></i>
                     </button>
                 </form>
+                {% endif %}
             </td>
         </tr>
         {% endfor %}
         </tbody>
     </table>
+
     <!-- Pagination controls -->
 
     <div class="pagination d-flex gap-2">
@@ -94,14 +90,12 @@
     </div>
 
 </div>
-
 {% endblock content %}
 
 {% block scripts %}
-
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        new DataTable('#param_list', {
+        new DataTable('#param_def_list', {
             responsive: true,
             order: [[0, 'desc']],
             dom: '<"row align-items-center mb-3"' +
@@ -117,4 +111,5 @@
         });
     });
 </script>
+
 {% endblock scripts %}

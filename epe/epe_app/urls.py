@@ -38,4 +38,11 @@ urlpatterns = [
     path('download/<str:filename>/', views.download_marked_pdf, name='download_marked_pdf'),
     path('parameter_similarity/', views.parameter_similarity_view, name='parameter_similarity'),
     path('parameter_analysis/', views.parameter_analysis_view, name='parameter_analysis'),
+    path('parameters/export/', views.export_parameters_csv, name='export_parameters_csv'),
+    path('mrt_parameter_insert/<int:mrt_param_id>/', views.mrt_parameter_add, name='mrt_parameter_insert'),  # Add mrt_param_def
+    path('mrt_parameter_update/<int:mrt_param_id>/', views.mrt_parameter_add, name='mrt_parameter_update'),  # Update mrt_param_def
+    path('mrt_parameter_list/', views.mrt_parameter_list, name='mrt_parameter_list'),  # List mrt_param_def,
+    path('mrt_parameter_delete/<int:mrt_param_id>/', views.mrt_parameter_delete, name='mrt_parameter_delete'),  # Delete mrt_param_def
+    path('mrt_parameter_search/', views.mrt_parameter_search, name='mrt_parameter_search'),  # search mrt_param_def
+    path('mrt_parameter_master_list/', views.mrt_parameter_master_list, name='mrt_parameter_master_list'),  # List mrt_param_def,
 ]

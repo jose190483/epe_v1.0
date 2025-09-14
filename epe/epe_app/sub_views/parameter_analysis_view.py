@@ -32,18 +32,19 @@ def search_and_highlight(pdf_path, keywords, prefix, timestamp, system_short_nam
             if kw in normalized_text or fuzz.ratio(kw, normalized_text) >= FUZZY_THRESHOLD:
                 matches = page.search_for(kw)
                 for rect in matches:
-                    # Define dot size
-                    dot_size = 5  # Adjust for visibility
+                    # Highlight in cyan
+                    highlight = page.add_highlight_annot(rect)
+                    highlight.set_colors(stroke=(0, 1, 1))  # Cyan
+                    highlight.update()
 
-                    # Calculate position for the dot (slightly to the right of the match)
+                    # Add red dot after the match
+                    dot_size = 5  # Adjust for visibility
                     dot_x = rect.x1 + 2
-                    dot_y = rect.y0 + (rect.y1 - rect.y0) / 2  # Vertically centered
+                    dot_y = rect.y0 + (rect.y1 - rect.y0) / 2
 
                     dot_rect = fitz.Rect(dot_x, dot_y, dot_x + dot_size, dot_y + dot_size)
-
-                    # Add a red filled circle annotation
                     dot_annot = page.add_circle_annot(dot_rect)
-                    dot_annot.set_colors(stroke=(1, 0, 0), fill=(1, 0, 0))  # Red color
+                    dot_annot.set_colors(stroke=(1, 0, 0), fill=(1, 0, 0))  # Red
                     dot_annot.set_border(width=0.5)
                     dot_annot.update()
 

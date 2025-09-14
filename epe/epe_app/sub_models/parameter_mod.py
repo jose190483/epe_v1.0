@@ -25,8 +25,9 @@ class prameter_info(models.Model):
                                             related_name='p_updated_by', db_column='p_updated_by')
     p_parameter_prefix = models.CharField(max_length=150, null=True, blank=True)
     p_parameter_suffix = models.CharField(max_length=150, null=True, blank=True)
+
     def __str__(self):
-        return self.p_id
+        return str(self.p_id) if self.p_id is not None else ""
 
     class Meta:
         ordering = ["-p_id"]
