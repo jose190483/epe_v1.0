@@ -45,4 +45,6 @@ urlpatterns = [
     path('mrt_parameter_delete/<int:mrt_param_id>/', views.mrt_parameter_delete, name='mrt_parameter_delete'),  # Delete mrt_param_def
     path('mrt_parameter_search/', views.mrt_parameter_search, name='mrt_parameter_search'),  # search mrt_param_def
     path('mrt_parameter_master_list/', views.mrt_parameter_master_list, name='mrt_parameter_master_list'),  # List mrt_param_def,
+    path('read_pdf_prompt/', views.read_pdf, name='read_pdf_prompt'),  # read_pdf_prompt
+    path('upload_pdf/', views.upload_pdf, name='upload_pdf'),  # upload_pdf
 ]

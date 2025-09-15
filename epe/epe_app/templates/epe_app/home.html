@@ -3,51 +3,102 @@
 <!-- Custom CSS -->
 {% load static %}
 <link rel="stylesheet" href="{% static 'all.css' %}">
+
+
 {% block content %}
 <div class="container-fluid">
-  <div class="row">
-    <!-- Static Sidebar -->
-    <div class="col-md-2 bg-dark text-white vh-100 p-3">
-      <h5 class="text-warning">Feature Links</h5>
-      <hr class="border border-primary border-2 opacity-75">
-      <ul class="nav flex-column">
-        <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="{% url 'project_list' %}"><i class="bi bi-book fs-3"></i> Projects</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="{% url 'parameter_definition_search' %}"><i class="bi bi-airplane-engines fs-3"></i> Parameter Definition</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="{% url 'parameter_definition_lov_info' %}"><i class="bi bi-brilliance fs-3"></i> Parameter Definition LOV</a>
-            </li>
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-2 bg-dark text-white vh-100 p-3">
+            <h5 class="text-warning">Feature Links</h5>
+            <hr class="border border-primary border-2 opacity-75">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="{% url 'project_list' %}"><i class="bi bi-book fs-3"></i> Projects</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="{% url 'parameter_definition_search' %}"><i class="bi bi-airplane-engines fs-3"></i> Parameter Definition</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="{% url 'parameter_definition_lov_info' %}"><i class="bi bi-brilliance fs-3"></i> Parameter Definition LOV</a>
+                </li>
 
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'parameter_list' %}"><i class="bi bi-boxes fs-3"></i> Parameter</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'parameter_similarity' %}"><i class="bi bi-flask-fill fs-3"></i> Parameter Matching</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'parameter_analysis' %}"><i class="bi bi-fuel-pump-diesel fs-3"></i> Parameter Analysis</a>
-            </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'parameter_list' %}"><i class="bi bi-boxes fs-3"></i> Parameter</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'parameter_similarity' %}"><i class="bi bi-flask-fill fs-3"></i> Parameter Matching</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'parameter_analysis' %}"><i class="bi bi-fuel-pump-diesel fs-3"></i> Parameter Analysis</a>
+                </li>
 
-            <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="{% url 'search_keywords' %}"><i class="bi bi-binoculars fs-3"></i> Search Keywords</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="{% url 'manage_pdfs' %}"><i class="bi bi-upload fs-3"></i> Manage PDF's</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'pdf_compare' %}"><i class="bi bi-shuffle fs-3"></i> Compare Pdf</a>
-            </li>
-           <li class="nav-item">
-              <a class="nav-link" href="{% url 'mrt_parameter_search' %}"><i class="bi bi-umbrella-fill fs-3"></i> MRT Parameters</a>
-            </li>
-          <li class="nav-item">
-              <a class="nav-link" href="{% url 'mrt_parameter_master_list' %}"><i class="bi bi-person-circle fs-3"></i> MRT Parameters Master List</a>
-            </li>
-      </ul>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="{% url 'search_keywords' %}"><i class="bi bi-binoculars fs-3"></i> Search Keywords</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="{% url 'manage_pdfs' %}"><i class="bi bi-upload fs-3"></i> Manage PDF's</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'pdf_compare' %}"><i class="bi bi-shuffle fs-3"></i> Compare Pdf</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'mrt_parameter_search' %}"><i class="bi bi-umbrella-fill fs-3"></i> MRT Parameters</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'mrt_parameter_master_list' %}"><i class="bi bi-person-circle fs-3"></i> MRT Parameters Master List</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'read_pdf_prompt' %}"><i class="bi bi-life-preserver fs-3"></i> Analyse PDF Content</a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="col-md-10 mt-3">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="card-title text-center">Parameter Definition</h5>
+                        </div>
+                        <div class="card-body d-flex justify-content-center align-items-center">
+                            <span class="badge bg-danger">{{parameter_definition_count}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="card-title text-center">Parameters</h5>
+                        </div>
+                        <div class="card-body d-flex justify-content-center align-items-center">
+                            <span class="badge bg-danger">{{parameter_count}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="card-title text-center">Systems</h5>
+                        </div>
+                        <div class="card-body d-flex justify-content-center align-items-center">
+                            <span class="badge bg-danger">{{systems_count}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="card-title text-center">Equipment</h5>
+                        </div>
+                        <div class="card-body d-flex justify-content-center align-items-center">
+                            <span class="badge bg-danger">{{equipments_count}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 {% endblock content %}

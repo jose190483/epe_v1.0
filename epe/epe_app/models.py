@@ -21,4 +21,5 @@ from .sub_models.equipment_mod import equipmentInfo,equipment_shortInfo
 from .sub_models.uom_mod import uom_info
 from .sub_models.parameter_mod import prameter_info
 from .sub_models.mrt_parameter_mod import mrt_prameter_info
+from .sub_models.pdf_chunks_mod import PDFChunks
 
