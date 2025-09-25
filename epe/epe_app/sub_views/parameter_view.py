@@ -1,9 +1,10 @@
+import csv
 import json
 
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Q
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse, HttpResponse
 from ..forms import parameter_definition_lov_form
 from ..models import parameter_definition_lov_info
 from ..forms import parameter_form
@@ -13,7 +14,7 @@ from django.contrib import messages
 
 
 def normalize_combo(system, equipment, name):
-    return f"{str(system).strip().upper()}_{str(equipment).strip().upper()}_{str(name).strip().upper()}"
+    return f"{str(system).strip().upper()} {str(equipment).strip().upper()} {str(name).strip().upper()}"
 
 @login_required(login_url='login_page')
 def parameter_add(request,param_id=0):
@@ -50,10 +51,10 @@ def parameter_add(request,param_id=0):
                 parameter_instance.save(update_fields=['p_id'])
 
                 system_short_name = (system_short_Info.objects.get(ss_system_name=request.POST.get('p_system'))).ss_system_short_name
-                equipment_short_name = equipment_shortInfo.objects.get(es_equipment_name=request.POST.get('p_equipment_short')).es_equipment_short_name
+                equipment_name = equipment_shortInfo.objects.get(es_equipment_name=request.POST.get('p_equipment_name')).es_equipment_name
                 parameter_name = request.POST.get('p_name')
 
-                parameter_combo = normalize_combo(system_short_name, equipment_short_name, parameter_name)
+                parameter_combo = normalize_combo(system_short_name, equipment_name, parameter_name)
                 print("parameter_combo_add", parameter_combo)
                 if prameter_info.objects.filter(p_parameter_name_combo__iexact=parameter_combo).exclude(pk=param_id).exists():
                     # Already exists for a different record
@@ -77,10 +78,10 @@ def parameter_add(request,param_id=0):
             p_form = parameter_form(request.POST,instance=parameter)
             if p_form.is_valid():
                 system_short_name = (system_short_Info.objects.get(ss_system_name=request.POST.get('p_system'))).ss_system_short_name
-                equipment_short_name = equipment_shortInfo.objects.get(es_equipment_name=request.POST.get('p_equipment_short')).es_equipment_short_name
+                equipment_name = equipment_shortInfo.objects.get(es_equipment_name=request.POST.get('p_equipment_name')).es_equipment_name
                 parameter_name = request.POST.get('p_name')
                 # parameter_combo=str(system_short_name)+str('_')+str(equipment_short_name)+str('_')+str(parameter_name)
-                parameter_combo = normalize_combo(system_short_name, equipment_short_name, parameter_name)
+                parameter_combo = normalize_combo(system_short_name, equipment_name, parameter_name)
                 print("Edit_parameter_combo",parameter_combo)
                 if prameter_info.objects.filter(p_parameter_name_combo__iexact=parameter_combo).exclude(pk=param_id).exists():
                     # Already exists for a different record
@@ -105,7 +106,7 @@ def parameter_list(request):
     first_name = request.session.get('first_name')
     param_list= (prameter_info.objects.all()).order_by('-id')
     page_number = request.GET.get('page')
-    paginator = Paginator(param_list, 10000)
+    paginator = Paginator(param_list, 50)
     page_obj = paginator.get_page(page_number)
     context = {
         'param_list' : param_list,
@@ -203,5 +204,38 @@ def load_units_type(request):
         return JsonResponse({'error': 'Parameter definition not found'}, status=404)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+
+def export_parameters_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="parameters.csv"'
+
+    writer = csv.writer(response)
+
+    writer.writerow([
+        'ID', 'Parameter ID', 'System', 'System Short', 'Equipment Name', 'Equipment Short',
+        'Definition', 'Definition Description', 'Name', 'Name As IS', 'UOM', 'Unit Type',
+        'Parameter LOV values', 'Prefix', 'Suffix', 'Parameter Name Combo',
+        'Digital Source', 'Status', 'Owner', 'Updated At', 'Updated By'
+    ])
+
+    for param in prameter_info.objects.all():
+        digital_sources = '|'.join([str(ds) for ds in param.p_digital_source.all()])
+        owners = '|'.join([str(owner) for owner in param.p_owner.all()])
+        lov_values = parameter_definition_lov_info.objects.filter(pdl_parameter_definition=param.p_definition)
+        lov_values_str = '|'.join([lov.pdl_lov for lov in lov_values])
+        definition_description = param.p_definition.pd_description if param.p_definition else ''
+
+        writer.writerow([
+            param.id, param.p_id, param.p_system, param.p_system_short,
+            param.p_equipment_name, param.p_equipment_short,
+            param.p_definition, definition_description,
+            param.p_name, param.p_name_as_is, param.p_uom, param.p_unit_type,
+            lov_values_str, param.p_parameter_prefix, param.p_parameter_suffix,
+            param.p_parameter_name_combo, digital_sources, param.p_status,
+            owners, param.p_updated_at, param.p_updated_by
+        ])
+
+    return response
+
 
 

@@ -5,7 +5,6 @@
     <h5 class="shadow-sm rounded text-center bg-info text-white p-2">Parameter Definition List</h5>
 </div>
 
-
 <div class="container_fluid shadow-box-table m-2 p-3">
     <div class="d-flex gap-2 justify-content-start m-2">
         <a href="{% url 'home_page' %}" class="btn btn-primary btn-sm">
@@ -57,6 +56,23 @@
         {% endfor %}
         </tbody>
     </table>
+
+    <!-- Pagination controls -->
+
+    <div class="pagination d-flex gap-2">
+        {% if page_obj.has_previous %}
+        <a class="btn btn-warning btn-sm" href="?page=1">First</a>
+        <a class="btn btn-warning btn-sm" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        {% endif %}
+
+        <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+
+        {% if page_obj.has_next %}
+        <a class="btn btn-warning btn-sm" href="?page={{ page_obj.next_page_number }}">Next</a>
+        <a class="btn btn-warning btn-sm" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+        {% endif %}
+    </div>
+
 </div>
 {% endblock content %}
 

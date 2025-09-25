@@ -1,0 +1,151 @@
+{% extends "epe_app/base.html" %}
+{% load widget_tweaks %}
+{% block content %}
+<div class="container-fluid">
+    <!-- File upload form -->
+    <form id="upload-pdf-form" method="post" enctype="multipart/form-data" class="mb-3">
+        {% csrf_token %}
+        <div class="input-group">
+            <input type="file" id="pdf-file" name="pdf_file" class="form-control" accept="application/pdf" required>
+            <button type="submit" class="btn btn-success btn-sm">Upload PDF</button>
+        </div>
+    </form>
+    <div id="loader" style="display: none;">
+        <p>Processing your PDF, please wait...</p>
+        <div class="spinner"></div> <!-- Add your spinner CSS here -->
+    </div>
+
+    <div class="card mb-3">
+      <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+          <h2 class="mb-0 mx-auto">Chat Box</h2>
+          <!-- Add Clear button aligned to the right -->
+          <form id="clear-history-form" class="mt-2">
+              <button type="button" id="clear-history" class="btn btn-danger btn-sm">Clear History</button>
+          </form>
+      </div>
+
+        <div class="card-body d-flex flex-column" style="height: 60vh;">
+            <!-- Chat history container -->
+            <div id="chat-history" class="flex-grow-1 overflow-auto mb-3 border rounded p-3" style="white-space: normal; overflow-x: hidden;">
+                {% if chat_history %}
+                {% for entry in chat_history %}
+                <div class="chat-entry p-3 mb-3 border rounded">
+                    <div class="prompt-container mb-2">
+                        <strong class="d-block">User:</strong>
+                        <p class="mb-2 border rounded p-2 bg-light text-wrap">{{ entry.prompt }}</p>
+                    </div>
+                    <div class="response-container">
+                        <strong class="d-block">Response:</strong>
+                        <p class="mb-2 border rounded p-2 bg-light text-wrap">{{ entry.response }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <p class="text-muted">No chat history available.</p>
+                {% endif %}
+            </div>
+
+            <!-- Input prompt at the bottom -->
+            <form id="chat-form" method="post" enctype="multipart/form-data" class="mt-auto">
+                {% csrf_token %}
+                <div class="input-group">
+                    <input type="text" id="prompt" name="prompt" class="form-control" placeholder="Enter your prompt..." required>
+                    <button type="submit" class="btn btn-primary">Send</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Clear history functionality
+        const clearHistoryButton = document.getElementById('clear-history');
+        if (clearHistoryButton) {
+            clearHistoryButton.addEventListener('click', function () {
+                const chatHistory = document.getElementById('chat-history');
+                if (chatHistory) {
+                    chatHistory.innerHTML = ''; // Clear the chat history container
+                }
+            });
+        }
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const chatForm = document.getElementById('chat-form');
+        if (chatForm) {
+            chatForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                const prompt = document.getElementById('prompt').value;
+                const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+                fetch("{% url 'read_pdf_prompt' %}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken
+                    },
+                    body: JSON.stringify({ prompt })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const chatHistory = document.getElementById('chat-history');
+                        const entry = document.createElement('div');
+                        entry.className = 'border p-2 mb-2';
+                        entry.innerHTML = `
+                            <strong>User:</strong>
+                            <p>${data.prompt}</p>
+                            <strong>Response:</strong>
+                            <p>${data.response}</p>
+                        `;
+                        chatHistory.appendChild(entry);
+                        chatHistory.scrollTop = chatHistory.scrollHeight; // Scroll to the bottom
+                        document.getElementById('prompt').value = '';
+                    } else {
+                        alert('Error: ' + data.error);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        } else {
+            console.error("Chat form not found.");
+        }
+    });
+</script>
+
+<script>
+    document.getElementById('upload-pdf-form').addEventListener('submit', function (e) {
+        e.preventDefault(); // Prevent default form submission
+        document.getElementById('loader').style.display = 'block'; // Show the loader
+
+        const formData = new FormData(this);
+        fetch("{% url 'upload_pdf' %}", {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+            },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('loader').style.display = 'none'; // Hide the loader
+            if (data.success) {
+                alert('PDF uploaded and processed successfully!');
+            } else {
+                alert('Error: ' + data.error);
+            }
+        })
+        .catch(error => {
+            document.getElementById('loader').style.display = 'none'; // Hide the loader
+            console.error('Error:', error);
+        });
+    });
+</script>
+{% endblock scripts %}

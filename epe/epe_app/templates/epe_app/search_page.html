@@ -5,6 +5,25 @@
     {% if message %}
     <div class="alert alert-success">{{ message }}</div>
     {% endif %}
+
+    <table class=" table table-striped table-bordered border-secondary-subtle table-responsive table-sm nowrap mt-2">
+        <thead class="table-dark">
+        <tr>
+            <th>Downlaod PDF</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for pdf in pdf_files %}
+        <tr>
+            <td class="text-center">
+                <a target="_blank" href="{% url 'download_marked_pdf' pdf %}"> {{ pdf }}
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
     <div class="row">
         <!-- Left Column (30%) -->
         <div class="col-md-4">
@@ -132,29 +151,29 @@
                     </div>
                     {% endif %}
                 </div>
-                <div class="container mt-4">
-                    {% if found_summary %}
-                    <h5>🔍 Matched Page Text:</h5>
-                    <div class="scroll-buttons">
-                        <button class="btn btn-outline-primary" onclick="scrollLeft()">⬅️</button>
-                        <button class="btn btn-outline-primary" onclick="scrollRight()">➡️</button>
-                    </div>
-                    <div id="scrollContainer" class="scroll-container">
-                        {% for kw, matches in found_summary.items %}
-                        {% for pdf_name, page_num, highlighted_text in matches %}
-                        <div class="card scroll-card">
-                            <div class="card-header bg-secondary text-white">
-                                <strong>{{ kw }}</strong> found in <strong>{{ pdf_name }}</strong> — Page {{ page_num }}
-                            </div>
-                            <div class="card-body" style="white-space: pre-wrap; background-color: #f8f9fa;">
-                                {{ highlighted_text|safe }}
-                            </div>
-                        </div>
-                        {% endfor %}
-                        {% endfor %}
-                    </div>
-                    {% endif %}
-                </div>
+                <!--                <div class="container mt-4">-->
+                <!--                    {% if found_summary %}-->
+                <!--                    <h5>🔍 Matched Page Text:</h5>-->
+                <!--                    <div class="scroll-buttons">-->
+                <!--                        <button class="btn btn-outline-primary" onclick="scrollLeft()">⬅️</button>-->
+                <!--                        <button class="btn btn-outline-primary" onclick="scrollRight()">➡️</button>-->
+                <!--                    </div>-->
+                <!--                    <div id="scrollContainer" class="scroll-container">-->
+                <!--                        {% for kw, matches in found_summary.items %}-->
+                <!--                        {% for pdf_name, page_num, highlighted_text in matches %}-->
+                <!--                        <div class="card scroll-card">-->
+                <!--                            <div class="card-header bg-secondary text-white">-->
+                <!--                                <strong>{{ kw }}</strong> found in <strong>{{ pdf_name }}</strong> — Page {{ page_num }}-->
+                <!--                            </div>-->
+                <!--                            <div class="card-body" style="white-space: pre-wrap; background-color: #f8f9fa;">-->
+                <!--                                {{ highlighted_text|safe }}-->
+                <!--                            </div>-->
+                <!--                        </div>-->
+                <!--                        {% endfor %}-->
+                <!--                        {% endfor %}-->
+                <!--                    </div>-->
+                <!--                    {% endif %}-->
+                <!--                </div>-->
 
                 {% if not found_summary and not not_found_keywords %}
                 <p class="text-muted">No results yet. Enter keywords and click "Search PDFs".</p>

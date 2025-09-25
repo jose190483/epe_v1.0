@@ -85,8 +85,20 @@
           </div>
           <div class="col-md-6">
             <div class="input-group input-group-sm">
+              <span class="input-group-text">Parameter Prefix</span>
+              {% render_field p_form.p_parameter_prefix class="form-control" %}
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="input-group input-group-sm">
               <span class="input-group-text">Parameter Name</span>
               {% render_field p_form.p_name class="form-control" %}
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="input-group input-group-sm">
+              <span class="input-group-text">Parameter Suffix</span>
+              {% render_field p_form.p_parameter_suffix class="form-control" %}
             </div>
           </div>
 

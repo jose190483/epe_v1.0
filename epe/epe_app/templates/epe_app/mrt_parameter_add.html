@@ -1,0 +1,65 @@
+{% extends "epe_app/base.html" %}
+{% load widget_tweaks %}
+
+{% block content %}
+<form method="POST" action="">
+  {% csrf_token %}
+  <div class="container my-3">
+    <div class="row justify-content-center">
+      <div class="col-12 col-lg-10">
+        <div class="card shadow-sm">
+          <div class="card-header bg-dark text-white text-center">
+            <h5 class="mb-0">Add/Update MRT Parameter</h5>
+          </div>
+          <div class="card-body bg-light">
+            <div class="row g-3">
+              <!-- Left Column -->
+              <div class="col-md-12">
+                <div class="input-group input-group-sm mb-2">
+                  <span class="input-group-text">Parameter</span>
+                  {% render_field mrt_param_form.mrt_parameter_ref class="form-control" %}
+                </div>
+                <div class="input-group input-group-sm mb-2">
+                  <span class="input-group-text">MRT Parameter</span>
+                  {% render_field mrt_param_form.mrt_parameter class="form-control" %}
+                </div>
+                <div class="input-group input-group-sm mb-2">
+                  <span class="input-group-text">Default value</span>
+                  {% render_field mrt_param_form.mrt_default_value class="form-control" %}
+                </div>
+              </div>
+              {% render_field mrt_param_form.mrt_updated_by id="mrt_updated_by" class="form-select" hidden="True" %}
+              <div class="d-flex col justify-content-center mt-4">
+                {% for message in messages %}
+                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %} py-1 mb-2">
+                  {{ message }}
+                </div>
+                {% endfor %}
+              </div>
+              <!-- Buttons -->
+              <div class="col-12 d-flex justify-content-between mt-2">
+                <button type="submit" class="btn btn-sm btn-success">
+                  <i class="fas fa-check"></i> Submit
+                </button>
+                <a href="{% url 'mrt_parameter_master_list' %}" class="btn btn-sm btn-danger">
+                  <i class="fas fa-times"></i> Cancel
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+{% endblock content %}
+
+{% block scripts %}
+<script>
+  $(document).ready(function () {
+    // Set the value of the hidden input field to the session user ID
+    document.getElementById("mrt_updated_by").value =({{ request.session.ses_userID }});
+  });
+</script>
+{% endblock scripts %}

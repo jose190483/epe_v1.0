@@ -52,3 +52,16 @@ border-color:black;
     padding:10px;
     margin:5px;
 }
+
+.nav-link {
+  transition: color 0.3s ease, transform 0.3s ease;
+    color: white !important; /* Default color */
+    font-family: 'Poppins', sans-serif;
+}
+
+.nav-link:hover {
+  color: #61C799 !important; /* Bootstrap warning color or any other */
+  transform: scale(1.05);     /* Slight zoom effect */
+  text-decoration: none;      /* Optional: remove underline */
+}
+

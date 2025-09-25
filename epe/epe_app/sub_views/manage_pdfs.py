@@ -1,11 +1,12 @@
 import os
 
+from django.conf import settings
 from django.shortcuts import render
-
 
 def manage_pdfs(request):
     import os
-    PDF_FOLDER = r"C:\Users\waltjos01\PycharmProjects\IDP_v3.0\idp\idp_app\pdfs"  # or your actual folder
+    # PDF_FOLDER = r"C:\Users\waltjos01\PycharmProjects\epe_v2.0\epe\epe_app\pdfs"  # or your actual folder
+    PDF_FOLDER = os.path.join(settings.MEDIA_ROOT, 'pdfs')
 
     message = ''
     pdf_files = [f for f in os.listdir(PDF_FOLDER) if f.endswith('.pdf')]

@@ -9,6 +9,9 @@
     <a href="{% url 'parameter_insert' %}" class="btn btn-success btn-sm">
         <i class="fas fa-plus"></i> Add
     </a>
+    <a href="{% url 'export_parameters_csv' %}" class="btn btn-warning btn-sm">
+        <i class="fas fa-plus"></i> Download CSV
+    </a>
 </div>
 
 <hr>
@@ -17,33 +20,51 @@
         <thead class="table-dark">
         <tr>
             <th>ID</th>
-            <th>Paramerter</th>
-            <th>Name</th>
+            <th>Edit</th>
+            <th>Paramerter ID</th>
+            <th>Name (As IS)</th>
+            <th>System Short</th>
+            <th>Equipment</th>
+            <th>Parameter Name</th>
+            <th>Parameter Name Combo</th>
             <th>Parameter Definition</th>
+            <th>Owner</th>
             <th>Unit Type</th>
             <th>UOM</th>
             <th>Status</th>
             <th>Updated On</th>
             <th>Updated By</th>
-            <th>Edit</th>
             <th>Delete</th>
         </thead>
         <tbody>
         {% for param in page_obj %}
         <tr>
             <td> {{param.id}}</td>
+            <td class="text-center">
+                <a class="btn btn-sm btn-primary" href="{% url 'parameter_update' param.id %}" >
+                    <i class="far fa-edit"></i>
+                </a>
+            </td>
             <td> {{param.p_id}}</td>
+            <td> {{param.p_name_as_is}}</td>
+            <td> {{param.p_system_short}}</td>
+            <td> {{param.p_equipment_name}}</td>
             <td> {{param.p_name}}</td>
+            <td> {{param.p_parameter_name_combo}}</td>
             <td> {{param.p_definition}}</td>
+<!--            <td> {{param.p_owner}}</td>-->
+
+            <td>
+                {% for owner in param.p_owner.all %}
+                {{ owner }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </td>
+
             <td> {{param.p_unit_type}}</td>
             <td> {{param.p_uom}}</td>
             <td> {{param.p_status}}</td>
             <td> {{param.p_updated_at}}</td>
             <td> {{param.p_updated_by}}</td>
-            <td class="text-center">
-                <a class="btn btn-sm btn-primary" href="{% url 'parameter_update' param.id %}" >
-                    <i class="far fa-edit"></i>
-                </a>
             <td class="text-center">
                 <form action="{% url 'parameter_delete' param.id %}" method="post" onclick="return confirm('Are you sure?');">
                     {% csrf_token %}
@@ -56,6 +77,22 @@
         {% endfor %}
         </tbody>
     </table>
+    <!-- Pagination controls -->
+
+    <div class="pagination d-flex gap-2">
+        {% if page_obj.has_previous %}
+        <a class="btn btn-warning btn-sm" href="?page=1">First</a>
+        <a class="btn btn-warning btn-sm" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        {% endif %}
+
+        <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+
+        {% if page_obj.has_next %}
+        <a class="btn btn-warning btn-sm" href="?page={{ page_obj.next_page_number }}">Next</a>
+        <a class="btn btn-warning btn-sm" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+        {% endif %}
+    </div>
+
 </div>
 
 {% endblock content %}

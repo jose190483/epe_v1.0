@@ -13,6 +13,13 @@
           </div>
 
           <div class="card-body bg-light">
+
+            {% if pd_form.pd_name.errors %}
+            <div class="container alert alert-danger" role="alert">
+              Name  <strong>"{{ request.POST.pd_name }}" </strong> already exists. Please use a different name.
+            </div>
+            {% endif %}
+
             <div class="row g-3">
               <!-- Left Column -->
               <div class="col-md-6">

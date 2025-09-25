@@ -34,4 +34,17 @@ urlpatterns = [
     path('export_csv/', views.export_csv, name='export_csv'),
     path('pdf_compare/', views.pdf_compare_view, name='pdf_compare'),
     path('home_page', views.home_view, name='home_page'),
+    path('parameter_definition_lov_info/', views.list_parameter_definition_lov, name='parameter_definition_lov_info'),
+    path('download/<str:filename>/', views.download_marked_pdf, name='download_marked_pdf'),
+    path('parameter_similarity/', views.parameter_similarity_view, name='parameter_similarity'),
+    path('parameter_analysis/', views.parameter_analysis_view, name='parameter_analysis'),
+    path('parameters/export/', views.export_parameters_csv, name='export_parameters_csv'),
+    path('mrt_parameter_insert/<int:mrt_param_id>/', views.mrt_parameter_add, name='mrt_parameter_insert'),  # Add mrt_param_def
+    path('mrt_parameter_update/<int:mrt_param_id>/', views.mrt_parameter_add, name='mrt_parameter_update'),  # Update mrt_param_def
+    path('mrt_parameter_list/', views.mrt_parameter_list, name='mrt_parameter_list'),  # List mrt_param_def,
+    path('mrt_parameter_delete/<int:mrt_param_id>/', views.mrt_parameter_delete, name='mrt_parameter_delete'),  # Delete mrt_param_def
+    path('mrt_parameter_search/', views.mrt_parameter_search, name='mrt_parameter_search'),  # search mrt_param_def
+    path('mrt_parameter_master_list/', views.mrt_parameter_master_list, name='mrt_parameter_master_list'),  # List mrt_param_def,
+    path('read_pdf_prompt/', views.read_pdf, name='read_pdf_prompt'),  # read_pdf_prompt
+    path('upload_pdf/', views.upload_pdf, name='upload_pdf'),  # upload_pdf
 ]

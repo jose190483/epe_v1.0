@@ -7,7 +7,7 @@ class equipmentInfo(models.Model):
         ordering = ["equipment_name"]
 
     def __str__(self):
-        return self.equipment_name
+        return self.equipment_name or ""
 
 class equipment_shortInfo(models.Model):
     es_equipment_name = models.ForeignKey(equipmentInfo,on_delete=models.PROTECT)
@@ -17,4 +17,4 @@ class equipment_shortInfo(models.Model):
         ordering = ["es_equipment_short_name"]
 
     def __str__(self):
-        return self.es_equipment_short_name
+        return self.es_equipment_short_name or ""
