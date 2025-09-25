@@ -9,8 +9,10 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+import os
 from pathlib import Path
+
+from django.contrib import messages
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +22,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-8-z#9$(^($659j3h4-pbxar92i(b8ll$vuenf3316&t@f^(%k('
+SECRET_KEY = 'django-insecure-$fdqn^rwz4)mxcxnkc(5hhx008=#hx&yzou9&hxu$&0w-u6gll'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 
 
 # Application definition
@@ -37,10 +42,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'widget_tweaks',
-    'crispy_forms',
-    'smart_selects',
     'epe_app',
+    'crispy_forms',
+    'widget_tweaks',
+    'smart_selects',
 ]
 
 MIDDLEWARE = [
@@ -80,13 +85,21 @@ WSGI_APPLICATION = 'epe.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'epe_002',
+        'NAME': 'epe_004',
         'USER': 'postgres',
         'PASSWORD': '244613',
-        'HOST': 'localhost'
+        'HOST': 'localhost',
     }
 }
 
+# Message Tags
+MESSAGE_TAGS = {
+        messages.debug: 'alert-secondary',
+        messages.info: 'alert-info',
+        messages.success: 'alert-success',
+        messages.warning: 'alert-warning',
+        messages.error: 'alert-danger',
+ }
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
