@@ -5,7 +5,7 @@ from collections import defaultdict
 from django.shortcuts import render
 from collections import Counter
 
-PDF_FOLDER = r"C:\Users\waltjos01\PycharmProjects\epe_v2.0\epe\epe_app\pdfs"
+PDF_FOLDER = r"C:\Users\BVM\PycharmProjects\epe_v_3.0\epe\epe_app\pdfs"
 
 def search_keywords(request):
     highlighted_results = defaultdict(list)

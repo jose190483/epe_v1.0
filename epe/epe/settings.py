@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'epe.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'epe_002',
+        'NAME': 'epe_003',
         'USER': 'postgres',
         'PASSWORD': '244613',
         'HOST': 'localhost'
