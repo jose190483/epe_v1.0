@@ -7,8 +7,6 @@ from sentence_transformers import SentenceTransformer
 model = SentenceTransformer(
     r'C:\Users\waltjos01\PycharmProjects\epe_v2.0\epe\epe_app\models\all-MiniLM-L6-v2-main'
 )
-
-
 def extract_text_chunks(pdf_file, max_chunk_size=800):
     import re
     from nltk.tokenize import sent_tokenize
@@ -48,7 +46,7 @@ def extract_text_chunks(pdf_file, max_chunk_size=800):
     return chunks
 
 
-def semantic_search(embeddings, prompt, chunks, top_k=3, similarity_threshold=0.5):
+def semantic_search(embeddings, prompt, chunks, top_k=3, similarity_threshold=0.1):
     from sentence_transformers import util
     import torch
 

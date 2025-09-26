@@ -26,12 +26,36 @@ def upload_pdf(request):
             reader = PdfReader(pdf_file)
             chunks = []
             embeddings = []
+            max_chunk_size = 800  # Maximum words per chunk
+            overlap = 100  # Overlap between chunks
+
             for page in reader.pages:
                 text = page.extract_text()
                 if text:
-                    chunks.append(text)
-                    # Precompute embeddings
-                    embeddings.append(model.encode(text, convert_to_tensor=False).tolist())
+                    # Split text into paragraphs
+                    paragraphs = text.split('\n\n')
+                    for paragraph in paragraphs:
+                        words = paragraph.split()
+                        current_chunk = []
+                        current_chunk_size = 0
+
+                        for word in words:
+                            if current_chunk_size + 1 > max_chunk_size:
+                                # Add the current chunk to the list
+                                chunks.append(' '.join(current_chunk))
+                                # Start a new chunk with overlap
+                                current_chunk = current_chunk[-overlap:] if overlap else []
+                                current_chunk_size = len(current_chunk)
+
+                            current_chunk.append(word)
+                            current_chunk_size += 1
+
+                        # Add the last chunk if it exists
+                        if current_chunk:
+                            chunks.append(' '.join(current_chunk))
+
+            # Precompute embeddings for all chunks
+            embeddings = [model.encode(chunk, convert_to_tensor=False).tolist() for chunk in chunks]
 
             # Save chunks and embeddings to the database
             PDFChunks.objects.create(file_name=file_name, chunks=chunks, embeddings=embeddings)
@@ -42,7 +66,6 @@ def upload_pdf(request):
             return JsonResponse({'success': False, 'error': 'An error occurred while processing the PDF.'})
 
     return JsonResponse({'success': False, 'error': 'Invalid request method.'})
-
 
 @login_required(login_url='login_page')
 def read_pdf(request):
