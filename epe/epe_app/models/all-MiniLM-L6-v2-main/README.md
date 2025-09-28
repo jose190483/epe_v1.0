@@ -20,14 +20,14 @@ datasets:
 - wikihow
 - natural_questions
 - trivia_qa
-- embedding-data/sentence-compression
-- embedding-data/flickr30k-captions
-- embedding-data/altlex
-- embedding-data/simple-wiki
-- embedding-data/QQP
-- embedding-data/SPECTER
-- embedding-data/PAQ_pairs
-- embedding-data/WikiAnswers
+- embedding-docs/sentence-compression
+- embedding-docs/flickr30k-captions
+- embedding-docs/altlex
+- embedding-docs/simple-wiki
+- embedding-docs/QQP
+- embedding-docs/SPECTER
+- embedding-docs/PAQ_pairs
+- embedding-docs/WikiAnswers
 
 ---
 

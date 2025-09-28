@@ -15,4 +15,5 @@ from .sub_views.compare_pdfs import pdf_compare_view
 from .sub_views.match_param_def import parameter_similarity_view
 from .sub_views.parameter_analysis_view import parameter_analysis_view
 from .sub_views.mrt_parameter_view import mrt_parameter_add,mrt_parameter_list,mrt_parameter_search,mrt_parameter_delete,mrt_parameter_master_list
-from .sub_views.read_pdf import read_pdf,upload_pdf
+from .sub_views.read_pdf import read_pdf,upload_pdf,ask_local_rag
+

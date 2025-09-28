@@ -171,7 +171,7 @@ def load_system_short_name_equipment_name(request):
         'equipment_name': equipment_name,
         'equipment_name_id': equipment_name_id,
     }
-    # return HttpResponse(json.dumps(data))
+    # return HttpResponse(json.dumps(docs))
     return JsonResponse(data)
 
 @login_required(login_url='login_page')
