@@ -1,18 +1,34 @@
-import json
-import re
-import requests
+import hashlib
+import traceback
+import fitz  # PyMuPDF
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 import fitz  # PyMuPDF
-from sentence_transformers import SentenceTransformer
-from sklearn.metrics.pairwise import cosine_similarity
+from django.views.decorators.http import require_POST
 import numpy as np
+from sentence_transformers import SentenceTransformer
 from ..models import PDFChunks
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
+# your embedding model already loaded somewhere above:
+model = SentenceTransformer(r"C:\Users\BVM\PycharmProjects\epe_v_3.0\epe\epe_app\models\all-MiniLM-L6-v2-main")
+
+def get_embedding(text: str) -> list[float]:
+    """
+    Encode a string into a 384-dim embedding.
+    Returns a plain Python list so it’s JSON-serializable.
+    """
+    # convert_to_numpy=True gives np.ndarray; normalize_embeddings=True gives cosine-ready vectors
+    embedding = model.encode(
+        text,
+        convert_to_numpy=True,
+        normalize_embeddings=True
+    )
+    # ensure float32 + list for JSONField
+    return embedding.astype(np.float32).tolist()
 
 def chunk_text_by_sentences(text, max_words=250):
-    # Split text into sentences and group into chunks
+    import re
     sentences = re.split(r'(?<=[.!?])\s+', text)
     chunks, chunk = [], []
     word_count = 0
@@ -28,56 +44,84 @@ def chunk_text_by_sentences(text, max_words=250):
     return chunks
 
 def clean_text(text):
-    # Remove extra whitespace and non-printable characters
+    import re
     return re.sub(r'\s+', ' ', text).strip()
 
-
-# Load the model from your local path
-model = SentenceTransformer('C:/Users/BVM/PycharmProjects/epe_v_3.0/epe/epe_app/models/all-MiniLM-L6-v2-main')
-
-# good: returns a plain list
-def get_embedding(text: str):
-    return model.encode(text, convert_to_numpy=True, normalize_embeddings=True).tolist()
-
+# your embedding model already loaded somewhere above:
+# model = SentenceTransformer(r"C:\Users\BVM\PycharmProjects\epe_v_3.0\epe\epe_app\models\all-MiniLM-L6-v2-main")
 
 @login_required(login_url='login_page')
+@require_POST
 def upload_pdf(request):
-    if request.method != 'POST' or 'pdf_file' not in request.FILES:
-        return JsonResponse({'success': False, 'error': 'Invalid request method.'})
+    """
+    Upload and process a PDF:
+    - compute SHA-256 hash
+    - skip if same content already processed
+    - extract text -> chunk
+    - embed chunks
+    - store in PDFChunks
+    """
+    if 'pdf_file' not in request.FILES:
+        return JsonResponse({'success': False, 'error': 'No file uploaded.'}, status=400)
 
     pdf_file = request.FILES['pdf_file']
     file_name = pdf_file.name
 
-    if PDFChunks.objects.filter(file_name=file_name).exists():
-        return JsonResponse({'success': False, 'error': 'A PDF with this name already exists.'})
-
     try:
-        doc = fitz.open(stream=pdf_file.read(), filetype="pdf")
+        # read file once and compute hash
+        stream_bytes = pdf_file.read()
+        if not stream_bytes:
+            return JsonResponse({'success': False, 'error': 'Empty file.'}, status=400)
+
+        file_hash = hashlib.sha256(stream_bytes).hexdigest()
+
+        # idempotency: skip if same hash already in DB
+        existing = PDFChunks.objects.filter(file_hash=file_hash).first()
+        if existing:
+            return JsonResponse({'success': True, 'message': 'This PDF is already processed.', 'file_name': existing.file_name})
+
+        # open PDF with PyMuPDF
+        try:
+            doc = fitz.open(stream=stream_bytes, filetype="pdf")
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': f'Cannot open PDF: {e}'}, status=400)
+
+        if doc.needs_pass:
+            doc.close()
+            return JsonResponse({'success': False, 'error': 'This PDF is password protected.'}, status=400)
+
         chunks = []
         for page in doc:
-            text = page.get_text()
+            text = page.get_text("text") or page.get_text() or ""
+            text = clean_text(text)
             if text:
-                chunks.extend(chunk_text_by_sentences(text, max_words=500))
+                chunks.extend(chunk_text_by_sentences(text, max_words=50))
+        doc.close()
 
+        # clean + filter short chunks
         chunks = [clean_text(c) for c in chunks if len(c.split()) >= 8]
         if not chunks:
-            return JsonResponse({'success': False, 'error': 'No extractable text found.'})
+            return JsonResponse({'success': False, 'error': 'No extractable text found. (Scanned PDF?)'}, status=400)
 
-        # Generate embeddings for each chunk
-        embeddings = [get_embedding(chunk) for chunk in chunks]
+        # batch embed chunks and convert to JSON-safe lists
+        emb_matrix = model.encode(chunks, convert_to_numpy=True, normalize_embeddings=True)
+        embeddings = emb_matrix.astype('float32').tolist()
 
+        # store in DB
         PDFChunks.objects.create(
             file_name=file_name,
+            file_hash=file_hash,
             chunks=chunks,
             embeddings=embeddings,
             num_chunks=len(chunks),
             dim=len(embeddings[0]) if embeddings else 384
         )
+
         return JsonResponse({'success': True, 'message': 'PDF uploaded and processed successfully.'})
 
     except Exception as e:
-        print("Error processing PDF:", e)
-        return JsonResponse({'success': False, 'error': 'An error occurred while processing the PDF.'})
+        traceback.print_exc()
+        return JsonResponse({'success': False, 'error': f'Processing error: {e}'}, status=500)
 
 @login_required(login_url='login_page')
 def read_pdf(request):
