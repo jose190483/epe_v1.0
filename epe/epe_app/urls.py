@@ -47,4 +47,5 @@ urlpatterns = [
     path('mrt_parameter_master_list/', views.mrt_parameter_master_list, name='mrt_parameter_master_list'),  # List mrt_param_def,
     path('read_pdf_prompt/', views.read_pdf, name='read_pdf_prompt'),  # read_pdf_prompt
     path('upload_pdf/', views.upload_pdf, name='upload_pdf'),  # upload_pdf
+    path('data_upload/', views.data_upload_view, name='data_upload'),
 ]

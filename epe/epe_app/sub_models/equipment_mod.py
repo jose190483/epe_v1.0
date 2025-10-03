@@ -3,6 +3,7 @@ from ..models import system_Info
 class equipmentInfo(models.Model):
     equipment_system_name = models.ForeignKey(system_Info,on_delete=models.PROTECT)
     equipment_name = models.CharField(max_length=100, null=True,default='')
+    equipment_name_short = models.CharField(max_length=100, null=True,default='')
     class Meta:
         ordering = ["equipment_name"]
 
