@@ -17,3 +17,5 @@ from .sub_views.parameter_analysis_view import parameter_analysis_view
 from .sub_views.mrt_parameter_view import mrt_parameter_add,mrt_parameter_list,mrt_parameter_search,mrt_parameter_delete,mrt_parameter_master_list
 from .sub_views.read_pdf import read_pdf,upload_pdf
 from .sub_views.data_upload_script import data_upload_view
+from .sub_views.read_pdf import read_pdf,upload_pdf,ask_local_rag
+

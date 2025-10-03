@@ -8,7 +8,7 @@ def parameter_similarity_view(request):
     # Fetch all records with related definitions
     records = prameter_info.objects.select_related('p_definition').all()
 
-    # Prepare data
+    # Prepare docs
     data = {
         "parameter_definition": [record.p_definition.pd_name for record in records],
         "parameter": [record.p_name for record in records]
