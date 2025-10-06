@@ -11,7 +11,7 @@ def parameter_similarity_view(request):
     # Prepare docs
     data = {
         "parameter_definition": [record.p_definition.pd_name for record in records],
-        "parameter": [record.p_name for record in records]
+        "parameter": [record.p_parameter_name_combo for record in records]
     }
 
     df = pd.DataFrame(data)

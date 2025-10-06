@@ -9,9 +9,13 @@
     <a href="{% url 'parameter_insert' %}" class="btn btn-success btn-sm">
         <i class="fas fa-plus"></i> Add
     </a>
-    <a href="{% url 'export_parameters_csv' %}" class="btn btn-warning btn-sm">
-        <i class="fas fa-plus"></i> Download CSV
+        <a href="{% url 'export_parameters_csv' %}" class="btn btn-secondary btn-sm">
+        <i class="fas fa-download"></i> Download CSV
     </a>
+    <a href="{% url 'parameter_list' %}" class="btn btn-warning btn-sm">
+        <i class="fas fa-list"></i> List All
+    </a>
+
 </div>
 
 <hr>
