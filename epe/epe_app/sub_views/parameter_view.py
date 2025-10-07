@@ -8,14 +8,20 @@ from django.http import JsonResponse, HttpResponse
 from ..forms import parameter_definition_lov_form
 from ..models import parameter_definition_lov_info
 from ..forms import parameter_form
-from ..models import prameter_definition_info,equipment_shortInfo,equipmentInfo,system_short_Info,unit_type_info,uom_info,prameter_info
+from ..models import system_Info,prameter_definition_info,equipment_shortInfo,equipmentInfo,system_short_Info,uom_info,prameter_info
 from django.shortcuts import render, redirect
 from django.contrib import messages
 
 
-def normalize_combo(system, equipment, name):
-    return f"{str(system).strip().upper()} {str(equipment).strip().upper()} {str(name).strip().upper()}"
-
+def normalize_combo(system_name, equipment_name, sub_class, parameter_definition):
+    components = [
+        str(system_name).strip().upper(),
+        str(equipment_name).strip().upper(),
+        str(parameter_definition).strip().upper()
+    ]
+    if sub_class:  # Only include sub_class if it's not None or empty
+        components.insert(2, str(sub_class).strip().upper())
+    return " ".join(components)
 @login_required(login_url='login_page')
 def parameter_add(request,param_id=0):
     if request.method == "GET":
@@ -50,11 +56,16 @@ def parameter_add(request,param_id=0):
                 parameter_instance.p_id = f"P_{1000000 + parameter_instance.id}"
                 parameter_instance.save(update_fields=['p_id'])
 
-                system_short_name = (system_short_Info.objects.get(ss_system_name=request.POST.get('p_system'))).ss_system_short_name
-                equipment_name = equipment_shortInfo.objects.get(es_equipment_name=request.POST.get('p_equipment_name')).es_equipment_name
-                parameter_name = request.POST.get('p_name')
+                # system_short_name = (system_short_Info.objects.get(ss_system_name=request.POST.get('p_system'))).ss_system_short_name
+                # equipment_name = equipment_shortInfo.objects.get(es_equipment_name=request.POST.get('p_equipment_name')).es_equipment_name
+                # parameter_name = request.POST.get('p_name')
 
-                parameter_combo = normalize_combo(system_short_name, equipment_name, parameter_name)
+                system_name = system_Info.objects.get(pk=request.POST.get('p_system')).system_name
+                equipment_name = equipmentInfo.objects.get(pk=request.POST.get('p_equipment_name')).equipment_name
+                sub_class = request.POST.get('p_parameter_prefix')
+                parameter_definition = prameter_definition_info.objects.get(pk=request.POST.get('p_definition')).pd_name
+
+                parameter_combo = normalize_combo(system_name, equipment_name, sub_class,parameter_definition)
                 print("parameter_combo_add", parameter_combo)
                 if prameter_info.objects.filter(p_parameter_name_combo__iexact=parameter_combo).exclude(pk=param_id).exists():
                     # Already exists for a different record
@@ -77,11 +88,16 @@ def parameter_add(request,param_id=0):
             parameter = prameter_info.objects.get(pk=param_id)
             p_form = parameter_form(request.POST,instance=parameter)
             if p_form.is_valid():
-                system_short_name = (system_short_Info.objects.get(ss_system_name=request.POST.get('p_system'))).ss_system_short_name
-                equipment_name = equipment_shortInfo.objects.get(es_equipment_name=request.POST.get('p_equipment_name')).es_equipment_name
-                parameter_name = request.POST.get('p_name')
-                # parameter_combo=str(system_short_name)+str('_')+str(equipment_short_name)+str('_')+str(parameter_name)
-                parameter_combo = normalize_combo(system_short_name, equipment_name, parameter_name)
+                # system_short_name = (system_short_Info.objects.get(ss_system_name=request.POST.get('p_system'))).ss_system_short_name
+                # equipment_name = equipment_shortInfo.objects.get(es_equipment_name=request.POST.get('p_equipment_name')).es_equipment_name
+                # parameter_name = request.POST.get('p_name')
+                # # parameter_combo=str(system_short_name)+str('_')+str(equipment_short_name)+str('_')+str(parameter_name)
+                system_name = system_Info.objects.get(pk=request.POST.get('p_system')).system_name
+                equipment_name = equipmentInfo.objects.get(pk=request.POST.get('p_equipment_name')).equipment_name
+                sub_class = request.POST.get('p_parameter_prefix')
+                parameter_definition = prameter_definition_info.objects.get(pk=request.POST.get('p_definition')).pd_name
+
+                parameter_combo = normalize_combo(system_name, equipment_name, sub_class, parameter_definition)
                 print("Edit_parameter_combo",parameter_combo)
                 if prameter_info.objects.filter(p_parameter_name_combo__iexact=parameter_combo).exclude(pk=param_id).exists():
                     # Already exists for a different record
@@ -143,12 +159,11 @@ def parameter_delete(request,param_id):
 @login_required(login_url='login_page')
 def load_equipment_short_name(request):
     equipment_id = request.GET.get('equipment_id')
-
+    print('equipment_id',equipment_id)
     try:
-        equipment_short = equipment_shortInfo.objects.get(es_equipment_name=equipment_id)
+        equipment_short = equipmentInfo.objects.get(pk=equipment_id).equipment_name_short
         data = {
-            'equipment_short_name': equipment_short.es_equipment_short_name,
-            'equipment_short_name_id': equipment_short.id,
+            'equipment_short_name': equipment_short,
         }
         return JsonResponse(data)
     except equipment_shortInfo.DoesNotExist:
@@ -160,13 +175,10 @@ def load_system_short_name_equipment_name(request):
     system_id = request.GET.get('system_id')
     print('system_id',system_id)
     # Fetch Unit Details
-    system_short_name_id = system_short_Info.objects.get(ss_system_name=system_id).id
-    system_short_name = system_short_Info.objects.get(ss_system_name=system_id).ss_system_short_name
+    system_short_name = system_Info.objects.get(pk=system_id).system_name_short
     equipment_name=list(equipmentInfo.objects.filter(equipment_system_name=system_id).values_list('equipment_name',flat=True).distinct())
     equipment_name_id=list(equipmentInfo.objects.filter(equipment_name__in=equipment_name).values_list('id',flat=True))
-    print('system_short_name_id',system_short_name_id)
     data = {
-        'system_short_name_id':system_short_name_id,
         'system_short_name':system_short_name,
         'equipment_name': equipment_name,
         'equipment_name_id': equipment_name_id,
@@ -213,8 +225,8 @@ def export_parameters_csv(request):
 
     writer.writerow([
         'ID', 'Parameter ID', 'System', 'System Short', 'Equipment Name', 'Equipment Short',
-        'Definition', 'Definition Description', 'Name', 'Name As IS', 'UOM', 'Unit Type',
-        'Parameter LOV values', 'Prefix', 'Suffix', 'Parameter Name Combo',
+        'Definition', 'Definition Description', 'Name As IS', 'UOM', 'Unit Type',
+        'Parameter LOV values', 'Sub Class', 'Parameter Name Combo',
         'Digital Source', 'Status', 'Owner', 'Updated At', 'Updated By'
     ])
 
@@ -229,8 +241,8 @@ def export_parameters_csv(request):
             param.id, param.p_id, param.p_system, param.p_system_short,
             param.p_equipment_name, param.p_equipment_short,
             param.p_definition, definition_description,
-            param.p_name, param.p_name_as_is, param.p_uom, param.p_unit_type,
-            lov_values_str, param.p_parameter_prefix, param.p_parameter_suffix,
+            param.p_name_as_is, param.p_uom, param.p_unit_type,
+            lov_values_str, param.p_parameter_prefix,
             param.p_parameter_name_combo, digital_sources, param.p_status,
             owners, param.p_updated_at, param.p_updated_by
         ])

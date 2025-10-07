@@ -3,7 +3,7 @@ from ..models import MyUser,status_Info,owner_info,digital_source_info,equipment
 
 class prameter_info(models.Model):
     p_id = models.CharField(max_length=100, blank=True,null=True, default='')
-    p_name = models.CharField(max_length=100, null=True, default='')
+    # p_name = models.CharField(max_length=100, null=True, default='')
     p_name_as_is = models.CharField(max_length=100,null=True, default='')
     p_uom=models.ForeignKey(uom_info,on_delete=models.CASCADE)
     p_definition=models.ForeignKey(prameter_definition_info,on_delete=models.PROTECT)
@@ -26,7 +26,7 @@ class prameter_info(models.Model):
     p_updated_by = models.ForeignKey(MyUser, on_delete=models.PROTECT, null=True,
                                             related_name='p_updated_by', db_column='p_updated_by')
     p_parameter_prefix = models.CharField(max_length=150, null=True, blank=True)
-    p_parameter_suffix = models.CharField(max_length=150, null=True, blank=True)
+    # p_parameter_suffix = models.CharField(max_length=150, null=True, blank=True)
 
     def __str__(self):
         return str(self.p_id) if self.p_id is not None else ""

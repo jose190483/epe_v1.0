@@ -89,8 +89,8 @@ def parameter_analysis_view(request):
         system_obj = system_Info.objects.get(id=system_id)
 
         # Get the short name from system_short_Info
-        system_short_obj = system_short_Info.objects.filter(ss_system_name=system_obj).first()
-        system_short_name = system_short_obj.ss_system_short_name if system_short_obj else 'N/A'
+        # system_short_obj = system_short_Info.objects.filter(ss_system_name=system_obj).first()
+        system_short_name = system_obj.system_name_short if system_obj.system_name_short else 'N/A'
 
         # Get the equipment object
         equipment_obj = equipmentInfo.objects.get(id=equipment_id)
@@ -138,7 +138,7 @@ def parameter_analysis_view(request):
             context['to_be_results'] = to_be_result
 
         # TF-IDF Similarity Calculation
-        param_texts = [p.p_name for p in parameters]
+        param_texts = [p.p_parameter_name_combo for p in parameters]
         def_texts = [p.p_definition.pd_name for p in parameters]
 
         df = pd.DataFrame({

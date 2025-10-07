@@ -133,7 +133,7 @@ def data_upload_view(request):
                             'pd_unit_type_id': unit_type_id,
                             'pd_library': pd_library_instance,
                             'pd_status': pd_status_instance,
-                            'pd_id': f"PD_1000000{parameter_definition_model.objects.count() + 1}",
+                            'pd_id': f"PD_{1000000 + parameter_definition_model.objects.count() + 1}",
                             'pd_description': description,
                             'pd_updated_at': datetime.now(),
                             'pd_updated_by': pd_updated_by_instance,
@@ -195,7 +195,7 @@ def data_upload_view(request):
 
                 # Dynamically fetch instances
                 defaults = {
-                    'p_id': f"P_1000000{parameter_info_model.objects.count() + 1}",
+                    'p_id': f"P_{1000000+parameter_info_model.objects.count() + 1}",
                     'p_name_as_is': doct_as_is_parameter,
                     'p_parameter_name_combo': parameter_instance,
                     'p_status': pd_status_instance,
@@ -203,7 +203,7 @@ def data_upload_view(request):
                     'p_updated_by': pd_updated_by_instance,
                     'p_parameter_prefix': parameter_prefix,
                 }
-                print('parameter_instance:', parameter_instance, 'Length:', len(parameter_instance))
+                # print('parameter_instance:', parameter_instance, 'Length:', len(parameter_instance))
 
                 # Fetch short names for system and equipment
                 system_instance = apps.get_model('epe_app', 'system_Info').objects.filter(system_name=system).first()
@@ -268,28 +268,16 @@ def data_upload_view(request):
         owner_info_model = apps.get_model('epe_app', 'owner_info')
 
         with transaction.atomic():
-            for index, row in df.dropna(subset=['Discipline Attribute Ownership']).iterrows():
-                # Get the parameter_info instance
-                parameter_instance = clean_text(row['Parameter instance'])
-                parameter_info = parameter_info_model.objects.filter(p_parameter_name_combo=parameter_instance).first()
+            # Extract and clean unique values from 'Discipline Attribute Ownership'
+            unique_owners = set()
+            for value in df['Discipline Attribute Ownership'].dropna():
+                # Split by pipe separator and clean each value
+                owners = [clean_text(owner) for owner in value.split('|') if owner.strip()]
+                unique_owners.update(owners)
 
-                if not parameter_info:
-                    print(f"Missing parameter_info for: {parameter_instance}")
-                    continue
-
-                # Split and clean Discipline Attribute Ownership values
-                owners = split_and_clean(row['Discipline Attribute Ownership'])
-
-                for owner in owners:
-                    # Get the owner_info instance
-                    owner_info = owner_info_model.objects.filter(owner_name=owner).first()
-
-                    if not owner_info:
-                        print(f"Missing owner_info for: {owner}")
-                        continue
-
-                    # Add the owner_info instance to the ManyToManyField
-                    parameter_info.p_owner.add(owner_info)
+            # Insert unique cleaned values into the 'owner_info' table
+            for owner in unique_owners:
+                owner_info_model.objects.get_or_create(owner_name=owner)
 
         return JsonResponse({'success': True, 'message': 'Data uploaded successfully.'})
     else:
