@@ -7,11 +7,13 @@ import fitz  # PyMuPDF
 from django.views.decorators.http import require_POST
 import numpy as np
 from sentence_transformers import SentenceTransformer
-from ..models import PDFChunks
+from sklearn.metrics.pairwise import cosine_similarity
 from django.http import JsonResponse
+from ..models import PDFChunks
+from django.http import JsonResponse, request
 from django.views.decorators.http import require_http_methods
 # your embedding model already loaded somewhere above:
-model = SentenceTransformer(r"C:\Users\BVM\PycharmProjects\epe_v_3.0\epe\epe_app\models\all-MiniLM-L6-v2-main")
+model = SentenceTransformer(r"C:\Users\waltjos01\PycharmProjects\epe_v2.0\epe\epe_app\models\all-MiniLM-L6-v2-main")
 
 def get_embedding(text: str) -> list[float]:
     """
@@ -167,7 +169,8 @@ def read_pdf(request):
             response_chunks = [all_chunks[i] for i in top_indices]
 
             context = "\n".join(response_chunks)
-            ollama_url = "http://localhost:11434/api/generate"
+            # ollama_url = "http://localhost:11434/api/generate"
+            ollama_url = ""
 
             payload = {
                 "model": "gemma3:4b",
@@ -232,7 +235,8 @@ def ollama_generate(model: str, prompt: str, *, stream: bool = False, **opts) ->
     Call Ollama /api/generate. If stream=True, it stitches together all chunks.
     Example opts: temperature=0.2, num_predict=256
     """
-    url = "http://localhost:11434/api/generate"
+    # url = "http://localhost:11434/api/generate"
+    url = ""
     payload = {"model": model, "prompt": prompt, "stream": stream}
     if opts:
         payload.update(opts)
@@ -257,3 +261,101 @@ def ollama_generate(model: str, prompt: str, *, stream: bool = False, **opts) ->
             # ignore partial lines
             continue
     return "".join(out).strip()
+
+# In `read_pdf.py`
+@require_http_methods(["POST"])
+def clear_chat_history(request):
+    request.session['chat_history'] = []
+    return JsonResponse({'success': True, 'message': 'Chat history cleared.'})
+
+
+def compare_prompt_with_pdf(request):
+    """
+    Compare a chunked prompt with chunked PDF content stored in the database.
+    """
+    if request.method == 'POST':
+        try:
+            # Extract the prompt and optional parameters from the request
+            prompt = request.POST.get('prompt', '').strip()
+            max_words = int(request.POST.get('max_words', 250))  # Default max words per chunk
+            top_n = int(request.POST.get('top_n', 3))  # Default number of top matches to return
+            print("Received prompt for comparison:", prompt)
+
+            # Validate the prompt
+            if not prompt:
+                return render(request, 'epe_app/read_pdf.html', {
+                    'response_text': 'Empty prompt provided.',
+                    'chat_history': []
+                })
+
+            if max_words <= 0 or top_n <= 0:
+                return render(request, 'epe_app/read_pdf.html', {
+                    'response_text': 'Invalid parameters: max_words and top_n must be positive integers.',
+                    'chat_history': []
+                })
+
+            # Step 1: Chunk the prompt into smaller pieces
+            prompt_chunks = chunk_text_by_sentences(prompt, max_words=max_words)
+
+            # Step 2: Retrieve PDF chunks and embeddings from the database
+            pdf_chunks = PDFChunks.objects.all()
+            if not pdf_chunks.exists():
+                return render(request, 'epe_app/read_pdf.html', {
+                    'response_text': 'No PDF content found in the database.',
+                    'chat_history': []
+                })
+
+            all_chunks = []
+            all_embeddings = []
+            chunk_to_file_map = []  # Map chunks to their file names
+            for pdf_chunk in pdf_chunks:
+                all_chunks.extend(pdf_chunk.chunks)
+                chunk_to_file_map.extend([pdf_chunk.file_name] * len(pdf_chunk.chunks))
+                for emb in pdf_chunk.embeddings:
+                    all_embeddings.append(np.array(emb, dtype=np.float32))
+
+            # Step 3: Generate embeddings for the prompt chunks
+            prompt_embeddings = np.array([get_embedding(chunk) for chunk in prompt_chunks], dtype=np.float32)
+
+            # Step 4: Compute cosine similarity between prompt embeddings and PDF embeddings
+            similarities = cosine_similarity(prompt_embeddings, np.vstack(all_embeddings))
+            print("Computed similarities shape:", similarities.shape)
+
+            # Step 5: Aggregate results and find top matches for each prompt chunk
+            top_matches = []
+            for i, chunk in enumerate(prompt_chunks):
+                chunk_similarities = similarities[i]
+                top_indices = chunk_similarities.argsort()[-top_n:][::-1]  # Get indices of top N matches
+                top_matches.append({
+                    'prompt_chunk': chunk,
+                    'matches': [
+                        {
+                            'pdf_chunk': all_chunks[idx],
+                            'similarity': float(chunk_similarities[idx]),
+                            'file_name': chunk_to_file_map[idx]
+                        }
+                        for idx in top_indices
+                    ]
+                })
+            print("Top matches found:", top_matches)
+
+            # Render the results in the template
+            return render(request, 'epe_app/read_pdf_new.html', {
+                'response_text': 'Comparison completed successfully.',
+                'chat_history': top_matches
+            })
+
+        except Exception as e:
+            # Log the error for debugging
+            import traceback
+            traceback.print_exc()
+            return render(request, 'epe_app/read_pdf_new.html', {
+                'response_text': f'An unexpected error occurred: {str(e)}',
+                'chat_history': []
+            })
+
+    # Handle GET requests or other methods
+    return render(request, 'epe_app/read_pdf_new.html', {
+        'response_text': '',
+        'chat_history': []
+    })
