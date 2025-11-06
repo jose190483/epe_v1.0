@@ -35,7 +35,7 @@
           <div class="col-md-6">
             <div class="input-group input-group-sm">
               <span class="input-group-text">System short Name</span>
-              {% render_field p_form.p_system_short id="p_system_short" class="select2"  %}
+              {% render_field p_form.p_system_short id="p_system_short" class="form-control"  %}
             </div>
           </div>
 
@@ -49,7 +49,7 @@
           <div class="col-md-6">
             <div class="input-group input-group-sm">
               <span class="input-group-text">Equipment Short Name</span>
-              {% render_field p_form.p_equipment_short id="p_equipment_short" class=" select2"  %}
+              {% render_field p_form.p_equipment_short id="p_equipment_short" class="form-control"  %}
             </div>
           </div>
 
@@ -85,23 +85,10 @@
           </div>
           <div class="col-md-6">
             <div class="input-group input-group-sm">
-              <span class="input-group-text">Parameter Prefix</span>
+              <span class="input-group-text">Sub class</span>
               {% render_field p_form.p_parameter_prefix class="form-control" %}
             </div>
           </div>
-          <div class="col-md-6">
-            <div class="input-group input-group-sm">
-              <span class="input-group-text">Parameter Name</span>
-              {% render_field p_form.p_name class="form-control" %}
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="input-group input-group-sm">
-              <span class="input-group-text">Parameter Suffix</span>
-              {% render_field p_form.p_parameter_suffix class="form-control" %}
-            </div>
-          </div>
-
           <div class="col-md-6">
             <div class="input-group input-group-sm">
               <span class="input-group-text">Parameter Name Combo</span>
@@ -131,7 +118,7 @@
           <button type="submit" class="btn btn-sm btn-success">
             <i class="fas fa-check"></i> Submit
           </button>
-          <a href="{% url 'parameter_list' %}" class="btn btn-sm btn-danger">
+          <a href="{% url 'parameter_search' %}" class="btn btn-sm btn-danger">
             <i class="fas fa-times"></i> Cancel
           </a>
         </div>
@@ -181,30 +168,18 @@
   $(document).ready(function () {
     $("#p_system").on("change", function () {
       const system_id = $(this).val();
-
-      if (!system_id || system_id === "0") {
-        $("#p_system_short, #p_equipment_name, #p_equipment_short").empty()
-          .append("<option value='0'>--Select--</option>");
-        return;
-      }
-
       $.ajax({
         url: "{% url 'load_system_short_name_equipment_name' %}",
         data: { system_id: system_id },
         success: function (data) {
           try {
             // system_short_name is a single value
-            const systemName = data.system_short_name || "";
-            const systemId = data.system_short_name_id || "";
-
+            const systemName_short = data.system_short_name || "";
             const equipmentNames = data.equipment_name || [];
             const equipmentIds = data.equipment_name_id || [];
 
             // Populate System Short Name dropdown
-            const $systemShort = $("#p_system_short");
-            $systemShort.empty().append("<option value='0'>--Select--</option>");
-            $systemShort.append(`<option value="${systemId}">${systemName}</option>`);
-            $systemShort.val(systemId);
+            document.getElementById("p_system_short").value =systemName_short;
 
             // Populate Equipment Name dropdown
             const $equipmentName = $("#p_equipment_name");
@@ -236,25 +211,13 @@
     $("#p_equipment_name").on("change", function () {
       const equipment_id = $(this).val();
 
-      if (!equipment_id || equipment_id === "0") {
-        $("#p_equipment_short").empty()
-          .append("<option value='0'>--Select--</option>")
-          .prop("disabled", true);
-        return;
-      }
-
       $.ajax({
         url: "{% url 'load_equipment_short_name' %}",
         data: { equipment_id: equipment_id },
         success: function (data) {
           try {
-            const name = data.equipment_short_name || "";
-            const id = data.equipment_short_name_id || "";
-
-            const $dropdown = $("#p_equipment_short");
-            $dropdown.empty().append("<option value='0'>--Select--</option>");
-            $dropdown.append(`<option value="${id}">${name}</option>`);
-            $dropdown.prop("disabled", false).val(id);
+            const equipment_short_name = data.equipment_short_name || "";
+            document.getElementById("p_equipment_short").value =equipment_short_name;
 
           } catch (e) {
             console.error("Invalid JSON in response", e);

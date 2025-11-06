@@ -46,5 +46,8 @@ urlpatterns = [
     path('mrt_parameter_search/', views.mrt_parameter_search, name='mrt_parameter_search'),  # search mrt_param_def
     path('mrt_parameter_master_list/', views.mrt_parameter_master_list, name='mrt_parameter_master_list'),  # List mrt_param_def,
     path('read_pdf_prompt/', views.read_pdf, name='read_pdf_prompt'),  # read_pdf_prompt
+    path('compare_prompt_with_pdf/', views.compare_prompt_with_pdf, name='compare_prompt_with_pdf'),  # read_pdf_prompt without LLM
     path('upload_pdf/', views.upload_pdf, name='upload_pdf'),  # upload_pdf
+    path('data_upload/', views.data_upload_view, name='data_upload'),
+    path('clear_chat_history/', views.clear_chat_history, name='clear_chat_history'),
 ]

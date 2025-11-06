@@ -1,6 +1,7 @@
 from django.db import models
 class system_Info(models.Model):
     system_name = models.CharField(max_length=100, null=True,default='')
+    system_name_short = models.CharField(max_length=100, null=True,default='')
 
     class Meta:
         ordering = ["system_name"]

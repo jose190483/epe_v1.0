@@ -61,18 +61,33 @@
 
 {% block scripts %}
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Clear history functionality
-        const clearHistoryButton = document.getElementById('clear-history');
-        if (clearHistoryButton) {
-            clearHistoryButton.addEventListener('click', function () {
-                const chatHistory = document.getElementById('chat-history');
-                if (chatHistory) {
-                    chatHistory.innerHTML = ''; // Clear the chat history container
+document.addEventListener('DOMContentLoaded', function () {
+    const clearHistoryButton = document.getElementById('clear-history');
+    if (clearHistoryButton) {
+        clearHistoryButton.addEventListener('click', function () {
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+            fetch("{% url 'clear_chat_history' %}", {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrfToken
                 }
-            });
-        }
-    });
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const chatHistory = document.getElementById('chat-history');
+                    if (chatHistory) {
+                        chatHistory.innerHTML = ''; // Clear the chat history container
+                    }
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    }
+});
 </script>
 
 <script>

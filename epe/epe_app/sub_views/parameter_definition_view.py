@@ -75,7 +75,7 @@ def parameter_definition_list(request):
     first_name = request.session.get('first_name')
     # param_def_list= (prameter_definition_info.objects.all()).order_by('-id')
     page_number = request.GET.get('page')
-    paginator = Paginator(param_def_list, 10000)
+    paginator = Paginator(param_def_list, 10000000)
     page_obj = paginator.get_page(page_number)
     context = {
                 'param_def_list' : param_def_list,
@@ -84,6 +84,7 @@ def parameter_definition_list(request):
                 'request_user': request.user,
                 }
     return render(request,"epe_app/parameter_definition_list.html",context)
+
 
 @login_required(login_url='login_page')
 def parameter_definition_search(request):
