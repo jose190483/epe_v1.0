@@ -1,4 +1,5 @@
 import hashlib
+import time
 import traceback
 import fitz  # PyMuPDF
 from django.contrib.auth.decorators import login_required
@@ -9,23 +10,20 @@ import numpy as np
 from sentence_transformers import SentenceTransformer
 from ..models import PDFChunks
 from django.http import JsonResponse
+import requests, json
 from django.views.decorators.http import require_http_methods
+from transformers import AutoModelForCausalLM,AutoTokenizer
+import torch
+from .rag_models import MODEL, TOKENIZER
 # your embedding model already loaded somewhere above:
-model = SentenceTransformer(r"C:\Users\BVM\PycharmProjects\epe_v_3.0\epe\epe_app\models\all-MiniLM-L6-v2-main")
+model = SentenceTransformer(r"C:\Users\BVM\PycharmProjects\epe_v_3.0\epe\epe_app\models\all_MiniLM_L6_v2_main")
+
+EMBEDDER = SentenceTransformer(r"C:\Users\BVM\PycharmProjects\epe_v_3.0\epe\epe_app\models\all_MiniLM_L6_v2_main")
 
 def get_embedding(text: str) -> list[float]:
-    """
-    Encode a string into a 384-dim embedding.
-    Returns a plain Python list so it’s JSON-serializable.
-    """
-    # convert_to_numpy=True gives np.ndarray; normalize_embeddings=True gives cosine-ready vectors
-    embedding = model.encode(
-        text,
-        convert_to_numpy=True,
-        normalize_embeddings=True
-    )
-    # ensure float32 + list for JSONField
-    return embedding.astype(np.float32).tolist()
+    """Return L2-normalized embedding as a JSON-safe list[float]."""
+    emb = EMBEDDER.encode(text, convert_to_numpy=True, normalize_embeddings=True)
+    return emb.astype(np.float32).tolist()
 
 def chunk_text_by_sentences(text, max_words=250):
     import re
@@ -46,9 +44,6 @@ def chunk_text_by_sentences(text, max_words=250):
 def clean_text(text):
     import re
     return re.sub(r'\s+', ' ', text).strip()
-
-# your embedding model already loaded somewhere above:
-# model = SentenceTransformer(r"C:\Users\BVM\PycharmProjects\epe_v_3.0\epe\epe_app\models\all-MiniLM-L6-v2-main")
 
 @login_required(login_url='login_page')
 @require_POST
@@ -184,6 +179,17 @@ def read_pdf(request):
                 if not answer:
                     answer = "Sorry, I couldn’t find that in the document."
 
+            # try:
+            #     answer = mistral_generate(
+            #         f"Context:\n{context}\n\nQuestion: {prompt}",
+            #         max_new_tokens=512,
+            #         temperature=0.2
+            #     )
+            #     if not answer:
+            #         answer = "Sorry, I couldn’t find that in the document."
+            # except Exception as e:
+            #     answer = f"Error running Mistral: {e}"
+
                 chat_entry = {'prompt': prompt, 'response': answer}
                 chat_history.append(chat_entry)
                 request.session['chat_history'] = chat_history
@@ -204,28 +210,27 @@ def read_pdf(request):
         'response_text': response_text,
         'chat_history': chat_history
     })
-@require_http_methods(["POST"])
-def ask_local_rag(request):
-    prompt = (request.POST.get("prompt") or request.body.decode("utf-8") or "").strip()
-    if not prompt:
-        return JsonResponse({"error": "Empty prompt"}, status=400)
-
-    try:
-        answer = ollama_generate(
-            model="llama3:8b",  # pick the exact tag you have (e.g., llama3, llama3.1, llama3:8b, etc.)
-            prompt=prompt,
-            stream=False,
-            temperature=0.3,
-            num_predict=256
-        )
-        if not answer:
-            answer = "Sorry, I couldn’t generate a response."
-        return JsonResponse({"answer": answer})
-    except Exception as e:
-        return JsonResponse({"error": str(e)}, status=500)
-
-
-import requests, json
+# @require_http_methods(["POST"])
+# def ask_local_rag(request):
+#     prompt = (request.POST.get("prompt") or request.body.decode("utf-8") or "").strip()
+#     if not prompt:
+#         return JsonResponse({"error": "Empty prompt"}, status=400)
+#
+#     try:
+#         answer = ollama_generate(
+#             model="llama3:8b",  # pick the exact tag you have (e.g., llama3, llama3.1, llama3:8b, etc.)
+#             prompt=prompt,
+#             stream=False,
+#             temperature=0.3,
+#             num_predict=256
+#         )
+#         if not answer:
+#             answer = "Sorry, I couldn’t generate a response."
+#         return JsonResponse({"answer": answer})
+#     except Exception as e:
+#         return JsonResponse({"error": str(e)}, status=500)
+#
+#
 
 def ollama_generate(model: str, prompt: str, *, stream: bool = False, **opts) -> str:
     """
@@ -257,3 +262,42 @@ def ollama_generate(model: str, prompt: str, *, stream: bool = False, **opts) ->
             # ignore partial lines
             continue
     return "".join(out).strip()
+
+MISTRAL_PATH = r"C:\Users\BVM\PycharmProjects\epe_v_3.0\epe\epe_app\models\Mistral_7B_Instruct_v0.3"  # your local dir
+MISTRAL_TOKENIZER = AutoTokenizer.from_pretrained(MISTRAL_PATH)
+
+# Use fp16 only if you have a GPU that supports it; otherwise use float32
+MISTRAL_MODEL = AutoModelForCausalLM.from_pretrained(
+    MISTRAL_PATH,
+    device_map="auto",
+    torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
+)
+
+def mistral_generate(prompt: str, *, max_new_tokens=64, temperature=0.2) -> str:
+    """
+    Fast path for local inference.
+    - If no CUDA, use Ollama (quantized) for speed.
+    - Keeps tokens small and greedy to return quickly.
+    """
+    if not torch.cuda.is_available():
+        # fallback so you aren't waiting minutes on CPU
+        return ollama_generate(
+            model="mistral:7b-instruct",   # or your local Ollama tag
+            prompt=prompt,
+            stream=False,
+            temperature=temperature,
+            num_predict=max_new_tokens,
+        )
+
+    inputs = TOKENIZER(prompt, return_tensors="pt", padding=True).to(MODEL.device)
+    with torch.inference_mode():
+        out_ids = MODEL.generate(
+            **inputs,
+            max_new_tokens=max_new_tokens,
+            temperature=temperature,
+            do_sample=False,              # greedy is faster/stable
+            pad_token_id=TOKENIZER.eos_token_id,
+        )
+    return TOKENIZER.decode(out_ids[0], skip_special_tokens=True)
+
+
