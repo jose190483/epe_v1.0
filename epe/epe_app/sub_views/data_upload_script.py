@@ -1,4 +1,7 @@
+import os
+
 import pandas as pd
+from django.conf import settings
 from django.db import transaction
 from django.apps import apps
 from django.http import JsonResponse
@@ -29,8 +32,8 @@ def generate_short_name(name):
 def data_upload_view(request):
     if request.method == 'GET':
         # File path
-        excel_file_path = r'C:\Users\waltjos01\PycharmProjects\epe_v2.0\epe\media\consolidated_Excel_v2.0.xlsx'
-
+        # excel_file_path = r'C:\Users\waltjos01\PycharmProjects\epe_v2.0\epe\media\consolidated_Excel_v2.0.xlsx'
+        excel_file_path = os.path.join(settings.MEDIA_ROOT, 'consolidated_Excel_v2.0.xlsx')
         # Read the Excel file
         df = pd.read_excel(excel_file_path)
 

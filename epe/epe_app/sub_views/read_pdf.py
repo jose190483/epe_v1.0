@@ -1,7 +1,7 @@
 import hashlib
-import time
+import os
 import traceback
-import fitz  # PyMuPDF
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 import fitz  # PyMuPDF
@@ -9,19 +9,20 @@ from django.views.decorators.http import require_POST
 import numpy as np
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
-from django.http import JsonResponse
 import requests, json
-from ..models import PDFChunks
-from django.http import JsonResponse, request
-from django.views.decorators.http import require_http_methods
-from transformers import AutoModelForCausalLM,AutoTokenizer
-import torch
-from .rag_models import MODEL, TOKENIZER
-# your embedding model already loaded somewhere above:
-model = SentenceTransformer(r"C:\Users\waltjos01\PycharmProjects\epe_v2.0\epe\epe_app\models\all-MiniLM-L6-v2-main")
-model = SentenceTransformer(r"C:\Users\BVM\PycharmProjects\epe_v_3.0\epe\epe_app\models\all_MiniLM_L6_v2_main")
+from torch import device
 
-EMBEDDER = SentenceTransformer(r"C:\Users\BVM\PycharmProjects\epe_v_3.0\epe\epe_app\models\all_MiniLM_L6_v2_main")
+from ..models import PDFChunks
+from django.http import JsonResponse
+from django.views.decorators.http import require_http_methods
+import torch
+from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
+
+# your embedding model already loaded somewhere above:
+MODEL_PATH = os.path.join(settings.BASE_DIR, 'epe_app', 'models', 'multi_qa_MiniLM_L6_cos_v1')
+model = SentenceTransformer(MODEL_PATH)
+
+EMBEDDER = SentenceTransformer(MODEL_PATH)
 
 def get_embedding(text: str) -> list[float]:
     """Return L2-normalized embedding as a JSON-safe list[float]."""
@@ -155,9 +156,6 @@ def read_pdf(request):
             # Generate embedding for the prompt (normalize if you like)
             prompt_embedding = np.array(get_embedding(prompt), dtype=np.float32).reshape(1, -1)
 
-            # Compute cosine similarity
-            # similarities = cosine_similarity(prompt_embedding, all_embeddings).flatten()
-
             similarities = (all_embeddings @ prompt_embedding.T).ravel()
 
             # Get top 3 most similar chunks
@@ -165,34 +163,21 @@ def read_pdf(request):
             response_chunks = [all_chunks[i] for i in top_indices]
 
             context = "\n".join(response_chunks)
-            # ollama_url = "http://localhost:11434/api/generate"
-            ollama_url = ""
-
-            payload = {
-                "model": "gemma3:4b",
-                "prompt": f"Context:\n{context}\n\nQuestion: {prompt}"
-            }
             try:
-                answer = ollama_generate(
-                    model="gemma3:4b",  # ensure this tag exists locally
-                    prompt=f"Context:\n{context}\n\nQuestion: {prompt}",
-                    stream=False,  # <—— key change
+                # answer = ollama_generate(
+                #     model="gemma3:4b",  # ensure this tag exists locally
+                #     prompt=f"Context:\n{context}\n\nQuestion: {prompt}",
+                #     stream=False,  # <—— key change
+                #     temperature=0.2,
+                #     num_predict=512
+                # )
+                answer = flan_t5_generate(
+                    f"Context:\n{context}\n\nQuestion: {prompt}",
                     temperature=0.2,
-                    num_predict=512
+                    max_new_tokens=512
                 )
                 if not answer:
                     answer = "Sorry, I couldn’t find that in the document."
-
-            # try:
-            #     answer = mistral_generate(
-            #         f"Context:\n{context}\n\nQuestion: {prompt}",
-            #         max_new_tokens=512,
-            #         temperature=0.2
-            #     )
-            #     if not answer:
-            #         answer = "Sorry, I couldn’t find that in the document."
-            # except Exception as e:
-            #     answer = f"Error running Mistral: {e}"
 
                 chat_entry = {'prompt': prompt, 'response': answer}
                 chat_history.append(chat_entry)
@@ -214,35 +199,14 @@ def read_pdf(request):
         'response_text': response_text,
         'chat_history': chat_history
     })
-# @require_http_methods(["POST"])
-# def ask_local_rag(request):
-#     prompt = (request.POST.get("prompt") or request.body.decode("utf-8") or "").strip()
-#     if not prompt:
-#         return JsonResponse({"error": "Empty prompt"}, status=400)
-#
-#     try:
-#         answer = ollama_generate(
-#             model="llama3:8b",  # pick the exact tag you have (e.g., llama3, llama3.1, llama3:8b, etc.)
-#             prompt=prompt,
-#             stream=False,
-#             temperature=0.3,
-#             num_predict=256
-#         )
-#         if not answer:
-#             answer = "Sorry, I couldn’t generate a response."
-#         return JsonResponse({"answer": answer})
-#     except Exception as e:
-#         return JsonResponse({"error": str(e)}, status=500)
-#
-#
 
 def ollama_generate(model: str, prompt: str, *, stream: bool = False, **opts) -> str:
     """
     Call Ollama /api/generate. If stream=True, it stitches together all chunks.
     Example opts: temperature=0.2, num_predict=256
     """
-    # url = "http://localhost:11434/api/generate"
-    url = ""
+    url = "http://localhost:11434/api/generate"
+    # url = ""
     payload = {"model": model, "prompt": prompt, "stream": stream}
     if opts:
         payload.update(opts)
@@ -267,45 +231,6 @@ def ollama_generate(model: str, prompt: str, *, stream: bool = False, **opts) ->
             # ignore partial lines
             continue
     return "".join(out).strip()
-
-MISTRAL_PATH = r"C:\Users\BVM\PycharmProjects\epe_v_3.0\epe\epe_app\models\Mistral_7B_Instruct_v0.3"  # your local dir
-MISTRAL_TOKENIZER = AutoTokenizer.from_pretrained(MISTRAL_PATH)
-
-# Use fp16 only if you have a GPU that supports it; otherwise use float32
-MISTRAL_MODEL = AutoModelForCausalLM.from_pretrained(
-    MISTRAL_PATH,
-    device_map="auto",
-    torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
-)
-
-def mistral_generate(prompt: str, *, max_new_tokens=64, temperature=0.2) -> str:
-    """
-    Fast path for local inference.
-    - If no CUDA, use Ollama (quantized) for speed.
-    - Keeps tokens small and greedy to return quickly.
-    """
-    if not torch.cuda.is_available():
-        # fallback so you aren't waiting minutes on CPU
-        return ollama_generate(
-            model="mistral:7b-instruct",   # or your local Ollama tag
-            prompt=prompt,
-            stream=False,
-            temperature=temperature,
-            num_predict=max_new_tokens,
-        )
-
-    inputs = TOKENIZER(prompt, return_tensors="pt", padding=True).to(MODEL.device)
-    with torch.inference_mode():
-        out_ids = MODEL.generate(
-            **inputs,
-            max_new_tokens=max_new_tokens,
-            temperature=temperature,
-            do_sample=False,              # greedy is faster/stable
-            pad_token_id=TOKENIZER.eos_token_id,
-        )
-    return TOKENIZER.decode(out_ids[0], skip_special_tokens=True)
-
-
 
 # In `read_pdf.py`
 @require_http_methods(["POST"])
@@ -364,7 +289,7 @@ def compare_prompt_with_pdf(request):
 
             # Step 4: Compute cosine similarity between prompt embeddings and PDF embeddings
             similarities = cosine_similarity(prompt_embeddings, np.vstack(all_embeddings))
-            print("Computed similarities shape:", similarities.shape)
+            # print("Computed similarities shape:", similarities.shape)
 
             # Step 5: Aggregate results and find top matches for each prompt chunk
             top_matches = []
@@ -404,3 +329,34 @@ def compare_prompt_with_pdf(request):
         'response_text': '',
         'chat_history': []
     })
+
+# --- Load once globally ---
+local_model_dir = os.path.join(settings.BASE_DIR, 'epe_app', 'models', 'flan_t5_base')
+
+tokenizer = AutoTokenizer.from_pretrained(local_model_dir)
+model = AutoModelForSeq2SeqLM.from_pretrained(local_model_dir)
+model.eval()
+
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+model.to(device)
+
+
+def flan_t5_generate(prompt: str, *, temperature: float = 0.7, max_new_tokens: int = 256) -> str:
+    """
+    Generate text using locally stored flan-t5-base model (offline).
+    Loads model once globally for performance.
+    """
+    # Tokenize input & move tensors to the correct device
+    inputs = tokenizer(prompt, return_tensors="pt")
+    inputs = {k: v.to(device) for k, v in inputs.items()}
+
+    # Generate output
+    outputs = model.generate(
+        **inputs,
+        temperature=temperature,
+        max_new_tokens=max_new_tokens,
+        do_sample=True
+    )
+
+    # Decode text
+    return tokenizer.decode(outputs[0], skip_special_tokens=True).strip()
