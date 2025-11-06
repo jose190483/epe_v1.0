@@ -19,14 +19,20 @@ import torch
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 
 # your embedding model already loaded somewhere above:
-MODEL_PATH = os.path.join(settings.BASE_DIR, 'epe_app', 'models', 'multi_qa_MiniLM_L6_cos_v1')
-model = SentenceTransformer(MODEL_PATH)
+EMBEDDING_MODEL_PATH = os.path.join(settings.BASE_DIR, 'epe_app', 'models', 'multi_qa_MiniLM_L6_cos_v1')
+EMBEDDING_MODEL = SentenceTransformer(EMBEDDING_MODEL_PATH)
 
-EMBEDDER = SentenceTransformer(MODEL_PATH)
+# Text generation model
+T5_MODEL_DIR = os.path.join(settings.BASE_DIR, 'epe_app', 'models', 'flan_t5_base')
+T5_TOKENIZER = AutoTokenizer.from_pretrained(T5_MODEL_DIR)
+T5_MODEL = AutoModelForSeq2SeqLM.from_pretrained(T5_MODEL_DIR)
+T5_MODEL.eval()
+
+DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+T5_MODEL.to(DEVICE)
 
 def get_embedding(text: str) -> list[float]:
-    """Return L2-normalized embedding as a JSON-safe list[float]."""
-    emb = EMBEDDER.encode(text, convert_to_numpy=True, normalize_embeddings=True)
+    emb = EMBEDDING_MODEL.encode(text, convert_to_numpy=True, normalize_embeddings=True)
     return emb.astype(np.float32).tolist()
 
 def chunk_text_by_sentences(text, max_words=250):
@@ -103,7 +109,7 @@ def upload_pdf(request):
             return JsonResponse({'success': False, 'error': 'No extractable text found. (Scanned PDF?)'}, status=400)
 
         # batch embed chunks and convert to JSON-safe lists
-        emb_matrix = model.encode(chunks, convert_to_numpy=True, normalize_embeddings=True)
+        emb_matrix = EMBEDDING_MODEL.encode(chunks, convert_to_numpy=True, normalize_embeddings=True)
         embeddings = emb_matrix.astype('float32').tolist()
 
         # store in DB
@@ -330,33 +336,15 @@ def compare_prompt_with_pdf(request):
         'chat_history': []
     })
 
-# --- Load once globally ---
-local_model_dir = os.path.join(settings.BASE_DIR, 'epe_app', 'models', 'flan_t5_base')
-
-tokenizer = AutoTokenizer.from_pretrained(local_model_dir)
-model = AutoModelForSeq2SeqLM.from_pretrained(local_model_dir)
-model.eval()
-
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-model.to(device)
-
-
 def flan_t5_generate(prompt: str, *, temperature: float = 0.7, max_new_tokens: int = 256) -> str:
-    """
-    Generate text using locally stored flan-t5-base model (offline).
-    Loads model once globally for performance.
-    """
-    # Tokenize input & move tensors to the correct device
-    inputs = tokenizer(prompt, return_tensors="pt")
-    inputs = {k: v.to(device) for k, v in inputs.items()}
+    inputs = T5_TOKENIZER(prompt, return_tensors="pt")
+    inputs = {k: v.to(DEVICE) for k, v in inputs.items()}
 
-    # Generate output
-    outputs = model.generate(
+    outputs = T5_MODEL.generate(
         **inputs,
         temperature=temperature,
         max_new_tokens=max_new_tokens,
         do_sample=True
     )
 
-    # Decode text
-    return tokenizer.decode(outputs[0], skip_special_tokens=True).strip()
+    return T5_TOKENIZER.decode(outputs[0], skip_special_tokens=True).strip()
